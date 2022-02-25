@@ -1,0 +1,1108 @@
+.dialog {
+  width: 100%;
+
+  .dialog-container {
+    width: 640px;
+    min-height: 500px;
+
+    .dialog-content {
+      min-height: 380px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .dialogMain {
+        width: 100%;
+      }
+    }
+  }
+
+  table {
+    font-size: 20px;
+    text-align: center;
+    font-weight: 100;
+    margin-bottom: 50px;
+    width: 70%;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  hr {
+    margin: 24px 0px;
+    border-top: 1px solid $color-secondary-pink;
+    border-bottom: none;
+    border-left: none;
+  }
+
+  ul {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    padding-left: 16px !important;
+    line-height: 20px;
+    color: $color-off-white;
+  }
+
+  li {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  li::marker {
+    color: $color-gray;
+  }
+
+  .m-0 {
+    margin: 0 !important;
+  }
+
+  .liquidStakingProtocolFee {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .error-message {
+    display: flex;
+    justify-content: center;
+    color: red;
+    font-size: 16px;
+    margin: 10px 0;
+    text-align: left;
+  }
+
+  .dialogHeader {
+    font-family: "Montserrat", sans-serif;
+    font-size: 24px;
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 40px;
+    line-height: 32px;
+    color: $color-off-white;
+  }
+
+  .dialogSecondaryHeader {
+    margin-top: 40px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 20px;
+    color: $color-blue;
+    text-align: center;
+  }
+
+  .title {
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    color: $color-blue;
+  }
+
+  .text {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .whitelist-dialog-header {
+    font-family: "Montserrat", sans-serif;
+    font-size: 24px;
+    text-align: center;
+    font-weight: 700;
+    margin: 16px;
+    line-height: 32px;
+    max-width: 448px;
+  }
+
+  .circularProgress {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    height: 300;
+    justify-content: center;
+    color: $background-primary;
+  }
+
+  .center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .contract-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 16px 0;
+    border: 1px solid #2e2e2e;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .charge {
+    display: flex;
+    align-items: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 14px;
+    color: $color-gray;
+    margin: 8px 0px;
+  }
+
+  .chargeHeader {
+    min-width: fit-content;
+  }
+
+  .chargeText {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+  }
+
+  .amount-text {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    color: $color-blue;
+  }
+
+  .amount-display {
+    margin: 0;
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 400;
+  }
+
+  .amount-currency {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .amount {
+    width: 100%;
+    border-radius: 10px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 20px;
+
+    .MuiTypography-colorTextSecondary {
+      color: currentColor;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 500;
+      line-height: 20px;
+    }
+  }
+
+  .wallet {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: "Montserrat", sans-serif !important;
+    font-size: 12px !important;
+    line-height: 16px;
+    padding: 8px 0 16px 0;
+    color: $color-blue;
+  }
+
+  .other-wallet {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 500;
+    padding: 24px 0px;
+    color: #fff;
+  }
+
+  .receipt {
+    margin-top: 30px;
+  }
+
+  .proceed {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 170px;
+    min-height: 40px;
+    background: linear-gradient(
+                    90deg,
+                    #f04adc 0%,
+                    rgba(240, 74, 220, 0.7) 100%
+    );
+    text-transform: none;
+    margin-top: 30px;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    width: 100%;
+    height: 60px;
+    border-radius: 24px;
+    text-align: center;
+    color: $color-white !important;
+
+    &:disabled {
+      opacity: 0.2;
+    }
+
+    &:hover {
+      transform: scale(0.98);
+    }
+  }
+
+  .errorIcon {
+    color: red;
+    vertical-align: sub;
+    margin-right: 10px;
+  }
+
+  .validation {
+    color: rgb(255, 255, 255, 0.5);
+  }
+
+  .divider {
+    border-top: 2px solid #2e2e2e !important;
+    box-shadow: 0px 0px 12px #090909;
+    border-radius: 20px;
+    width: 100%;
+  }
+
+  .ulMargin {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 24px;
+  }
+
+  .airdropsChargeContainer {
+    margin: 32px 0 88px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .undelegateChargeContainer {
+    margin: 24px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .optionsContainer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    .optionItemActive {
+      width: 64px;
+      height: 32px;
+      padding: 0px;
+      margin-right: 8px;
+      border-radius: 8px;
+      color: $background-secondary !important;
+      background: $color-off-white;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+
+      .optionItemText {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 64px;
+        height: 32px;
+        color: $background-secondary !important;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 16px;
+        cursor: pointer;
+      }
+    }
+
+    .optionItem {
+      width: 64px;
+      height: 32px;
+      padding: 1px;
+      margin-right: 8px;
+      border-radius: 8px;
+      background: #1e1e1e;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+
+      .optionItemText {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 64px;
+        height: 32px;
+        color: $color-off-white;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 16px;
+        cursor: pointer;
+      }
+
+      &:hover {
+        background-image: linear-gradient(#111111, #111111),
+        radial-gradient(circle at top left, #f04adc, #00dbff);
+        background-origin: border-box;
+        background-clip: content-box, border-box;
+      }
+    }
+  }
+
+  .rewardsListItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .loader-container {
+    height: 240px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .loader-text-message {
+    position: absolute;
+    bottom: 128px;
+    left: 30%;
+    right: 30%;
+    margin: 8px 0;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    color: $color-off-white;
+    text-align: center;
+  }
+
+  .success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .success-icon {
+      height: 104px;
+      width: 104px;
+    }
+
+    .message {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      color: $color-off-white;
+      margin: 0;
+    }
+
+    .success-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 170px;
+      min-height: 40px;
+      background: linear-gradient(
+                      90deg,
+                      #f04adc 0%,
+                      rgba(240, 74, 220, 0.7) 100%
+      );
+      text-transform: none;
+      margin-top: 30px;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 24px;
+      height: 56px;
+      border-radius: 20px;
+      text-align: center;
+      color: $color-white !important;
+
+      &:disabled {
+        opacity: 0.2;
+      }
+
+      &:hover {
+        transform: scale(0.98);
+      }
+    }
+  }
+
+  .stake-dialog-container {
+    width: 640px;
+    min-height: 200px;
+    border-radius: 0px;
+
+    .back-btn {
+      position: absolute;
+      top: 0;
+      cursor: pointer;
+    }
+
+    .dialog-content {
+      min-height: 200px;
+      display: flex;
+      margin: 20px 35px 30px;
+      .dialogMain {
+        width: 100%;
+      }
+    }
+    .flex-center{
+      align-items: center;
+      justify-content: center;
+    }
+    .v-center{
+      align-items: center;
+    }
+    .validatorImage{
+      max-width:20px;
+      height:20px;
+    }
+    .validatorLogo{
+      max-width:40px;
+      height:40px;
+    }
+    .success-container{
+      height: 240px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .stake-dialog-title {
+      font-weight: 600;
+      font-size: 24px;
+      text-align: center;
+      border-bottom: 1px solid #3E3E3E;
+      margin: 0px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+    }
+
+    .row-title {
+      font-size: 12px;
+      color: #8C8C8C;
+    }
+
+    .row-item {
+      margin: 0px;
+      font-size: 14px;
+      color: #F9F9F9;
+      position: relative;
+      word-wrap: break-word;
+      margin: 0 auto;
+    }
+
+    .txt-center {
+      text-align: center;
+    }
+
+    .txt-right {
+      text-align: right;
+    }
+
+    .airdrop-text {
+      font-size: 10px;
+      padding: 0px 4px 0px 3px;
+
+      img {
+        height: 8px;
+      }
+    }
+
+    .airdrop-view {
+      font-size: 10px;
+      color: #8C8C8C;
+      cursor: pointer;
+      padding-left: 10px;
+    }
+
+    .undelegate-head, .withdraw-head, .deposit-head {
+      text-align: center;
+      padding-bottom: 18px;
+    }
+
+    .withdraw-head {
+      border-bottom: 1px solid #3E3E3E;
+      margin: 0px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+    }
+
+    .withdraw-footer {
+      text-align: center;
+      padding-bottom: 15px;
+    }
+
+    .withdraw-footer p:nth-child(1) {
+      font-size: 16px;
+    }
+
+    .withdraw-footer p:nth-child(2) {
+      color: #8C8C8C;
+      font-size: 12px;
+    }
+
+    .undelegate-head p:nth-child(1), .withdraw-head p:nth-child(1), .deposit-head p:nth-child(1) {
+      font-size: 24px;
+      margin-bottom: 0;
+    }
+
+    .undelegate-head p:nth-child(2), .withdraw-head p:nth-child(2), .deposit-head p:nth-child(2) {
+      font-size: 12px;
+    }
+
+    .deposit-head p:nth-child(3) {
+      font-size: 12px;
+    }
+
+    .undelegate-btn, .undelegate-withdraw-link, .airdrop-withdraw-link {
+      cursor: pointer;
+    }
+
+    .undelegate-para {
+      padding-bottom: 25px;
+    }
+
+    .stake-confirm-btn {
+      width: 100%;
+      color: #fff;
+      border: 1px solid;
+      border-radius: 0;
+      padding: 15px;
+      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      &:hover{
+        background: #fff !important;
+        border: 1px solid !important;
+        color: #111111 !important;
+      }
+    }
+
+    .legendImage {
+      height: 10px;
+    }
+
+    .widthdraw-fund .MuiTypography-colorTextSecondary {
+      font-size: 10px;
+      color: #8C8C8C;
+    }
+
+    .filter-item-list {
+      padding: 32px 32px 32px 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 28px;
+      grid-row-gap: 24px;
+
+      .flex {
+        font-size: 12px;
+      }
+    }
+
+    .dropdown-container {
+      position: absolute;
+      display: block;
+      top: 0px;
+      left: 0;
+      z-index: 1000;
+
+      .dropdown-box {
+        width: 300px;
+        margin: 0 auto;
+      }
+    }
+
+    .airdrop-withdraw-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 5px;
+      grid-row-gap: 14px;
+      display: flex;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      border-bottom: 1px solid #3E3E3E;
+      font-size: 14px;
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+    }
+
+    .loader-text-message {
+      position: inherit;
+    }
+
+    .withdraw-disabled {
+      color: #7d7d7d;
+      cursor: no-drop;
+    }
+  }
+
+  .stake-wrap {
+    width: 100%;
+    position: relative;
+  }
+
+  width: 100%;
+  display: inline-block;
+
+  .dialog-container {
+    width: 820px;
+    min-height: 500px;
+    height: fit-content;
+
+    .dialog-content {
+      min-height: 380px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .dialogMain {
+        width: 100%;
+      }
+    }
+  }
+
+  table {
+    font-size: 20px;
+    text-align: center;
+    font-weight: 100;
+    margin-bottom: 50px;
+    width: 70%;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  hr {
+    margin: 24px 0px;
+    border-top: 1px solid $color-secondary-pink;
+    border-bottom: none;
+    border-left: none;
+  }
+
+  ul {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    padding-left: 16px !important;
+    line-height: 20px;
+    color: $color-off-white;
+  }
+
+  li {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  li::marker {
+    color: $color-gray;
+  }
+
+  .m-0 {
+    margin: 0 !important;
+  }
+
+  .liquidStakingProtocolFee {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .error-message {
+    display: flex;
+    justify-content: center;
+    color: red;
+    font-size: 16px;
+    margin: 10px 0;
+    text-align: left;
+  }
+
+  .dialogHeader {
+    font-family: "Montserrat", sans-serif;
+    font-size: 24px;
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 40px;
+    line-height: 32px;
+    color: $color-off-white;
+  }
+
+  .dialogSecondaryHeader {
+    margin-top: 40px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 20px;
+    color: $color-blue;
+    text-align: center;
+  }
+
+  .title {
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    color: $color-blue;
+  }
+
+  .text {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .whitelist-dialog-header {
+    font-family: "Montserrat", sans-serif;
+    font-size: 24px;
+    text-align: center;
+    font-weight: 700;
+    margin: 16px;
+    line-height: 32px;
+    max-width: 448px;
+  }
+
+  .success-block{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .circularProgress {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    height: 300;
+    justify-content: center;
+    color: $background-primary;
+  }
+
+  .center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .contract-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 16px 0;
+    border: 1px solid #2e2e2e;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .charge {
+    display: flex;
+    align-items: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 14px;
+    color: $color-gray;
+    margin: 8px 0px;
+  }
+
+  .chargeHeader {
+    min-width: fit-content;
+  }
+
+  .chargeText {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+  }
+
+  .optionText {
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+  }
+
+  .amount-text {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    color: $color-blue;
+  }
+
+  .amount-display {
+    margin: 0;
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 400;
+  }
+
+  .amount-currency {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .amount {
+    width: 100%;
+    border-radius: 10px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 20px;
+
+    .MuiTypography-colorTextSecondary {
+      color: currentColor;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 500;
+      line-height: 20px;
+    }
+  }
+
+  .wallet {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: "Montserrat", sans-serif !important;
+    font-size: 12px !important;
+    line-height: 16px;
+    padding: 8px 0 16px 0;
+    color: $color-blue;
+  }
+
+  .other-wallet {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 500;
+    padding: 24px 0px;
+    color: #fff;
+  }
+
+  .receipt {
+    margin-top: 30px;
+  }
+
+  .proceed {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 170px;
+    min-height: 40px;
+    background: linear-gradient(
+                    90deg,
+                    #f04adc 0%,
+                    rgba(240, 74, 220, 0.7) 100%
+    );
+    text-transform: none;
+    margin-top: 30px;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    width: 100%;
+    height: 60px;
+    border-radius: 24px;
+    text-align: center;
+    color: $color-white !important;
+
+    &:disabled {
+      opacity: 0.2;
+    }
+
+    &:hover {
+      transform: scale(0.98);
+    }
+  }
+
+  .errorIcon {
+    color: red;
+    vertical-align: sub;
+    margin-right: 10px;
+  }
+
+  .validation {
+    color: rgb(255, 255, 255, 0.5);
+  }
+
+  .divider {
+    border-top: 2px solid #2e2e2e !important;
+    box-shadow: 0px 0px 12px #090909;
+    border-radius: 20px;
+    width: 100%;
+  }
+
+  .ulMargin {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 24px;
+  }
+
+  .airdropsChargeContainer {
+    margin: 32px 0 88px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .undelegateChargeContainer {
+    margin: 24px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .optionsContainer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    .optionItemActive {
+      width: 64px;
+      height: 32px;
+      padding: 0px;
+      margin-right: 8px;
+      border-radius: 8px;
+      color: $background-secondary !important;
+      background: $color-off-white;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+
+      .optionItemText {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 64px;
+        height: 32px;
+        color: $background-secondary !important;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 16px;
+        cursor: pointer;
+      }
+    }
+
+    .optionItem {
+      width: 64px;
+      height: 32px;
+      padding: 1px;
+      margin-right: 8px;
+      border-radius: 8px;
+      background: #1e1e1e;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+
+      .optionItemText {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 64px;
+        height: 32px;
+        color: $color-off-white;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 16px;
+        cursor: pointer;
+      }
+
+      &:hover {
+        background-image: linear-gradient(#111111, #111111),
+        radial-gradient(circle at top left, #f04adc, #00dbff);
+        background-origin: border-box;
+        background-clip: content-box, border-box;
+      }
+    }
+  }
+
+  .rewardsListItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .loader-container {
+    height: 240px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .loader-text-message {
+    position: absolute;
+    bottom: 128px;
+    left: 30%;
+    right: 30%;
+    margin: 8px 0;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    color: $color-off-white;
+    text-align: center;
+  }
+
+  .success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .success-icon {
+      height: 104px;
+      width: 104px;
+    }
+
+    .message {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      color: $color-off-white;
+      margin: 0;
+    }
+
+    .success-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 170px;
+      min-height: 40px;
+      background: linear-gradient(
+                      90deg,
+                      #f04adc 0%,
+                      rgba(240, 74, 220, 0.7) 100%
+      );
+      text-transform: none;
+      margin-top: 30px;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 24px;
+      height: 56px;
+      border-radius: 20px;
+      text-align: center;
+      color: $color-white !important;
+
+      &:disabled {
+        opacity: 0.2;
+      }
+
+      &:hover {
+        transform: scale(0.98);
+      }
+    }
+  }
+}

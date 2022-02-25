@@ -1,0 +1,47 @@
+@mixin for-phone-only {
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+@mixin for-tablet-portrait-up {
+  @media (min-width: 600px) {
+    @content;
+  }
+}
+
+@mixin for-tablet-landscape-down {
+  @media (max-width: 899.9999px) {
+    @content;
+  }
+}
+@mixin for-tablet-landscape-up {
+  @media (min-width: 900px) {
+    @content;
+  }
+}
+@mixin for-desktop-up {
+  @media (min-width: 1200px) {
+    @content;
+  }
+}
+@mixin for-big-desktop-up {
+  @media (min-width: 1800px) {
+    @content;
+  }
+}
+
+// dark color
+$color-dark-100: #1e1e1e;
+$color-dark-200: #2e2e2e;
+
+// light color
+$color-light-800: #8c8c8c;
+
+// success color
+$color-success: #50cc96;
+
+// warning color
+$color-warning: #e2b93b;
+
+// secondary color
+$color-secondary: #43b8d2;

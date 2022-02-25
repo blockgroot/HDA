@@ -1,0 +1,80 @@
+.sdRewardsVestingContainer {
+  & > h2 {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 32px;
+    margin-bottom: 16px;
+    color: #f9f9f9;
+  }
+}
+
+.sdRewardsVestingContent {
+  width: 100%;
+  max-width: 900px;
+  position: relative;
+  padding: 25px;
+  color: #fff;
+  background: #111111;
+  border: 2px solid #2e2e2e;
+  box-sizing: border-box;
+  box-shadow: 3px 3px 12px #010101;
+  border-radius: 24px;
+  font-weight: 500;
+  margin-top: 1em;
+
+  & > p {
+    margin-bottom: 0;
+  }
+
+  table {
+    border: 2px solid #2e2e2e;
+    box-sizing: border-box;
+    box-shadow: 3px 3px 12px #010101;
+    width: 100%;
+    border-radius: 24px;
+    border-spacing: 0px;
+    border-collapse: separate;
+  }
+
+  td,
+  th {
+    border: 1px solid #2e2e2e;
+  }
+
+  th {
+    border-top: 0;
+  }
+
+  th:last-child {
+    border-right: 0;
+  }
+
+  th:first-child {
+    border-left: 0;
+  }
+
+  td:last-child {
+    border-bottom: 0;
+    border-right: 0;
+  }
+
+  tr:nth-child(1) > td:nth-child(1) {
+    border-left: 0;
+  }
+
+  tr:nth-child(2) > td:nth-child(1) {
+    border-left: 0;
+    border-bottom: 0;
+  }
+
+  th,
+  td {
+    padding: 1.2em 1em 1.2em 1.2em;
+    width: 50%;
+  }
+}
+
+.list {
+  list-style-type: disc;
+  padding-left: 2rem;
+}

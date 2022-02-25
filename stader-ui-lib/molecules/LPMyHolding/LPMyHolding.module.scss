@@ -1,0 +1,21 @@
+.swap_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  text-transform: capitalize;
+  font-size: 16px;
+  line-height: 20px;
+  color: #FFFFFF;
+  padding: 8px 32px;
+  border: 1px solid #eb5fe2;
+  border-radius: 16px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+  width: 100%;
+  min-width: 200px;
+  margin-top: 24px;
+
+  &:disabled {
+    opacity: 0.3;
+  }
+}

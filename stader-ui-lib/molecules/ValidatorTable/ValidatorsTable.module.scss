@@ -1,0 +1,26 @@
+.main {
+  height: 100%;
+  padding: 18px 20px !important;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  max-height: 218px;
+}
+
+.th {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+.tbody {
+  @apply grid;
+  @apply grid-cols-3;
+  padding: 12px 0px;
+  //max-height: 100px;
+  overflow: auto;
+  flex: 1;
+}
+
+.validator_text {
+  margin-bottom: 24px !important;
+}

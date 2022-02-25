@@ -1,0 +1,64 @@
+.zeroState {
+	padding: 24px;
+	min-height: 360px;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	.infoIcon {
+		color: #3e3e3e;
+		font-size: 56px;
+	}
+
+	.zeroStateContent {
+		margin: 16px 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.header {
+			font-size: 24px;
+			line-height: 32px;
+			color: $color-off-white;
+			margin-bottom: 24px;
+		}
+
+		.text {
+			font-weight: 600;
+			font-size: 16px;
+			line-height: 24px;
+			color: $color-off-white;
+		}
+
+		.button {
+			margin-top: 16px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: linear-gradient(
+				90deg,
+				#f04adc 0%,
+				rgba(240, 74, 220, 0.7) 100%
+			);
+			text-transform: capitalize;
+			font-weight: 600;
+			font-size: 20px;
+			line-height: 24px;
+			width: 200px;
+			height: 56px;
+			border-radius: 20px;
+			text-align: center;
+			color: $color-white !important;
+
+			&:disabled {
+				opacity: 0.2;
+			}
+
+			&:hover {
+				transform: scale(0.98);
+			}
+		}
+	}
+}

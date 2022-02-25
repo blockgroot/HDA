@@ -1,0 +1,4 @@
+export enum WalletStatusT {
+  INITIALIZING = "INITIALIZING",
+  WALLET_CONNECTED = "WALLET_CONNECTED",
+}

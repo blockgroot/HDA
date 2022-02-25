@@ -1,0 +1,9 @@
+.button {
+  @include for-tablet-landscape-up {
+    cursor: pointer;
+    width: 160px;
+  }
+  @include for-tablet-landscape-down {
+    width: 125px;
+  }
+}

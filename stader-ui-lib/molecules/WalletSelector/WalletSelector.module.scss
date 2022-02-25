@@ -1,0 +1,59 @@
+.wallet_dropdown_container {
+  position: relative;
+}
+.dropdown_box {
+  top: 0;
+  right: 0;
+  position: absolute;
+  width: 250px;
+  box-shadow: 0 0 21px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 20px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.term_of_service {
+  color: #43b8d2;
+}
+
+.wallet_icon {
+  position: relative;
+}
+
+.wallet_connected_badge {
+  position: absolute;
+  top: -4px;
+  left: -5px;
+}
+.divider {
+  height: 15px;
+  width: 1px;
+  background-color: #3e3e3e;
+  margin: 0 14px;
+}
+
+.icon_only_wallet {
+  position: relative;
+
+  .badge_icon {
+    position: absolute;
+    color: #fff;
+    font-size: 12px;
+    top: -4px;
+    left: -5px;
+  }
+
+  .badge_wallet_connected {
+    color: $color-success;
+  }
+
+  .badge_wallet_disconnected {
+    color: $color-warning;
+  }
+}
+
+.popover {
+  z-index: 100;
+}

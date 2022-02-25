@@ -1,0 +1,70 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    /*font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,*/
+    /*Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;*/
+}
+
+html {
+    box-sizing: border-box;
+    height: -webkit-fill-available;
+    height: 100vh;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif !important;
+}
+
+.pink-gradient {
+    background: linear-gradient(90deg, #F04ADC 0%, rgba(240, 74, 220, 0.7) 100%);
+}
+
+.pink-gradient-hover {
+    background: linear-gradient(90deg, #EF35D9 0%, rgba(217, 27, 194, 0.7) 100%);
+}
+
+.gradient-main {
+    background: linear-gradient(90deg, #F04ADC 0%, #00DBFF 100%);
+}
+
+.text-gradient {
+    background: linear-gradient(90deg, #f04adc 0%, #00dbff 100%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+.sul-input::placeholder {
+    color: #8c8c8c;
+}
+
+.stakePoolsCommunityFarming {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  grid-auto-rows: auto;
+  grid-gap: 2em
+}
+
+.stakePoolsCommunityFarming .myPortfolioContainer {
+  margin-top: 50px;
+}

@@ -1,0 +1,11 @@
+.subtitle_value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @include for-tablet-landscape-down {
+    & > :first-child {
+      margin-right: 30px;
+    }
+  }
+}

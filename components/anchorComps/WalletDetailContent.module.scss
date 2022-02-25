@@ -1,0 +1,20 @@
+@import '../../styles/base/_variable.scss';
+
+.walletLineItem {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    padding: 16px 0px;
+    border-bottom: 1px solid $color-primary;
+}
+
+.disconnect {
+    background-color: $background-wallet-button;
+    color: $color-wallet-button;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 16px;
+    border: 1px solid #2e2e2e;
+}

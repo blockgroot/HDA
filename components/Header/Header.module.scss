@@ -1,0 +1,49 @@
+@import '../../styles/base/_variable.scss';
+
+.headerBannerWrapper {
+	padding: 0 16px;
+	background-color: $background-primary;
+	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 3;
+
+    @include respond-above(sm) {
+        padding: 0 32px;
+    }
+
+	.header {
+        padding: 8px 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background-color: $background-primary;
+
+		.headerLogo {
+            display: inline-block;
+            width: 80px;
+            height: 40px;
+            background-image: url('/static/Stader_logo_title.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            @include respond-above(sm) {
+                width: 140px;
+                height: 78px;
+            }
+		}
+	}
+    .menuBtn {
+        font-weight: 700;
+        cursor: pointer;
+        color: $color-white;
+        border: none;
+        outline: none;
+        background-color: transparent;
+
+        @include respond-above(sm) {
+            display: none;
+        }
+    }
+}

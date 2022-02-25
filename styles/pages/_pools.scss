@@ -1,0 +1,681 @@
+.VaultsContainer {
+	width: 100%;
+	padding: 56px 0;
+	margin: auto;
+
+	.vaultListMarginBottom {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 24px;
+
+		.vaultListHeader {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			width: 100%;
+			padding: 0 24px;
+
+			.autoCompounding {
+				font-weight: 700;
+				font-size: 16px;
+				color: $color-blue;
+				margin-left: 10px;
+				cursor: pointer;
+			}
+
+			.retainRewards {
+				font-weight: 700;
+				font-size: 16px;
+				color: $color-tertiary-pink;
+				margin-left: 10px;
+				width: 132px;
+				cursor: pointer;
+			}
+		}
+
+		.infoSpan {
+			display: flex;
+			align-items: center;
+
+			.infoIcon {
+				margin: 0px 8px;
+				height: 16px;
+				width: 16px;
+			}
+
+			.vaultListSelectText {
+				margin-left: 8px;
+				font-family: "Montserrat", sans-serif;
+				font-weight: 500;
+				font-size: 12px;
+				line-height: 16px;
+				color: $color-off-white;
+			}
+		}
+	}
+
+	.vaultListDetailsContainer {
+		width: 100%;
+		padding: 0 32px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		.vaultListDetailsHeader {
+			font-weight: normal;
+			font-size: 16px;
+			line-height: 20px;
+			color: $color-gray;
+			margin-bottom: 0;
+			margin: 12px 0;
+			margin-right: 24px;
+		}
+
+		.vaultListDetailsText {
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 16px;
+			color: $color-off-white;
+			margin-bottom: 0;
+			margin: 0 16px;
+		}
+
+		.vaultListDetailsIcon {
+			height: 16px;
+			width: 16px;
+			fill: $color-primary !important;
+		}
+
+		.vaultListDetailsTextHovered {
+			color: $color-secondary-pink;
+		}
+
+		.vaultHeaderAmount {
+			font-weight: 600;
+			font-size: 32px;
+			line-height: 40px;
+			color: $color-secondary-pink;
+		}
+
+		.vaultMaintenanceHeader {
+			font-weight: 600;
+			font-size: 24px;
+			line-height: 32px;
+			color: $color-off-white;
+			margin-bottom: 16px;
+		}
+
+		.vaultSecondaryHeader {
+			font-weight: 600;
+			font-size: 18px;
+			line-height: 22px;
+			color: $color-off-white;
+			margin-bottom: 0;
+			margin-top: 12px;
+		}
+
+		.vaultHeaderText {
+			font-size: 24px;
+			line-height: 32px;
+		}
+
+		.vaultHeaderAmountSmall {
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 20px;
+			color: $color-blue !important;
+		}
+
+		.vaultHeaderAmountInfoIcon {
+			font-size: 24px;
+			margin-right: 8px;
+		}
+
+		.vaultHeaderInfoIcon {
+			font-size: 16px;
+			margin-left: 4px;
+			cursor: pointer;
+		}
+
+		.vaultHeaderPoolAmount {
+			font-weight: 400;
+			font-size: 18px;
+			line-height: 20px;
+		}
+	}
+
+	.vaultListTableWidth {
+		width: 100%;
+		padding: 0 24px;
+
+		.TableRow {
+			padding: 20px 0px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.TableHeaderCell {
+				width: 20%;
+				flex-basis: 260px;
+				font-size: 16px;
+				font-weight: 700;
+				color: $color-white;
+			}
+
+			.TableBodyCell {
+				display: flex;
+				width: 20%;
+				flex-basis: 260px;
+				font-size: 18px;
+				line-height: 24px;
+				font-weight: 500;
+				color: $color-white;
+
+				.iconSpan {
+					display: flex;
+					align-items: center;
+					font-weight: 600;
+
+					.poolIcon {
+						margin-right: 16px;
+						height: 24px;
+						width: 24px;
+					}
+				}
+
+				.communityPool {
+					color: $color-secondary-pink !important;
+					font-size: 18px;
+					line-height: 22px;
+				}
+
+				.poolTag {
+					padding: 8px 10px;
+					font-weight: 400;
+					font-size: 11px;
+					line-height: 14px;
+					margin-right: 12px;
+					margin-bottom: 0;
+					color: #f9f9f9;
+					background: #2e2e2e;
+					border-radius: 10px;
+				}
+
+				.blueChipPool {
+					color: $color-blue !important;
+					font-size: 18px;
+					line-height: 22px;
+				}
+
+				.airdropsPlusPool {
+					color: #ad84ff !important;
+					font-size: 18px;
+					line-height: 22px;
+				}
+			}
+
+			.vaultListCellFlexHeader {
+				flex-basis: 70%;
+				font-weight: 700;
+			}
+
+			.vaultListCellEmpty {
+				flex-basis: 160px;
+			}
+
+			.vaultListCellFlex {
+				flex-basis: 70% !important;
+			}
+
+			.vaultListInfo {
+				align-items: center;
+
+				&:hover {
+					color: $color-secondary-pink;
+				}
+			}
+
+			.vaultInfoIcon {
+				margin-left: 8px;
+				font-size: 16px;
+				cursor: pointer;
+			}
+
+			.vaultListFlexCenter {
+				display: flex;
+				justify-content: center;
+			}
+
+			.vaultListFlexType {
+				justify-content: flex-end;
+				flex-basis: 160px;
+			}
+
+			.verticalFlex {
+				display: flex;
+				flex-direction: column;
+				flex-basis: 290px;
+			}
+
+			.vaultListText {
+				display: flex;
+				align-items: flex-end;
+			}
+
+			.vaultListTextSmall {
+				font-weight: 500;
+				font-size: 12px;
+				line-height: 18px;
+				margin-left: 8px;
+			}
+
+			.expandButton {
+				background: #1e1e1e;
+				color: $color-white;
+				padding: 8px;
+				min-height: 0 !important;
+				min-width: 0 !important;
+				height: 40px;
+				width: 40px;
+			}
+		}
+
+		.TableRowPools {
+			padding: 17px 31px;
+			transition: height 1s linear;
+		}
+
+		.poolDetails {
+			padding: 20px 31px 31px 31px;
+
+			.poolHeader {
+				font-family: "Montserrat", sans-serif;
+				font-size: 14px;
+				font-weight: 500;
+				line-height: 16px;
+				color: $color-off-white;
+			}
+
+			.poolInfoHeader {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				.poolInfo {
+					display: flex;
+					justify-content: flex-start;
+					align-items: center;
+					margin: 12px 0;
+
+					.poolInfoItem {
+						display: flex;
+						justify-content: flex-start;
+						align-items: center;
+						cursor: pointer;
+
+						.poolInfoItemIcon {
+							height: 16px;
+							width: 16px;
+							margin-right: 8px;
+							fill: $color-primary !important;
+						}
+
+						.poolInfoItemText {
+							margin: 0;
+							font-family: "Montserrat", sans-serif;
+							font-weight: 700;
+							font-size: 14px;
+							line-height: 16px;
+							color: $color-off-white;
+
+							&:hover {
+								color: $color-secondary-pink;
+							}
+						}
+
+						.poolInfoItemTextHovered {
+							color: $color-secondary-pink;
+						}
+					}
+
+					.poolInfoItemMargin {
+						margin-left: 24px;
+					}
+				}
+			}
+
+			.poolDetailsTable {
+				padding: 24px;
+				height: 216px;
+				border: 1px solid $background-wallet-button;
+				border-radius: 16px;
+				box-sizing: border-box;
+
+				.poolDetailsHeader {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+				}
+
+				.availableAmount {
+					color: $color-blue;
+					font-family: "Montserrat", sans-serif;
+					font-size: 12px;
+					font-weight: 500;
+					line-height: 16px;
+				}
+
+				.amountField {
+					width: 100%;
+					border-radius: 10px;
+					font-family: "Montserrat", sans-serif;
+					font-weight: 600;
+					margin-bottom: 5px;
+					font-size: 20px;
+
+					.MuiTypography-colorTextSecondary {
+						color: currentColor;
+						font-family: "Montserrat", sans-serif;
+						font-weight: 500;
+						line-height: 20px;
+					}
+				}
+
+				.validation {
+					font-family: "Montserrat", sans-serif !important;
+					font-size: 12px !important;
+					line-height: 16px;
+					color: $color-gray;
+				}
+
+				.depositContainer {
+					height: fit-content !important;
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					margin: 16px 0;
+
+					.depositStakes {
+						display: flex;
+						align-items: center;
+						flex-wrap: wrap;
+					}
+
+					.depositAmountContainerActive {
+						width: 64px;
+						height: 32px;
+						padding: 0px;
+						margin-right: 8px;
+						border-radius: 8px;
+						color: $background-secondary !important;
+						background: $color-off-white;
+						box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+
+						.depositAmountItem {
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							width: 64px;
+							height: 32px;
+							color: $background-secondary !important;
+							font-weight: 600;
+							font-size: 14px;
+							line-height: 16px;
+							cursor: pointer;
+						}
+					}
+
+					.depositAmountContainer {
+						width: 64px;
+						height: 32px;
+						padding: 1px;
+						border-radius: 8px;
+						margin-right: 8px;
+						background: #1e1e1e;
+						box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+
+						.depositAmountItem {
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							width: 64px;
+							height: 32px;
+							color: $color-gray;
+							font-weight: 600;
+							font-size: 14px;
+							line-height: 16px;
+							cursor: pointer;
+						}
+
+						&:hover {
+							background-image: linear-gradient(#111111, #111111),
+								radial-gradient(circle at top left, #f04adc, #00dbff);
+							background-origin: border-box;
+							background-clip: content-box, border-box;
+						}
+					}
+
+					.depositButtonItem {
+						display: flex;
+						justify-content: center;
+						align-items: center;
+
+						.depositButton {
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							font-weight: 700;
+							text-transform: capitalize;
+							font-size: 18px;
+							line-height: 22px;
+							color: $color-off-white;
+							padding: 16px 32px;
+							border: 1px solid $color-secondary-pink;
+							border-radius: 16px;
+							box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+							background: $background-secondary !important;
+							width: 100%;
+
+							&:disabled {
+								opacity: 0.3;
+							}
+						}
+					}
+				}
+
+				.poolDetailsTableHeader {
+					display: flex;
+					margin-top: 8px;
+					color: $color-gray;
+					font-family: "Montserrat", sans-serif;
+					font-weight: 600;
+					font-size: 14px;
+					line-height: 16px;
+				}
+
+				.validatorDetails {
+					margin-top: 4px;
+					max-height: 108px;
+					overflow-y: auto;
+
+					.validatorHeader {
+						display: flex;
+						flex-direction: column;
+
+						.validatorDetailsText {
+							font-weight: 500;
+							font-size: 12px;
+							line-height: 14px;
+							margin-bottom: 24px;
+							color: $color-gray;
+						}
+					}
+
+					&::-webkit-scrollbar {
+						width: 0.4em;
+					}
+
+					&::-webkit-scrollbar-track {
+						box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+						-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+					}
+
+					&::-webkit-scrollbar-thumb {
+						background-color: $background-wallet-button;
+						border-radius: 6px;
+					}
+				}
+			}
+
+			.poolDetailSuccess {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				position: relative;
+
+				.poolDetailSuccessIcon {
+					height: 72px;
+					width: 72px;
+				}
+
+				.successDetails {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+
+					.successHeader {
+						font-size: 14px;
+						font-weight: 600;
+						line-height: 16px;
+						color: $color-off-white;
+					}
+
+					.successRedirectInfo {
+						background: #1e1e1e;
+						border-radius: 16px;
+						padding: 12px 16px;
+						max-width: 380px;
+						box-sizing: border-box;
+
+						.successRedirectInfoText {
+							font-size: 12px;
+							line-height: 18px;
+							color: $color-off-white;
+							margin-bottom: 0;
+							text-align: center;
+
+							.successRedirectInfoLink {
+								margin-left: 4px;
+								color: $color-blue !important;
+								font-weight: 600;
+								cursor: pointer;
+							}
+						}
+					}
+				}
+
+				.tvlDetails {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+
+					.tvlHeader {
+						font-size: 18px;
+						font-weight: 600;
+						line-height: 22px;
+						color: $color-off-white;
+					}
+
+					.tvlReopenInfo {
+						background: #1e1e1e;
+						border-radius: 12px;
+						padding: 16px 40px;
+						box-sizing: border-box;
+
+						.tvlReopenInfoText {
+							font-weight: 600;
+							font-size: 14px;
+							line-height: 18px;
+							color: $color-off-white;
+							margin-bottom: 0;
+							text-align: center;
+
+							.tvlReopenInfoLink {
+								margin-left: 4px;
+								color: $color-blue !important;
+								font-weight: 600;
+								cursor: pointer;
+								margin-bottom: 0;
+							}
+						}
+					}
+				}
+
+				.poolDetailCloseIcon {
+					color: $color-gray;
+					position: absolute;
+					top: 8px;
+					right: 8px;
+					cursor: pointer;
+				}
+			}
+		}
+	}
+
+	.vaultListDiv {
+		margin: 0;
+		margin-bottom: 40px;
+		padding: 1px;
+		min-width: 0;
+		color: $color-white;
+		background: $background-secondary;
+		border: 1px solid #2e2e2e;
+		border-radius: 24px;
+		box-sizing: border-box;
+		box-shadow: 3px 3px 12px #010101;
+
+		.heightSection {
+			height: 30px;
+		}
+	}
+
+	.vaultListDivTvl {
+		padding: 32px;
+		border-radius: 24px !important;
+	}
+
+	.vaultListDivMaintenance {
+		min-height: 240px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding: 56px 32px;
+		border-radius: 24px !important;
+	}
+
+	.vaultListDetails {
+		border-radius: 12px;
+		width: fit-content;
+		margin-bottom: 40px;
+	}
+
+	.vaultsDivider {
+		margin: 8px 32px;
+		background: #2e2e2e;
+	}
+
+	.vaultListDivHover {
+		&:hover {
+			background-image: linear-gradient(#111111, #111111),
+				radial-gradient(circle at top left, #f04adc, #00dbff);
+			background-origin: border-box;
+			background-clip: content-box, border-box;
+		}
+	}
+}

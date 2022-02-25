@@ -1,0 +1,24 @@
+.sp_pool_container {
+  border: 0px solid white;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding: 25px 40px 40px;
+
+  .heading {
+    margin: 20px 0;
+  }
+
+  .content_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @include for-tablet-landscape-down {
+      flex-direction: column;
+
+      & > :first-child {
+        margin-bottom: 16px;
+      }
+    }
+  }
+}

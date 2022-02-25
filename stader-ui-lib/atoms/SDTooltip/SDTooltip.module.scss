@@ -1,0 +1,16 @@
+.desktop {
+  @include for-tablet-landscape-down {
+    display: none;
+  }
+}
+
+.mobile {
+  @include for-tablet-landscape-up {
+    display: none;
+  }
+}
+
+.dialog {
+  background-color: #161616;
+  padding: 20px;
+}

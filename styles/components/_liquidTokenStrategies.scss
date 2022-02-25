@@ -1,0 +1,152 @@
+.strategiesInfoHeader {
+	color: $color-off-white;
+	font-size: 18px;
+	line-height: 22px;
+	font-weight: 700;
+	margin-top: 56px;
+}
+
+.strategiesInfoDescription {
+	color: $color-off-white;
+	font-size: 10px;
+	line-height: 14px;
+	font-weight: 600;
+	margin-top: 16px;
+}
+
+.strategiesInfoCard {
+	display: flex;
+	flex-direction: column;
+	background: $background-secondary;
+	border: 1px solid #2e2e2e;
+	box-sizing: border-box;
+	box-shadow: 3px 3px 12px #010101;
+	border-radius: 24px;
+	height: 420px;
+	padding: 24px 32px;
+	margin-top: 12px;
+	overflow-y: hidden;
+
+	.strategiesInfoLogos {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+
+		.logo {
+			margin-right: 16px;
+			height: 40px;
+			width: 40px;
+		}
+	}
+
+	.strategiesInfoTitle {
+		margin-top: 24px;
+		margin-bottom: 8px;
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 20px;
+		color: $color-off-white;
+	}
+
+	.strategiesInfoAPY {
+		display: flex;
+		align-items: flex-end;
+
+		.strategiesInfoAPYPercentage {
+			margin-bottom: 0;
+			font-weight: 700;
+			font-size: 32px;
+			line-height: 40px;
+			color: $color-off-white;
+		}
+
+		.strategiesInfoAPYText {
+			margin-bottom: 4px;
+			margin-left: 16px;
+			font-weight: 600;
+			font-size: 16px;
+			line-height: 20px;
+			color: $color-off-white;
+		}
+	}
+
+	.strategiesInfoTVL {
+		margin-top: 8px;
+		margin-bottom: 0;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 20px;
+		color: $color-off-white;
+	}
+
+	.strategiesInfoDivider {
+		background: #3e3e3e;
+		width: 100%;
+		height: 1px;
+	}
+
+	.strategiesInfoRewards {
+		display: flex;
+		align-items: flex-end;
+
+		.strategiesInfoRewardsAmount {
+			margin-bottom: 0;
+			font-style: normal;
+			font-weight: 400;
+			font-size: 24px;
+			line-height: 32px;
+			color: $color-off-white;
+		}
+
+		.strategiesInfoRewardsText {
+			margin-bottom: 4px;
+			margin-left: 4px;
+			font-style: normal;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 16px;
+			color: $color-off-white;
+		}
+	}
+
+	.liquidityButton {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-weight: 700;
+		text-transform: capitalize;
+		font-size: 16px;
+		line-height: 20px;
+		color: $color-off-white;
+		padding: 8px 32px;
+		border: 1px solid $color-secondary-pink;
+		border-radius: 16px;
+		box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+		background: $background-secondary !important;
+		width: 100%;
+		min-width: 200px;
+		margin-top: 24px;
+
+		&:disabled {
+			opacity: 0.3;
+		}
+	}
+
+	.strategiesInfoSwap {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 16px;
+
+		.strategiesInfoSwapText {
+			margin-bottom: 0;
+			cursor: pointer;
+			font-style: normal;
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 20px;
+			color: $color-off-white;
+		}
+	}
+}

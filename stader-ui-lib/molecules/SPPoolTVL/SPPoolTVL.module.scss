@@ -1,0 +1,39 @@
+.box {
+  padding: 34px 32px !important;
+
+  @include for-tablet-landscape-down {
+    padding: 16px !important;
+  }
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include for-tablet-landscape-down {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.estimate {
+  display: flex;
+  align-items: flex-end;
+
+  @include for-tablet-landscape-down {
+    margin-top: 0.5rem;
+    align-items: flex-end;
+  }
+
+  .value {
+    margin-right: 0.5rem;
+    @include for-tablet-landscape-up {
+      margin-left: 1.5rem;
+    }
+  }
+
+  .luna {
+    margin-bottom: 5px !important;
+  }
+}

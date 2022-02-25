@@ -1,0 +1,49 @@
+@import "../../../styles/base/_variable.scss";
+
+.route {
+  padding: 8px 24px;
+  line-height: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  color: $color-off-white;
+  margin-top: 16px;
+
+  &.active {
+    color: $color-blue;
+  }
+}
+
+.chevron {
+  font-size: 28px;
+  font-weight: normal;
+  margin-top: -4px;
+
+  &.active {
+    transform: rotate(90deg);
+  }
+}
+
+.link {
+  font-size: 14px;
+  padding: 8px 16px;
+  margin-left: 24px;
+  cursor: pointer;
+
+  &.active {
+    font-weight: bold;
+    color: $color-off-white;
+    background: linear-gradient(
+      90deg,
+      rgba(#8c8c8c, 0.5) 0%,
+      rgba(62, 62, 62, 0.5) 100%
+    );
+    border-radius: 8px 0px 0px 8px;
+  }
+
+  &:hover {
+    color: $color-off-white;
+  }
+}

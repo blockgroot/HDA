@@ -1,0 +1,33 @@
+.portfolioContainer {
+	width: 100%;
+	padding: 40px 0;
+	margin: auto;
+
+	.portfolioTabs {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+
+		.portfolioTab {
+			font-size: 18px;
+			font-weight: 500;
+			line-height: 22px;
+			color: $color-gray;
+			margin-right: 96px;
+			cursor: pointer;
+
+			.portfolioTabText {
+				margin: 0;
+			}
+		}
+
+		.portfolioTabActive {
+			font-weight: 700;
+			color: $color-blue;
+		}
+	}
+
+	.portfolioBody {
+		margin: 40px 0;
+	}
+}

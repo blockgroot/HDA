@@ -1,0 +1,39 @@
+@import "../../styles/stader_ui_lib_global";
+
+.gradient_outline {
+  @extend .sul_gradient_outline;
+
+  &::before {
+    border-radius: 24px !important;
+  }
+
+  &::after {
+    border-radius: 25px;
+  }
+}
+
+.gradient_hover {
+  @extend .sul_gradient_outline_hover;
+
+  @include for-tablet-landscape-down {
+    // border: none;
+
+    &:hover::before {
+      background: transparent !important;
+    }
+
+    &:hover::after {
+      background: transparent !important;
+    }
+  }
+
+  @include for-tablet-landscape-up {
+    &::before {
+      border-radius: 24px !important;
+    }
+
+    &::after {
+      border-radius: 25px;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+
+  @include for-tablet-landscape-down {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .tooltips_wrap {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+
+    @include for-tablet-landscape-down {
+      flex-wrap: wrap;
+
+      & > div {
+        margin-top: 12px;
+        margin-right: 12px;
+      }
+    }
+  }
+}

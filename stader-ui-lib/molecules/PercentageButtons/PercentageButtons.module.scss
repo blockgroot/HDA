@@ -1,0 +1,42 @@
+@import "../../styles/stader_ui_lib_global";
+
+.button {
+  height: 32px;
+  width: 64px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  color: #8c8c8c;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.button:hover {
+  @extend .sul_gradient_outline_hover;
+
+  &::before {
+    border-radius: 8px;
+  }
+
+  &::after {
+    border-radius: 7px;
+    width: calc(100% - 1px);
+  }
+}
+
+.button_group {
+  display: flex;
+
+  & > :not(:last-child) {
+    margin-right: 12px;
+  }
+}
+
+.active {
+  background-color: white;
+  color: #111;
+}
+.active:hover {
+  background-color: white !important;
+  color: #111;
+  z-index: unset;
+}

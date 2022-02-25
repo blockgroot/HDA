@@ -1,0 +1,50 @@
+.arrow_down {
+  position: absolute;
+  left: 50%;
+  bottom: -36px;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+
+  img {
+    height: 48px;
+    width: 48px;
+  }
+}
+
+.lunax_to_luna_info {
+  margin-top: 20px;
+}
+
+.error_wrapper {
+  height: 42px;
+}
+
+.available_amount_validation {
+  display: flex;
+  justify-content: space-between;
+
+  @include for-tablet-landscape-down {
+    flex-direction: column;
+    align-items: center;
+
+    & > :first-child {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.percentage_buttons_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  @include for-tablet-landscape-down {
+    flex-direction: column;
+
+    & > div {
+      margin-bottom: 20px;
+    }
+  }
+  // flex justify-between items-center mb-6
+}

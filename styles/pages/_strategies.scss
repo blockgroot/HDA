@@ -1,0 +1,197 @@
+.strategiesContainer {
+	width: 100%;
+	padding: 40px 0;
+	margin: auto;
+
+	.strategiesInfoHeader {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		.infoIcon {
+			color: $color-off-white;
+		}
+
+		.strategiesInfoText {
+			margin-bottom: 0;
+			margin-left: 8px;
+			font-weight: 600;
+			font-size: 16px;
+			line-height: 24px;
+			color: $color-off-white;
+			text-align: center;
+		}
+	}
+
+	.strategiesDetails {
+		margin-top: 40px;
+		display: flex;
+		justify-content: center;
+		width: 100%;
+
+		.strategiesBreakUp {
+			display: flex;
+			flex-direction: column;
+			height: 428px;
+			padding: 40px;
+			border: 1px solid #2e2e2e;
+			border-radius: 24px;
+			box-sizing: border-box;
+			box-shadow: 3px 3px 12px #010101;
+
+			.strategyBreakUpInfo {
+				margin-bottom: 40px;
+
+				.strategyBreakUpInfoHeader {
+					font-weight: 600;
+					font-size: 18px;
+					line-height: 22px;
+					color: $color-off-white;
+				}
+
+				.strategyBreakUpInfoDetails {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+
+					.strategiesBreakUpGroup {
+						display: flex;
+						align-items: center;
+					}
+
+					.strategyBreakUpInfoItem {
+						display: flex;
+						justify-content: flex-start;
+						align-items: center;
+						cursor: pointer;
+
+						.strategyBreakUpInfoItemText {
+							color: $color-off-white;
+							font-size: 12px;
+							font-weight: 500;
+							line-height: 14px;
+							margin: 0 8px;
+						}
+
+						.strategyBreakUpInfoItemIcon {
+							font-size: 18px;
+							color: $color-off-white;
+						}
+
+						.strategyBreakUpValue {
+							color: $color-off-white;
+							font-size: 24px;
+							font-weight: 500;
+							line-height: 32px;
+							margin: 0 8px;
+							min-width: 64px;
+							text-align: center;
+						}
+
+						&:hover {
+							.strategyBreakUpInfoItemText,
+							.strategyBreakUpInfoItemIcon {
+								color: $color-secondary-pink !important;
+							}
+						}
+					}
+				}
+
+				.strategyBreakUpSlider {
+					.customSlider {
+						height: 8px;
+						border: 1px solid #2e2e2e;
+						border-radius: 4px;
+						background: #1e1e12;
+						box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+					}
+
+					.customSliderThumb {
+						height: 18px;
+						width: 18px;
+						box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+					}
+
+					.autoCompoundingTrack {
+						height: 8px;
+						background: linear-gradient(
+							90deg,
+							#eb5fe2 0%,
+							rgba(235, 95, 226, 0.4) 96.39%
+						);
+						border-radius: 4px 0 0 4px;
+					}
+
+					.autoCompoundingThumb {
+						background: linear-gradient(180deg, #eb5fe2 0%, #a30f99 100%);
+					}
+
+					.thumbNone {
+						display: none !important;
+					}
+
+					.retainRewardsTrack {
+						height: 8px;
+						background: linear-gradient(
+							90deg,
+							#43b8d2 0%,
+							rgba(67, 184, 210, 0.4) 96.39%
+						);
+						border-radius: 4px 0 0 4px;
+					}
+
+					.retainRewardsThumb {
+						background: linear-gradient(180deg, #42c2de 0%, #098fac 100%);
+					}
+				}
+			}
+
+			.strategyBreakUpInfoText {
+				margin-top: 8px;
+				color: $color-gray;
+				font-weight: 400;
+				font-size: 12px;
+				line-height: 16px;
+			}
+
+			.strategyConfirmButtonContainer {
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				.confirmButton {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					font-weight: 700;
+					text-transform: capitalize;
+					font-size: 18px;
+					line-height: 22px;
+					color: $color-off-white;
+					padding: 16px 64px;
+					border: 1px solid $color-secondary-pink;
+					border-radius: 20px;
+					box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+					background: $background-secondary !important;
+				}
+
+				.changePortfolio {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					cursor: pointer;
+
+					.text {
+						margin-right: 16px;
+						margin-bottom: 0;
+						color: $color-off-white;
+						font-weight: 700;
+						font-size: 16px;
+						line-height: 20px;
+					}
+				}
+			}
+		}
+	}
+}

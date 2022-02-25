@@ -1,0 +1,11 @@
+.mainContent {
+  display: flex;
+
+  // HACK: There should be a better way to do this,
+  // here 142px is height of banner + header (banner can disappear anytime 😞)
+  min-height: calc(100vh - 142px);
+
+  &.noBanner {
+    min-height: calc(100vh - 92px);
+  }
+}

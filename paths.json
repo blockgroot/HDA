@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@assets/*": [
+      "stader-ui-lib/assets/*"
+     ],
+      "@atoms/*": [
+        "stader-ui-lib/atoms/*"
+      ],
+      "@molecules/*": [
+        "stader-ui-lib/molecules/*"
+      ],
+      "@organisms/*": [
+        "stader-ui-lib/organisms/*"
+      ],
+      "@templates/*": [
+        "stader-ui-lib/templates/*"
+      ],
+      "@constants/*": [
+        "constants/*"
+      ],
+      "@services/*": [
+        "services/*"
+      ],
+      "@static/*": [
+        "public/static/*"
+      ],
+      "@pages/*": [
+        "pages/*"
+      ],
+      "@libs/*": [
+        "libs/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@types_/*": [
+        "@types/*"
+      ],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ]
+    }
+  }
+}

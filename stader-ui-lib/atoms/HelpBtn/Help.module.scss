@@ -1,0 +1,24 @@
+@import '../../../styles/base/_variable.scss';
+
+.helpButtonContainer {
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+
+	.helpButton {
+        display: inline-block;
+        display: flex;
+        align-items: center;
+        color: $color-off-white;
+        padding: 8px;
+
+		.helpButtonText {
+            padding-left: 8px;
+			color: $color-off-white;
+			font-weight: 600;
+			font-size: 16px;
+			line-height: 18px;
+			margin-bottom: 0;
+		}
+	}
+}

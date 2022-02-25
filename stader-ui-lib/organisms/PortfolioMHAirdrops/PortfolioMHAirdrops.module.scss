@@ -1,0 +1,25 @@
+.airdrops_box {
+  display: flex;
+  justify-content: space-between;
+  @include for-tablet-landscape-up {
+    padding: 36px 40px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  @include for-tablet-landscape-down {
+    padding: 20px;
+    flex-direction: column;
+  }
+}
+
+.withdraw_button {
+  align-self: flex-end;
+
+  @include for-tablet-landscape-up {
+    width: 160px;
+  }
+
+  @include for-tablet-landscape-down {
+    margin-top: 20px;
+  }
+}

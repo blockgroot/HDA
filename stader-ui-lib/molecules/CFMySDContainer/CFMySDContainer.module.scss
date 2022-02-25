@@ -1,0 +1,7 @@
+.root {
+  padding: 2.5rem;
+
+  @include for-tablet-landscape-down {
+    padding: 1rem;
+  }
+}

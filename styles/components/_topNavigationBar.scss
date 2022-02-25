@@ -1,0 +1,75 @@
+.navbar {
+	width: 90%;
+	margin: auto;
+	margin-bottom: 30px;
+	margin-top: 30px;
+
+	.navbarContent {
+		width: 100%;
+		margin: 0;
+		padding: 0px 16px;
+		background-color: #111;
+		color: $color-white;
+		border-radius: 24px !important;
+
+		.navbarBtns {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.navbarLinks {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				.routeButton {
+					padding: 16px 0;
+					height: 100%;
+					margin-left: 40px;
+					border-radius: 0;
+					color: $color-gray;
+					border-bottom: none;
+					font-weight: 500;
+					line-height: 20px;
+					text-transform: none;
+					font-size: 16px;
+				}
+
+				.routeButtonActive {
+					padding: 16px 0;
+					height: 100%;
+					margin-left: 40px;
+					border-radius: 0;
+					color: $color-off-white;
+					border-bottom: 2px solid $color-gray;
+					font-weight: 700;
+					line-height: 20px;
+					text-transform: none;
+					font-size: 16px;
+				}
+			}
+
+			.navFaqDiv {
+				padding: 16px 10px;
+				margin-right: 40px;
+				display: flex;
+				justify-content: center;
+
+				.navFaq {
+					display: flex;
+					align-items: center;
+					font-family: "Montserrat", sans-serif;
+					color: $color-white;
+					font-weight: 500;
+					font-size: 14px;
+					line-height: 16px;
+					text-decoration: unset;
+
+					.navFaqIcon {
+						margin-right: 8px;
+					}
+				}
+			}
+		}
+	}
+}

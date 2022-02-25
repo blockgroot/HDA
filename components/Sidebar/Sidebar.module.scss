@@ -1,0 +1,149 @@
+@import '../../styles/base/_variable.scss';
+
+.sidebar {
+    width: 100vw;
+    color: $color-gray;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    @include respond-above(sm) {
+        background-color: $background-primary;
+        width: 240px;
+    }
+
+    @include respond-below(sm) {
+        position: fixed;
+        height: -webkit-fill-available;
+        overflow: auto;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 3;
+
+        &.hide {
+            display: none;
+        }
+    }
+
+    .header {
+        padding: 24px 20px 32px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: $background-primary;
+        position: relative;
+        z-index: 3;
+
+        @include respond-above(sm) {
+            display: none;
+        }
+
+        .close {
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 0;
+            margin: 0;
+            font-size: 48px;
+            line-height: 24px;
+        }
+    }
+
+    .wrap {
+        display: flex;
+        flex-direction: column;
+        background-color: $background-primary;
+        position: relative;
+        z-index: 2;
+        padding-bottom: 32px;
+
+        @include respond-above(sm) {
+            position: sticky;
+            top: 95px;
+        }
+    }
+
+    .ovl {
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        background-color: rgba($background-primary, 0.9);
+        z-index: 0;
+
+        @include respond-above(sm) {
+            display: none;
+        }
+    }
+
+    .helpBtn {
+        z-index: 1;
+        background-color: $background-primary;
+
+        @include respond-below(sm) {
+        }
+        @include respond-above(sm) {
+            position: fixed;
+            bottom: 0;
+        }
+    }
+
+    .coinListSaleLink {
+        padding: 6px 14px;
+        margin-left: 10px;
+        margin-top: 16px;
+        line-height: 32px;
+        cursor: pointer;
+        font-weight: bold;
+        color: $color-off-white;
+        cursor: pointer;
+        border-radius: 12px 0px 0px 12px;
+        &.active {
+             background: linear-gradient(90deg, #F04ADC 0%, rgba(240, 74, 220, 0) 100%);
+        }
+        a:hover {
+            color: $color-off-white;
+        }
+    }
+    .coinListSaleLinkNewTag {
+        background: linear-gradient(90deg, #F04ADC 0%, rgba(240, 74, 220, 0.703827) 99.99%);
+        border-radius: 6px 6px 6px 0px;
+        font-size: 10px;
+        line-height: 12px;
+        color: #111111;
+        padding: 2px 6px;
+        font-weight: bold;
+        margin-left: 6px;
+        margin-bottom: 2px;
+        vertical-align: middle;
+        &.active {
+            background: #F9F9F9;
+        }
+    }
+
+    .routeLink{
+        padding: 6px 14px;
+        margin-left: 10px;
+        margin-top: 16px;
+        line-height: 32px;
+        cursor: pointer;
+        font-weight: bold;
+        color: #f9f9f9;
+        cursor: pointer;
+        &.active {
+             color: #43b8d2;
+        }
+        a:hover {
+            color: #43b8d2;
+        }
+    }
+    .textSuper{
+        vertical-align: super;
+    }
+
+
+}

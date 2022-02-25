@@ -1,0 +1,26 @@
+name: pr - nextjs
+on: "pull_request"
+jobs:
+  nextjs:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: "Install vercel"
+        run: npm i -g vercel
+      - name: "Deploy to vercel"
+        id: deploy
+        run: |
+          prodRun=""
+          echo "::set-output name=DEPLOYMENT_URL::$(vercel --confirm -t $VERCEL_TOKEN --scope $VERCEL_ORG_ID)"
+      - name: "comment deployment url"
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: "Preview url is  ${{ steps.deploy.outputs.DEPLOYMENT_URL }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

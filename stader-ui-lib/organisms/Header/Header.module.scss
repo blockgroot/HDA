@@ -1,0 +1,57 @@
+@import "./styles/base/variable";
+// @import "mixins";
+
+.header {
+  padding: 0 16px;
+  background-color: $background-primary;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+
+  height: 56px;
+  @include for-tablet-landscape-up {
+    height: 94px;
+  }
+
+  @include respond-above(sm) {
+    padding: 0 32px;
+  }
+
+  .main {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $background-primary;
+    // height: 94px;
+
+    .logo {
+      width: 140px;
+
+      @include for-tablet-landscape-down {
+        width: 70px;
+      }
+    }
+
+    .wallet_menu {
+      display: flex;
+      align-items: center;
+    }
+
+    .wallet_button {
+      @include for-tablet-landscape-down {
+        // display: none;
+      }
+    }
+
+    .menu_button {
+      margin-left: 8px;
+      @include for-desktop-up {
+        display: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,127 @@
+.rewards-container {
+	width: 100%;
+	padding: 56px 0px;
+	font-size: 18px;
+	font-weight: 700;
+	color: $color-off-white;
+
+	.flex {
+		display: flex;
+	}
+
+	.value {
+		min-width: fit-content !important;
+		font-weight: 400;
+		font-size: 40px;
+		line-height: 48px;
+		color: $color-off-white;
+		margin: 0;
+	}
+
+	.label {
+		flex-direction: column;
+		margin-top: auto;
+		font-size: 16px;
+		line-height: 16px;
+	}
+
+	.reward-token {
+		img {
+			margin-left: 4px;
+			height: 14px;
+			width: 14px;
+		}
+	}
+
+	.card-title {
+		margin-bottom: 16px;
+		font-size: 18px;
+		line-height: 22px;
+	}
+
+	.card-info-icon {
+		font-size: 18px;
+		color: $color-off-white;
+	}
+
+	.community-farming-card {
+		margin-bottom: 40px;
+	}
+
+	.stader {
+		border-color: $color-primary;
+
+		.reward-token {
+			line-height: 24px;
+			margin-bottom: -2px;
+
+			img {
+				margin-left: 4px;
+				height: 24px;
+				width: 24px;
+			}
+		}
+	}
+
+	.airdrops-card {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 32px 40px;
+		width: 100%;
+		border: 1px solid #1e1e1e;
+		box-sizing: border-box;
+		box-shadow: 3px 3px 12px #010101;
+		border-radius: 24px;
+
+		.airdropsContentInfo {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+			align-items: center;
+
+			.airdropsContent {
+				margin-right: 72px;
+				margin-top: 4px;
+				margin-bottom: 4px;
+
+				.airdropsContentText {
+					min-width: fit-content !important;
+					font-weight: 400;
+					font-size: 40px;
+					line-height: 48px;
+					color: $color-off-white;
+					margin: 0;
+				}
+
+				.airdropsContentTextSmall {
+					font-weight: 500;
+					font-size: 14px;
+					line-height: 16px;
+					text-transform: uppercase;
+				}
+			}
+		}
+
+		.borderdButton {
+			width: 160px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-weight: 700;
+			text-transform: capitalize;
+			font-size: 18px;
+			line-height: 22px;
+			color: $color-off-white;
+			padding: 8px 40px;
+			border: 1px solid $color-secondary-pink;
+			border-radius: 16px;
+			box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+			background: $background-secondary !important;
+
+			&:disabled {
+				opacity: 0.3;
+			}
+		}
+	}
+}

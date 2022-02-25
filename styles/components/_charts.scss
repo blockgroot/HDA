@@ -1,0 +1,111 @@
+.customLegends {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+
+	.customLegend {
+		display: flex;
+		margin: 16px 32px 16px 0;
+
+		.legendMarker {
+			height: 56px;
+			width: 3px;
+			margin-right: 12px;
+		}
+
+		.customLegendInfo {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			align-items: flex-start;
+
+			.legendLabel {
+				margin: 0;
+				font-weight: 700;
+				line-height: 20px;
+				color: $color-gray;
+			}
+
+			.cfLegendWrapper {
+				padding: 6px 8px;
+				border-radius: 8px;
+				background: linear-gradient(
+					90deg,
+					#7e7ed8 0%,
+					rgba(126, 126, 216, 0.6) 100%
+				);
+			}
+
+			.legendAirdropValues {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+
+				.legendValue {
+					margin-right: 40px;
+				}
+			}
+
+			.legendsViewAllAirdrops {
+				margin-top: 16px;
+				margin-left: 24px;
+			}
+		}
+
+		.legendMarker1 {
+			background: linear-gradient(
+				180deg,
+				#eb5fe2 0%,
+				rgba(235, 95, 226, 0.6) 100%
+			);
+		}
+
+		.legendMarker2 {
+			background: linear-gradient(
+				180deg,
+				#8989eb 0%,
+				rgba(137, 137, 235, 0.6) 100%
+			);
+		}
+
+		.legendMarker3 {
+			background: linear-gradient(
+				180deg,
+				#43b8d2 0%,
+				rgba(67, 184, 210, 0.6) 100%
+			);
+		}
+	}
+}
+
+.legendValue {
+	margin: 0;
+	margin-top: 8px;
+	font-size: 24px;
+	font-weight: 400;
+	line-height: 32px;
+	color: $color-off-white;
+	text-transform: uppercase;
+}
+
+.legendValueDenom {
+	font-size: 12px;
+	line-height: 16px;
+	margin: 0;
+	color: $color-off-white;
+}
+
+.legendImage {
+	height: 14px;
+}
+
+.legendsViewAll {
+	font-weight: 700;
+	font-size: 12px;
+	line-height: 16px;
+	color: $color-tertiary-pink;
+	cursor: pointer;
+	&:hover {
+		color: $color-off-white;
+	}
+}

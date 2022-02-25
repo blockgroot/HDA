@@ -1,0 +1,35 @@
+.sdButton {
+	min-width: 170px !important;
+	border-radius: 16px !important;
+	min-height: 40px !important;
+	font-weight: 600 !important;
+	font-size: 16px !important;
+	line-height: 20px !important;
+	color: #fff !important;
+	background: linear-gradient(
+		90deg,
+		#f04adc 0%,
+		rgba(240, 74, 220, 0.7) 100%
+	) !important;
+	text-transform: none !important;
+	&:hover {
+		transform: scale(0.98) !important;
+	}
+}
+
+.sdButtonDisabled {
+	min-width: 170px !important;
+	border-radius: 16px !important;
+	min-height: 40px !important;
+	font-weight: 600 !important;
+	font-size: 16px !important;
+	line-height: 20px !important;
+	color: #fff !important;
+	background: linear-gradient(
+		90deg,
+		#f04adc 0%,
+		rgba(240, 74, 220, 0.7) 100%
+	) !important;
+	text-transform: none !important;
+	opacity: 0.2 !important;
+}

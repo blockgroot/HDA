@@ -1,0 +1,27 @@
+.root {
+  height: 100%;
+
+  @include for-tablet-landscape-up {
+    padding: 36px 32px;
+    min-height: 350px;
+  }
+  @include for-tablet-landscape-down {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px !important;
+    height: auto;
+  }
+
+  .value {
+    @include for-tablet-landscape-down {
+      font-size: 14px !important;
+    }
+  }
+  .luna {
+    @include for-tablet-landscape-up {
+      margin-top: 4px;
+    }
+    font-size: 12px;
+  }
+}
