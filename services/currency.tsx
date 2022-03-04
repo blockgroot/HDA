@@ -5,7 +5,7 @@ import {
 import request from "./client";
 
 export const getLunaPrice = async () => {
-  let authParams = {
+  const authParams = {
     url: GET_LUNA_PRICE_URL,
   };
 
@@ -14,7 +14,7 @@ export const getLunaPrice = async () => {
 };
 
 export const getTokenPriceInLuna = async (token: string) => {
-  let authParams = {
+  const authParams = {
     url: GET_TOKEN_PRICE_IN_LUNA_URL,
     data: {
       token,

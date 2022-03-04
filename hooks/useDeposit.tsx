@@ -37,7 +37,6 @@ const useDeposit = () => {
   const { terra, walletAddress, updateWalletBalance } = useAppContext();
   const wallet = useWallet();
   const queryClient = useQueryClient();
-  // const {handleContractsAndPoolDetails} = useCommunityFarmingPools()
 
   const getEstimateTransFee = async (args: DepositProps) => {
     const { amount, contracts, poolId } = args;

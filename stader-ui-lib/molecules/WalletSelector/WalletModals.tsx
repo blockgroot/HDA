@@ -94,24 +94,10 @@ export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
           onClick={() => installWallet(ConnectType.CHROME_EXTENSION)}
           size={"small"}
         >
-          <Typography fontWeight={"medium"}>Load Terra Wallet</Typography>
+          <Typography fontWeight={"medium"}>HashPack Wallet</Typography>
         </Button>
       )}
 
-      {wallet.availableConnections
-        .filter((t) => t.type != ConnectType.READONLY)
-        .map((type) => (
-          <Button
-            variant={"flat"}
-            childClassName={"px-5"}
-            parentClassName={"mt-4 w-full"}
-            onClick={() => connectWallet(type)}
-            key={type.type}
-            size={"small"}
-          >
-            <Typography fontWeight={"medium"}>{type.name}</Typography>
-          </Button>
-        ))}
       <Typography
         fontWeight={"bold"}
         className={"text-white mt-5 text-center"}

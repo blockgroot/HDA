@@ -24,7 +24,7 @@ export const getTotalFarmedRewards =
 export const getUserFarmedRewards = async (
   walletAddress: string
 ): Promise<MySDRewardsType> => {
-  let authParams = {
+  const authParams = {
     url: GET_USER_FARMED_REWARDS,
     data: {
       userAddress: walletAddress,
@@ -36,7 +36,7 @@ export const getUserFarmedRewards = async (
 };
 
 export const getKyvApr = async (poolId: number) => {
-  let authParams = {
+  const authParams = {
     url: GET_KVY_APR_BY_POOL,
     data: {
       poolId,
@@ -48,7 +48,7 @@ export const getKyvApr = async (poolId: number) => {
 };
 
 export const getUserStakingRewards = async (walletAddress: string) => {
-  let authParams = {
+  const authParams = {
     url: GET_USER_STAKING_REWARDS,
     data: {
       userAddress: walletAddress,
@@ -60,7 +60,7 @@ export const getUserStakingRewards = async (walletAddress: string) => {
 };
 
 export const getUserStakingAirdrops = async (walletAddress: string) => {
-  let authParams = {
+  const authParams = {
     url: GET_USER_STAKING_AIRDROPS,
     data: {
       userAddress: walletAddress,
@@ -72,7 +72,7 @@ export const getUserStakingAirdrops = async (walletAddress: string) => {
 };
 
 export const getUserSdRewards = async (walletAddress: string) => {
-  let authParams = {
+  const authParams = {
     url: GET_USER_SD_REWARDS,
     data: {
       userAddress: walletAddress,
