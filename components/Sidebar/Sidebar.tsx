@@ -14,23 +14,23 @@ interface Props {
 }
 
 const routes: Route[] = [
-  {
-    title: "Stake Pools",
-    pages: [
-      {
-        label: "Pools",
-        path: "/pools",
-      },
-      {
-        label: "Strategies",
-        path: "/strategies",
-      },
-      {
-        label: "Portfolio",
-        path: "/portfolio",
-      },
-    ],
-  },
+  // {
+  //   title: "Stake Pools",
+  //   pages: [
+  //     {
+  //       label: "Pools",
+  //       path: "/pools",
+  //     },
+  //     {
+  //       label: "Strategies",
+  //       path: "/strategies",
+  //     },
+  //     {
+  //       label: "Portfolio",
+  //       path: "/portfolio",
+  //     },
+  //   ],
+  // },
   {
     title: "Liquid Staking",
     pages: [
@@ -38,10 +38,10 @@ const routes: Route[] = [
         label: "Pools",
         path: "/lt-pools",
       },
-      {
-        label: "Rewards",
-        path: "/lt-rewards",
-      },
+      // {
+      //   label: "Rewards",
+      //   path: "/lt-rewards",
+      // },
     ],
   },
 ];
@@ -51,17 +51,17 @@ const routes: Route[] = [
 // }
 
 const stakerouteLink = {
-    title: "Stake",
-    path: "/stake-plus",
-    symbal: "+"
-  }
+  title: "Stake",
+  path: "/stake-plus",
+  symbal: "+",
+};
 
 const Sidebar: FC<Props> = ({
   activePage,
   hide = false,
   onToggleSidebar = () => {},
 }: Props) => {
-    const currentRouteIsStakePlus = activePage === stakerouteLink.path;
+  const currentRouteIsStakePlus = activePage;
   return (
     <div className={c(styles.sidebar, hide ? styles.hide : styles.show)}>
       <div className={styles.header}>
@@ -72,18 +72,6 @@ const Sidebar: FC<Props> = ({
         {routes.map((route) => (
           <NavItem route={route} activePage={activePage} key={route.title} />
         ))}
-         {/*<div className={c(styles.coinListSaleLink, { [styles.active]: currentRouteIsCoinlist })}>
-					<Link href={coinlistRoute.path} key={coinlistRoute.path}>
-						{coinlistRoute.title}
-					</Link>
-					<span className={c(styles.coinListSaleLinkNewTag, { [styles.active]: currentRouteIsCoinlist })}>New</span>
-				</div> */}
-        <div className={c(styles.routeLink, { [styles.active]: currentRouteIsStakePlus })}>
-          <Link href={stakerouteLink.path} key={stakerouteLink.path}>
-            {stakerouteLink.title}
-          </Link>
-          {stakerouteLink.symbal ? <span className={c(styles.textSuper)}>{stakerouteLink.symbal}</span> : ""}
-        </div> 
       </div>
       <div className={styles.ovl} onClick={() => onToggleSidebar(!hide)} />
       <div style={{ flex: 1 }}></div>

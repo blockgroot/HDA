@@ -10,6 +10,7 @@ import { useAppContext } from "../../../libs/appContext";
 import greenTick from "../../assets/svg/check_success.svg";
 import { CheckCircle, Info } from "@material-ui/icons";
 import classNames from "classnames";
+import useHashConnect from "@hooks/useHashConnect";
 
 const WalletSelector = ({
   variant,
@@ -25,6 +26,15 @@ const WalletSelector = ({
     anchorEl: null,
   });
   const { walletBalance } = useAppContext();
+  const {
+    connect,
+    walletData,
+    installedExtensions,
+    associateToken,
+    accountInfo,
+  } = useHashConnect();
+
+  const { accountIds, network, id } = walletData;
 
   const wallet: any = useWallet();
   const {
@@ -103,7 +113,7 @@ const WalletSelector = ({
           </div>
         }
         className={"px-4 items-center flex"}
-        onClick={openModal}
+        onClick={connect}
         size={size || "small"}
         id="wallet-button"
       >

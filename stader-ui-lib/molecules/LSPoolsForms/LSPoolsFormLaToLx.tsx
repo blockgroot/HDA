@@ -74,14 +74,14 @@ function LSPoolsFormLaToLx(props: Props) {
           <form onSubmit={handleSubmit}>
             <div className={styles.available_amount_validation}>
               <Typography variant={"body3"} color={"secondary"}>
-                Available: {walletBalance.toFixed(6)} LUNA
+                Available: {walletBalance.toFixed(6)} Hbar
               </Typography>
 
               <Typography
                 variant={"body3"}
               >{`1 ${tokenLabel} = ${tvlExchangeRate.toFixed(
                 6
-              )} LUNA`}</Typography>
+              )} Hbar`}</Typography>
             </div>
             {(errors.ust || errors.luna) && (
               <Typography
@@ -110,7 +110,7 @@ function LSPoolsFormLaToLx(props: Props) {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end" className="text-white">
-                      <span className={"text-white"}>LUNA</span>
+                      <span className={"text-white"}>Hbar</span>
                     </InputAdornment>
                   ),
                 }}
@@ -133,7 +133,7 @@ function LSPoolsFormLaToLx(props: Props) {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end" className="text-white">
-                      <span className={"text-white"}>LunaX</span>
+                      <span className={"text-white"}>HbarX</span>
                     </InputAdornment>
                   ),
                 }}

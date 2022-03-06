@@ -15,8 +15,8 @@ export default function SPPools() {
   if (status === WalletStatus.INITIALIZING)
     return <Loader text={PAGE_LOADER_TEXT} />;
 
-  if (status === WalletStatus.WALLET_NOT_CONNECTED || !walletAddress)
-    return <SPPoolWelcomeBox />;
+  // if (status === WalletStatus.WALLET_NOT_CONNECTED || !walletAddress)
+  //   return <SPPoolWelcomeBox />;
 
   const breadcrumbsContent = [
     <Typography color="textSecondary" key={1}>

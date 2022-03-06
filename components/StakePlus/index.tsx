@@ -20,18 +20,18 @@ import WelcomeScreenPools from "../common/WelcomeScreenPools";
 
 // for representational purpose
 export type ValidatorInfo = {
-  operatorAddress: string,
-  name: string,
-  apr: string,
-  uptime: string,
-  commission: string,
-  votingPower: string,
-}
+  operatorAddress: string;
+  name: string;
+  apr: string;
+  uptime: string;
+  commission: string;
+  votingPower: string;
+};
 
 export type StakeContractInfo = {
-  stakeContractAddress: string,
-  operatorAddress: string
-}
+  stakeContractAddress: string;
+  operatorAddress: string;
+};
 
 export type ValidatorStakingInfoMap = { [validator: string]: ValidatorInfo };
 
@@ -44,19 +44,24 @@ const StakePlus: React.FC = () => {
     useStakeAirdropsDialog();
   const [openStakeDepositDialog, stakeDepositDialogElement] =
     useStakeDepositDialog();
-  const [stakeContractInfo, setStakeContractInfo] = useState<StakeContractInfo>({
-    stakeContractAddress: "",
-    operatorAddress: ""
-  });
+  const [stakeContractInfo, setStakeContractInfo] = useState<StakeContractInfo>(
+    {
+      stakeContractAddress: "",
+      operatorAddress: "",
+    }
+  );
   const [pageLoader, setPageLoader] = useState<boolean>(false);
   const [allDelegateValidator, setAllDelegateValidatorInfo] = useState<any[]>(
     []
   );
-  const [allUndelegationValidator, setAllUndelegationValidatorInfo] = useState<any[]>([]);
+  const [allUndelegationValidator, setAllUndelegationValidatorInfo] = useState<
+    any[]
+  >([]);
   const [totalDelegateInvestValidator, setTotalDelegateInvestValidator] =
     useState<number>(0);
   const [totalAirdrops, setTotalAirdrops] = useState<any>({});
-  const [validatorStakingInfoMap, setValidatorStakingInfoMap] = useState<ValidatorStakingInfoMap>({});
+  const [validatorStakingInfoMap, setValidatorStakingInfoMap] =
+    useState<ValidatorStakingInfoMap>({});
   const [totalUndelegateInvestValidator, setTotalUndelegateInvestValidator] =
     useState<number>(0);
 
@@ -73,8 +78,8 @@ const StakePlus: React.FC = () => {
     try {
       return await terra.wasm.contractQuery(contractAddress, {
         get_user_info: {
-          user_addr: walletAddress
-        }
+          user_addr: walletAddress,
+        },
       });
     } catch (e) {
       console.log("Error reported in fetching userInfo " + e);
@@ -88,8 +93,8 @@ const StakePlus: React.FC = () => {
     try {
       return await terra.wasm.contractQuery(contractAddress, {
         get_user_undelegation_records: {
-          user_addr: walletAddress
-        }
+          user_addr: walletAddress,
+        },
       });
     } catch (e) {
       console.log("Error reported in fetching undelegate data " + e);
@@ -104,15 +109,17 @@ const StakePlus: React.FC = () => {
     try {
       return await terra.wasm.contractQuery(contractAddress, {
         batch_undelegation: {
-          batch_id: batchId
-        }
+          batch_id: batchId,
+        },
       });
     } catch (e) {
       console.log("Error reported in fetching undelegate data " + e);
     }
   };
 
-  const fetchValidatorAPR = async (validators: string[]): Promise<{ [validator: string]: string }> => {
+  const fetchValidatorAPR = async (
+    validators: string[]
+  ): Promise<{ [validator: string]: string }> => {
     const validatorToApr: { [validator: string]: string } = {};
 
     for (const validator of validators) {
@@ -129,15 +136,19 @@ const StakePlus: React.FC = () => {
     return Promise.resolve(validatorToApr);
   };
 
-  const fetchValidatorStakingInfo = async (validators: string[]): Promise<ValidatorStakingInfoMap> => {
+  const fetchValidatorStakingInfo = async (
+    validators: string[]
+  ): Promise<ValidatorStakingInfoMap> => {
     const validatorInfoMap: { [validator: string]: ValidatorInfo } = {};
 
     // get the validator comission rate and all other info
     const allValidatorsData = await axios.get(config.VALIDATORS_URL);
     // @ts-ignore
-    const filteredValidators = allValidatorsData.data?.validators.filter((item: any, index: number) => {
-      return validators.includes(item.operatorAddress);
-    });
+    const filteredValidators = allValidatorsData.data?.validators.filter(
+      (item: any, index: number) => {
+        return validators.includes(item.operatorAddress);
+      }
+    );
 
     const validatorToAprMap = await fetchValidatorAPR(validators);
 
@@ -146,10 +157,14 @@ const StakePlus: React.FC = () => {
       validatorInfoMap[operatorAddress] = {
         apr: validatorToAprMap[operatorAddress],
         operatorAddress,
-        commission: (parseFloat(filteredValidator?.commissionInfo?.rate) * 100).toFixed(1),
+        commission: (
+          parseFloat(filteredValidator?.commissionInfo?.rate) * 100
+        ).toFixed(1),
         uptime: (filteredValidator?.upTime * 100).toFixed(1),
-        votingPower: (parseFloat(filteredValidator?.votingPower?.weight) * 100).toFixed(1),
-        name: filteredValidator?.description?.moniker
+        votingPower: (
+          parseFloat(filteredValidator?.votingPower?.weight) * 100
+        ).toFixed(1),
+        name: filteredValidator?.description?.moniker,
       };
     }
 
@@ -166,18 +181,20 @@ const StakePlus: React.FC = () => {
         twd: 0,
         orion: 0,
         mine: 0,
-        vkr: 0
+        vkr: 0,
       };
 
       const validatorDetail = {
         validator_name: "",
         contract_address: "",
-        operator_address:""
+        operator_address: "",
       };
 
       const validatorOperatingAddresses = Object.keys(config.stakePlus);
 
-      const validatorStakingInfo = await fetchValidatorStakingInfo(validatorOperatingAddresses);
+      const validatorStakingInfo = await fetchValidatorStakingInfo(
+        validatorOperatingAddresses
+      );
       setValidatorStakingInfoMap(validatorStakingInfo);
 
       const validatorDelegateInfo = await Promise.all(
@@ -189,10 +206,11 @@ const StakePlus: React.FC = () => {
           );
           validatorDetail.validator_name = validatorStakingInfo[item].name;
           validatorDetail.contract_address = contractAddress;
-          validatorDetail.operator_address = validatorStakingInfo[item].operatorAddress;
+          validatorDetail.operator_address =
+            validatorStakingInfo[item].operatorAddress;
           validators.user_info["validator_info"] = {
             ...validators.user_info["validator_info"],
-            ...validatorDetail
+            ...validatorDetail,
           };
           totalDelegateDeposits =
             totalDelegateDeposits +
@@ -200,10 +218,14 @@ const StakePlus: React.FC = () => {
           validators?.user_info?.total_airdrops.map((item: any, index: any) => {
             if (item["denom"] === "orion") {
               // @ts-ignore
-              totalAirdrops[item["denom"]] += lunaFormatterOrion(parseInt(item["amount"]));
+              totalAirdrops[item["denom"]] += lunaFormatterOrion(
+                parseInt(item["amount"])
+              );
             } else {
               // @ts-ignore
-              totalAirdrops[item["denom"]] += lunaFormatter(parseInt(item["amount"]));
+              totalAirdrops[item["denom"]] += lunaFormatter(
+                parseInt(item["amount"])
+              );
             }
           });
           return validators;
@@ -228,20 +250,22 @@ const StakePlus: React.FC = () => {
                 infoItem.batch_info.batch.est_release_time = moment
                   .unix(
                     Number(infoItem.batch_info.batch.est_release_time) /
-                    1000000000
-                  ).add(15, "minutes")
+                      1000000000
+                  )
+                  .add(15, "minutes")
                   .format("lll");
               }
             }
           );
           validatorDetail.validator_name = validatorStakingInfo[item].name;
           validatorDetail.contract_address = contractAddress;
-          validatorDetail.operator_address = validatorStakingInfo[item].operatorAddress;
+          validatorDetail.operator_address =
+            validatorStakingInfo[item].operatorAddress;
           if (undelegationValidator.length != 0) {
             undelegationValidator.forEach(async (item: any, index: number) => {
               undelegationValidator[index]["validator_info"] = {
                 ...undelegationValidator[index]["validator_info"],
-                ...validatorDetail
+                ...validatorDetail,
               };
               totalUndelegateDeposits =
                 totalUndelegateDeposits +
@@ -274,8 +298,7 @@ const StakePlus: React.FC = () => {
     [walletAddress],
     () => getAllValidatorInfo(walletAddress),
     {
-      onSuccess: (res) => {
-      }
+      onSuccess: (res) => {},
     }
   );
 
@@ -297,12 +320,13 @@ const StakePlus: React.FC = () => {
     let validatorParam = urlParams.get("validator");
     const validators = Object.keys(config.stakePlus).map((item, index) => item);
     if (!validatorParam || !validators.includes(validatorParam)) {
-      validatorParam = validators[Math.floor(Math.random() * validators.length)];
+      validatorParam =
+        validators[Math.floor(Math.random() * validators.length)];
     }
 
     setStakeContractInfo({
       operatorAddress: validatorParam,
-      stakeContractAddress: (config as any).stakePlus[validatorParam as string]
+      stakeContractAddress: (config as any).stakePlus[validatorParam as string],
     });
   }, []);
 
@@ -327,29 +351,35 @@ const StakePlus: React.FC = () => {
   if (wallet.status === WalletStatus.INITIALIZING || pageLoader)
     return <Loader text={PAGE_LOADER_TEXT} />;
 
-  if (wallet.status === WalletStatus.WALLET_NOT_CONNECTED || !walletAddress)
-    return <WelcomeScreenPools />;
+  // if (wallet.status === WalletStatus.WALLET_NOT_CONNECTED || !walletAddress)
+  //   return <WelcomeScreenPools />;
 
   return (
     <div>
-      {Object.keys(validatorStakingInfoMap).length != 0 &&
-        <ValidatorTemplate validatorStakingInfoMap={validatorStakingInfoMap} stakeContractInfo = {stakeContractInfo} />}
-      {Object.keys(validatorStakingInfoMap).length != 0 && <div className="deposite-container">
-        <Grid item xs={2} className={c(styles.marginAuto)}>
-          <Button
-            className={c(styles.outlineNoBgBtn)}
-            onClick={() => {
-              openStakeDepositDialog({
-                stakeContractInfo,
-                validatorStakingInfoMap,
-                refreshPage
-              });
-            }}
-          >
-            Deposit
-          </Button>
-        </Grid>
-      </div>}
+      {Object.keys(validatorStakingInfoMap).length != 0 && (
+        <ValidatorTemplate
+          validatorStakingInfoMap={validatorStakingInfoMap}
+          stakeContractInfo={stakeContractInfo}
+        />
+      )}
+      {Object.keys(validatorStakingInfoMap).length != 0 && (
+        <div className="deposite-container">
+          <Grid item xs={2} className={c(styles.marginAuto)}>
+            <Button
+              className={c(styles.outlineNoBgBtn)}
+              onClick={() => {
+                openStakeDepositDialog({
+                  stakeContractInfo,
+                  validatorStakingInfoMap,
+                  refreshPage,
+                });
+              }}
+            >
+              Deposit
+            </Button>
+          </Grid>
+        </div>
+      )}
       <div className={c(styles.stakePlusDivider)} />
       <p className={c(styles.stakePlusTitle)}>Portfolio</p>
       <Grid container spacing={4}>
@@ -364,7 +394,7 @@ const StakePlus: React.FC = () => {
               walletAddress: walletAddress,
               terra: terra,
               walletBalance: walletBalance,
-              allDelegateValidator: allDelegateValidator
+              allDelegateValidator: allDelegateValidator,
             });
           }}
         >
@@ -385,7 +415,7 @@ const StakePlus: React.FC = () => {
               walletAddress: walletAddress,
               terra: terra,
               walletBalance: walletBalance,
-              allUndelegationValidator: allUndelegationValidator
+              allUndelegationValidator: allUndelegationValidator,
             });
           }}
         >
@@ -406,7 +436,7 @@ const StakePlus: React.FC = () => {
               refreshPage: refreshPage,
               terra: terra,
               walletBalance: walletBalance,
-              allDelegateValidator: allDelegateValidator
+              allDelegateValidator: allDelegateValidator,
             });
           }}
         >
@@ -415,26 +445,37 @@ const StakePlus: React.FC = () => {
             <p className={c(styles.title)}>Airdrops</p>
             <div className="flex">
               <div className="flex items-center mr-1">
-                <h1 className="font-normal text-white">{totalAirdrops["anc"] && totalAirdrops["anc"].toFixed(4)}</h1>
+                <h1 className="font-normal text-white">
+                  {totalAirdrops["anc"] && totalAirdrops["anc"].toFixed(4)}
+                </h1>
                 <div className="ml-2 mr-1">
                   <p className="font-normal text-white">ANC</p>
                 </div>
                 <img src="/static/anc.png" alt="anc" style={{ height: 10 }} />
               </div>
               <div className="flex items-center ml-2">
-                <h1 className="font-normal text-white">{totalAirdrops["mir"] && totalAirdrops["mir"].toFixed(4)}</h1>
+                <h1 className="font-normal text-white">
+                  {totalAirdrops["mir"] && totalAirdrops["mir"].toFixed(4)}
+                </h1>
                 <div className="ml-2 mr-1">
                   <p className="font-normal text-white">MIR</p>
                 </div>
                 <img src="/static/mir.png" alt="anc" style={{ height: 10 }} />
               </div>
-              {Object.keys(totalAirdrops).length > 2 ?
+              {Object.keys(totalAirdrops).length > 2 ? (
                 <div className="flex items-center ml-2">
-                  <div className={c(styles.countCircleContainer)} onClick={(e) => {
-                    showAirdroplist(e);
-                  }}><span>+{Object.keys(totalAirdrops).length - 2}</span></div>
-                </div> : ""
-              }
+                  <div
+                    className={c(styles.countCircleContainer)}
+                    onClick={(e) => {
+                      showAirdroplist(e);
+                    }}
+                  >
+                    <span>+{Object.keys(totalAirdrops).length - 2}</span>
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
               {viewAirdropsDropdown && (
                 <div className="dropdown-container">
                   <ClickAwayListener onClickAway={onClickAwayViewAirdrops}>
@@ -442,35 +483,41 @@ const StakePlus: React.FC = () => {
                       <div className="filterDropdownContainer">
                         <div className={c(styles.filterItemList)}>
                           {totalAirdrops &&
-                            Object.keys(totalAirdrops)?.map((item: any, index: number) => (
-                              <div className="flex items-center" key={index}>
-                                <h2 className="font-normal text-white">
-                                  {totalAirdrops[item] != 0 ? totalAirdrops[item].toFixed(4) : 0}
-                                </h2>
-                                <div className="ml-2 mr-1">
-                                  <p className="font-normal text-white">{item.toUpperCase()}</p>
-                                </div>
-                                <img
-                                  src={
-                                    item === "anc"
-                                      ? "/static/anc.png"
-                                      : item === "mir"
+                            Object.keys(totalAirdrops)?.map(
+                              (item: any, index: number) => (
+                                <div className="flex items-center" key={index}>
+                                  <h2 className="font-normal text-white">
+                                    {totalAirdrops[item] != 0
+                                      ? totalAirdrops[item].toFixed(4)
+                                      : 0}
+                                  </h2>
+                                  <div className="ml-2 mr-1">
+                                    <p className="font-normal text-white">
+                                      {item.toUpperCase()}
+                                    </p>
+                                  </div>
+                                  <img
+                                    src={
+                                      item === "anc"
+                                        ? "/static/anc.png"
+                                        : item === "mir"
                                         ? "/static/mir.png"
                                         : item === "mine"
-                                          ? "/static/pylon.png"
-                                          : item === "orion"
-                                            ? "/static/orion.png"
-                                            : item === "twd"
-                                              ? "/static/twd.png"
-                                              : "/static/valkyrie.png"
-                                  }
-                                  alt={item}
-                                  height={12}
-                                  style={{ marginLeft: 2 }}
-                                  className={c(styles.legendImage)}
-                                />
-                              </div>
-                            ))}
+                                        ? "/static/pylon.png"
+                                        : item === "orion"
+                                        ? "/static/orion.png"
+                                        : item === "twd"
+                                        ? "/static/twd.png"
+                                        : "/static/valkyrie.png"
+                                    }
+                                    alt={item}
+                                    height={12}
+                                    style={{ marginLeft: 2 }}
+                                    className={c(styles.legendImage)}
+                                  />
+                                </div>
+                              )
+                            )}
                         </div>
                       </div>
                     </div>

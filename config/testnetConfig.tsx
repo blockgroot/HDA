@@ -1,12 +1,5 @@
 export const testnetConfig = {
-  network: {
-    name: "testnet",
-    chainID: "bombay-12",
-    lcd: "https://bombay-lcd.terra.dev",
-    walletconnectID: 0,
-    fcd: "https://bombay-fcd.terra.dev",
-    localterra: false,
-  },
+  network: {},
   contractAddresses: {
     staderHub: "terra1r867s2xya4ya7mele62tur8y7wa337rje3w9v3",
     anc: "terra1747mad58h0w4y589y3sk84r5efqdev9q4r02pc",

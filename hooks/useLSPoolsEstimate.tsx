@@ -51,7 +51,7 @@ const useLSPoolsEstimate = () => {
   );
 
   useEffect(() => {
-    tvlQuery.refetch();
+    // tvlQuery.refetch();
   }, []);
 
   return {

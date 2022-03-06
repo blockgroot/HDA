@@ -25,7 +25,7 @@ function MainLayout(props: any) {
   const router = useRouter();
 
   const [hideSidebar, setHideSidebar] = useState<Boolean>(true);
-  const [hideBanner, setHideBanner] = useState<Boolean>(false);
+  const [hideBanner, setHideBanner] = useState<Boolean>(true);
 
   const handleHideBanner = () => setHideBanner(true);
 

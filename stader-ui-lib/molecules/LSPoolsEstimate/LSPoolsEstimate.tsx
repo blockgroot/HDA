@@ -11,16 +11,28 @@ type Props = {
   tvl: any;
   holdings: number;
   isLoading: boolean;
+  tokenX: string;
+  token: string;
+  apy: number;
+};
+
+const deaultValue: Props = {
+  tvl: 0,
+  holdings: 0,
+  isLoading: false,
+  tokenX: "HbarX",
+  token: "Hbar",
+  apy: 9.86,
 };
 
 function LSPoolsEstimate(props: Props) {
-  const { tvl, holdings, isLoading } = props;
+  const { tvl, holdings, isLoading, tokenX, apy, token } = props;
 
   const renderElement = (
     <>
       <div className="lg:mb-8">
         <Typography variant={"body1"} fontWeight={"bold"}>
-          My LunaX
+          My {tokenX}
         </Typography>
         <Typography
           variant={"h2"}
@@ -49,7 +61,7 @@ function LSPoolsEstimate(props: Props) {
           fontWeight={"medium"}
           className={styles.value}
         >
-          9.86%
+          {apy} %
         </Typography>
       </div>
       <div>
@@ -62,14 +74,14 @@ function LSPoolsEstimate(props: Props) {
             fontWeight={"medium"}
             className={classNames("mr-2 text-gradient", styles.value)}
           >
-            {formatUST(demicrofy(tvl.uluna)).split(".")[0]}
+            {formatUST(demicrofy(tvl)).split(".")[0]}
           </Typography>
           <Typography
             variant={"body2"}
             color={"secondary"}
             className={styles.luna}
           >
-            LUNA
+            {token}
           </Typography>
         </div>
       </div>

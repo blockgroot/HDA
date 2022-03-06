@@ -5,15 +5,14 @@ import { useWallet, WalletStatus } from "@terra-money/wallet-provider";
 import WelcomeScreenPoolLiquidStaking from "../components/common/WelcomeScreenPoolLiquidStaking";
 
 function Stake() {
-  const { status } = useWallet();
+  // const { status } = useWallet();
   return (
     <div>
       <MainLayout>
-        {status === WalletStatus.WALLET_NOT_CONNECTED ? (
+        {/* {status === WalletStatus.WALLET_NOT_CONNECTED ? (
           <WelcomeScreenPoolLiquidStaking />
-        ) : (
-          <LSPools />
-        )}
+        ) : ( */}
+        <LSPools />
       </MainLayout>
     </div>
   );

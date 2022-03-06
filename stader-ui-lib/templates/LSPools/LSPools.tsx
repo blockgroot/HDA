@@ -16,6 +16,8 @@ import useUserHolding from "@hooks/useUserHolding";
 import { useWallet, WalletStatus } from "@terra-money/wallet-provider";
 import { Grid } from "@material-ui/core";
 
+import useHashConnect from "@hooks/useHashConnect";
+
 const { liquidStaking: contractAddress } = config.contractAddresses;
 
 const defaultConfig: ContractConfigType = {
@@ -25,93 +27,114 @@ const defaultConfig: ContractConfigType = {
 };
 
 function LSPools() {
-  const { terra } = useAppContext();
+  // const { terra } = useAppContext();
+  // const {
+  //   connect,
+  //   walletData,
+  //   installedExtensions,
+  //   associateToken,
+  //   accountInfo,
+  // } = useHashConnect();
+
+  // const { accountIds, network, id } = walletData;
   const wallet = useWallet();
   const { tvl, tvlLoading } = useLSPoolsEstimate();
-  const { data, isLoading, undelegationQuery } = useLPBatchHoldingLunaX();
+  // const { data, isLoading, undelegationQuery } = useLPBatchHoldingLunaX();
 
-  const holdingQuery = useUserHolding();
+  // const holdingQuery = useUserHolding();
 
   const [config, setConfig] = useState<ContractConfigType>(defaultConfig);
+  const {
+    connect,
+    walletData,
+    installedExtensions,
+    associateToken,
+    accountInfo,
+  } = useHashConnect();
 
-  const handleInitialization = async () => {
-    try {
-      const contractConfig = await terra.wasm.contractQuery(contractAddress, {
-        config: {},
-      });
+  const { accountIds, network, id } = walletData;
 
-      const min_deposit = Number(contractConfig?.config?.min_deposit ?? 0);
-      const max_deposit = Number(contractConfig?.config?.max_deposit ?? 0);
-      const protocol_withdraw_fee = Number(
-        contractConfig?.config?.protocol_withdraw_fee ?? 0
-      );
+  // const handleInitialization = async () => {
+  //   try {
+  //     const contractConfig = await terra.wasm.contractQuery(contractAddress, {
+  //       config: {},
+  //     });
 
-      return { min_deposit, max_deposit, protocol_withdraw_fee };
-    } catch (e) {
-      return { success: false, message: "Error!" + e };
-    }
-  };
+  //     const min_deposit = Number(contractConfig?.config?.min_deposit ?? 0);
+  //     const max_deposit = Number(contractConfig?.config?.max_deposit ?? 0);
+  //     const protocol_withdraw_fee = Number(
+  //       contractConfig?.config?.protocol_withdraw_fee ?? 0
+  //     );
 
-  const contractConfigQuery = useQuery(
-    LS_CONTRACT_CONFIG,
-    handleInitialization,
-    {
-      onSuccess: (res: ContractConfigType) => {
-        setConfig(res);
-      },
-      refetchOnWindowFocus: false,
-    }
-  );
+  //     return { min_deposit, max_deposit, protocol_withdraw_fee };
+  //   } catch (e) {
+  //     return { success: false, message: "Error!" + e };
+  //   }
+  // };
 
-  if (
-    contractConfigQuery.isLoading ||
-    tvlLoading ||
-    holdingQuery.isLoading ||
-    wallet.status === WalletStatus.INITIALIZING
-  ) {
-    return <Loader text={"Please wait while we set things up for you"} />;
-  }
+  // const contractConfigQuery = useQuery(
+  //   LS_CONTRACT_CONFIG,
+  //   handleInitialization,
+  //   {
+  //     onSuccess: (res: ContractConfigType) => {
+  //       setConfig(res);
+  //     },
+  //     refetchOnWindowFocus: false,
+  //   }
+  // );
+
+  // if (
+  //   contractConfigQuery.isLoading ||
+  //   tvlLoading ||
+  //   holdingQuery.isLoading ||
+  //   wallet.status === WalletStatus.INITIALIZING
+  // ) {
+  //   return <Loader text={"Please wait while we set things up for you"} />;
+  // }
 
   return (
     <div>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
           <LSPoolsEstimate
-            tvl={tvl}
-            holdings={holdingQuery.holding}
-            isLoading={holdingQuery.isLoading || tvlLoading}
+            tvl={0}
+            holdings={0}
+            isLoading={false}
+            token={"Hbar"}
+            tokenX={"HbarX"}
+            apy={9.86}
           />
         </Grid>
         <Grid item xs={12} md={8}>
           <LSPoolsForm
             tvl={tvl}
-            tvlLoading={tvlLoading}
+            tvlLoading={false}
             contractConfig={config}
-            holding={holdingQuery.holding}
+            holding={0}
           />
         </Grid>
       </Grid>
       <Grid container spacing={3} className={"mt-12 mb-16"}>
-        <Grid item xs={12} md={4}>
+        {/* <Grid item xs={12} md={4}>
           <LPMyHolding
             isLoading={isLoading}
             lunaTokens={data?.lunaToken || 0}
             lunaXTokens={data?.lunaXToken || 0}
           />
-        </Grid>
-        <Grid item xs={12} md={8}>
-          <Typography
+        </Grid> */}
+        <Grid item xs={8} md={8}>
+          {/* <Typography
             variant={"h3"}
             fontWeight={"bold"}
             className={"mb-4 md:mb-14"}
           >
-            Withdrawals
-          </Typography>
-          <LPPoolsWithdraw
+            Withdrawals (Coming soon)
+          </Typography> */}
+          {/* <LPPoolsWithdraw
             isLoading={undelegationQuery.isLoading}
             undelegations={undelegationQuery.data}
             refetchQuery={undelegationQuery.refetch}
-          />
+          /> */}
         </Grid>
       </Grid>
     </div>

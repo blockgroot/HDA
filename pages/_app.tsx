@@ -20,6 +20,9 @@ import { config } from "../config/config";
 import reportWebVitals from "../utils/reportWebVitals";
 import { AppProvider } from "../libs/appContext";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { HashConnect } from "hashconnect";
+import HashConnectProvider from "../context/HashConnectProvider";
+const hashConnect = new HashConnect(false);
 
 const walletConnectChainIds: Record<number, NetworkInfo> = {
   0: config.network,
@@ -48,11 +51,11 @@ export default function App({ Component, pageProps }: AppProps) {
   const main = (
     <main id="main-root">
       <QueryClientProvider client={queryClient}>
-        <AppProvider>
+        <HashConnectProvider hashConnect={hashConnect} debug>
           <ThemeProvider theme={theme}>
             <Component {...pageProps} />
           </ThemeProvider>
-        </AppProvider>
+        </HashConnectProvider>
       </QueryClientProvider>
     </main>
   );

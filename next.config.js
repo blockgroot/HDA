@@ -4,12 +4,12 @@ const path = require("path");
 
 const withImages = require("next-images");
 module.exports = withImages({
-  reactStrictMode: true,
+  reactStrictMode: false,
   async redirects() {
     return [
       {
         source: "/",
-        destination: "/pools",
+        destination: "/lt-pools",
         permanent: true,
       },
     ];
