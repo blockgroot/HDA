@@ -11,7 +11,7 @@ import {
   TokenDissociateTransaction,
 } from "@hashgraph/sdk";
 import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { makeBytes, signAndMakeBytes, init } from "../services/signing.service";
 
 //Type declarations
@@ -54,6 +54,7 @@ export interface HashConnectProviderAPI {
   network: Networks;
   metadata?: HashConnectTypes.AppMetadata;
   installedExtensions: HashConnectTypes.WalletMetadata | null;
+  status: string;
 }
 
 const INITIAL_SAVE_DATA: SaveData = {
@@ -63,6 +64,12 @@ const INITIAL_SAVE_DATA: SaveData = {
   pairedAccounts: [],
   pairedWalletData: null,
 };
+
+// export declare enum WalletStatus {
+//   INITIALIZING = "INITIALIZING",
+//   WALLET_NOT_CONNECTED = "WALLET_NOT_CONNECTED",
+//   WALLET_CONNECTED = "WALLET_CONNECTED",
+// }
 
 let APP_CONFIG: HashConnectTypes.AppMetadata = {
   name: "Hedera Staking DApp",
@@ -92,6 +99,7 @@ export const HashConnectAPIContext =
     walletData: INITIAL_SAVE_DATA,
     network: "testnet",
     installedExtensions: null,
+    status: "INITIALIZING",
   });
 
 export default function HashConnectProvider({
@@ -110,6 +118,15 @@ export default function HashConnectProvider({
   // const [accountId, setAccountId] = useState<string | null>();
 
   const [tokenId] = useState<string>("0.0.30842742");
+
+  const [status, _setStatus] = useState<string>("INITIALIZING");
+
+  const statusRef = useRef(status);
+
+  const setStatus = (status: string) => {
+    statusRef.current = status;
+    _setStatus(status);
+  };
 
   //? Initialize the package in mount
   const initializeHashConnect = async () => {
@@ -196,23 +213,19 @@ export default function HashConnectProvider({
     // Do a thing
   };
 
-  // const foundExtensionEventHandler = (
-  //   data: HashConnectTypes.WalletMetadata
-  // ) => {
-  //   if (debug) console.debug("====foundExtensionEvent====", data);
-  //   // Do a thing
-  //   console.log("exytension found", data);
-  //   setInstalledExtensions(data as HashConnectTypes.WalletMetadata);
-  // };
-
-  function foundExtensionEventHandler(data) {
-    console.log("exytension found", data);
+  const foundExtensionEventHandler = (
+    data: HashConnectTypes.WalletMetadata
+  ) => {
+    if (debug) console.debug("====foundExtensionEvent====", data);
+    // Do a thing
+    setStatus("WALLET_NOT_CONNECTED");
     setInstalledExtensions(data as HashConnectTypes.WalletMetadata);
-  }
+  };
 
   const pairingEventHandler = (data: MessageTypes.ApprovePairing) => {
     if (debug) console.log("===Wallet connected=====", data);
     // Save Data to localStorage
+
     saveDataInLocalStorage(data);
   };
 
@@ -248,8 +261,12 @@ export default function HashConnectProvider({
   }, []);
 
   useEffect(() => {
-    console.log("installedExtensions", installedExtensions);
+    console.log("installedExtensions2", installedExtensions);
   }, [installedExtensions]);
+
+  useEffect(() => {
+    console.log("status", status);
+  }, [status]);
 
   const connect = async () => {
     console.log("installedExtensions", installedExtensions);
@@ -278,6 +295,7 @@ export default function HashConnectProvider({
     //v2.0.0
     // setBalance(accountInfo.balance.toTinybars().toString());
     setAccountInfo(accountInfo);
+    setStatus("WALLET_CONNECTED");
   };
 
   const associateToken = async () => {
@@ -323,6 +341,7 @@ export default function HashConnectProvider({
         walletData: saveData,
         network: network,
         installedExtensions,
+        status,
       }}
     >
       {children}

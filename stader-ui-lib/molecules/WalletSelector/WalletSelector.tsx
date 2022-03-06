@@ -32,6 +32,7 @@ const WalletSelector = ({
     installedExtensions,
     associateToken,
     accountInfo,
+    status,
   } = useHashConnect();
 
   const { accountIds, network, id } = walletData;
@@ -45,13 +46,10 @@ const WalletSelector = ({
     installWallet,
   } = useWalletInfo();
 
-  const isWalletConnected: boolean =
-    wallet.status === WalletStatus.WALLET_CONNECTED;
-  const isWalletInitializing: boolean =
-    !wallet || wallet.status === WalletStatus.INITIALIZING;
+  const isWalletConnected: boolean = status === WalletStatus.WALLET_CONNECTED;
+  const isWalletInitializing: boolean = status === WalletStatus.INITIALIZING;
   const isWalletDisconnected: boolean =
-    wallet.wallets.length === 0 ||
-    wallet.status === WalletStatus.WALLET_NOT_CONNECTED;
+    status === WalletStatus.WALLET_NOT_CONNECTED;
 
   const openModal = (e: any) => {
     setModal({ open: true, anchorEl: e.currentTarget });
@@ -67,15 +65,16 @@ const WalletSelector = ({
         fontWeight={"medium"}
         className={"inline ml-4 capitalize"}
       >
-        {truncatedWalletAddress}
+        {accountInfo?.accountId.toString()}
       </Typography>
       <div className={styles.divider} />
       <Typography variant={"body2"} fontWeight={"bold"} className={"mr-1"}>
-        {walletBalance}
+        {console.log(accountInfo?.balance.toString())}
+        {accountInfo?.balance.toString()}
       </Typography>
-      <Typography variant={"body3"} fontWeight={"bold"} className={"inline"}>
-        LUNA
-      </Typography>
+      {/* <Typography variant={"body3"} fontWeight={"bold"} className={"inline"}>
+        HBAR
+      </Typography> */}
     </>
   );
 
@@ -123,6 +122,7 @@ const WalletSelector = ({
   };
 
   const renderWalletButton = useCallback(() => {
+    // console.log("accountInfo", accountInfo?.balance.hbars?.toString());
     if (isWalletInitializing) {
       return <WalletButton>Initializing Wallet...</WalletButton>;
     }
@@ -130,7 +130,7 @@ const WalletSelector = ({
       return <WalletButton>Connect Wallet</WalletButton>;
     }
     return <WalletButton>{walletButtonElements}</WalletButton>;
-  }, [wallet.status, walletBalance]);
+  }, [status, walletBalance]);
 
   const iconOnlyWalletButton = useCallback(() => {
     // if(isWalletInitializing){
@@ -156,7 +156,7 @@ const WalletSelector = ({
       </div>
     );
     // }
-  }, [wallet.status, walletBalance]);
+  }, [status, walletBalance]);
 
   return (
     <div style={{ position: "relative" }}>
