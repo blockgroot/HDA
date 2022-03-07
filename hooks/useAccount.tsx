@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useHashConnect from "./useHashConnect";
 import TokenRelationship from "@hashgraph/sdk/lib/account/TokenRelationship";
-
-const tokenId = "0.0.30863559";
+import { tokenId } from "context/HashConnectProvider";
 
 export default function useAccount() {
   const { accountInfo } = useHashConnect();

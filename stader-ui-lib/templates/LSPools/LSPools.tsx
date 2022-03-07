@@ -52,6 +52,7 @@ function LSPools() {
     installedExtensions,
     associateToken,
     accountInfo,
+    stake,
   } = useHashConnect();
 
   const { hbarX, isAsocciated, hbar } = useAccount();
@@ -60,6 +61,11 @@ function LSPools() {
   const handleAssocuiteToken = () => {
     console.log("associateToken2");
     associateToken();
+  };
+
+  const handleStake = (amount: number) => {
+    console.log("stake2");
+    stake(amount);
   };
 
   return (
@@ -84,6 +90,7 @@ function LSPools() {
             holding={accountInfo?.balance.toBigNumber().toNumber() || 0}
             isAssocciated={isAsocciated}
             associateToken={handleAssocuiteToken}
+            handleStake={handleStake}
           />
         </Grid>
       </Grid>

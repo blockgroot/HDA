@@ -20,6 +20,7 @@ export type LSPoolProps = {
   holding: number;
   isAssocciated: boolean;
   associateToken: () => void;
+  handleStake: (amount: number) => void;
 };
 
 export type ContractConfigType = {
@@ -36,6 +37,7 @@ function LSPoolsForm(props: LSPoolProps) {
     holding,
     isAssocciated,
     associateToken,
+    handleStake,
   } = props;
 
   const [tab, setTab] = useState<number>(0);
@@ -49,9 +51,9 @@ function LSPoolsForm(props: LSPoolProps) {
     associateToken();
   };
 
-  const handleStale = (value: number) => {
+  const doHandleStake = (value: number) => {
     console.log("Stake");
-    associateToken();
+    handleStake(value);
   };
 
   if (tvlLoading) {
@@ -111,7 +113,7 @@ function LSPoolsForm(props: LSPoolProps) {
                   ustWalletBalance={1}
                   maximumDeposit={contractConfig.max_deposit}
                   minimumDeposit={contractConfig.min_deposit}
-                  stake={handleStale}
+                  stake={doHandleStake}
                 />
               )}
               {tab === 1 && (

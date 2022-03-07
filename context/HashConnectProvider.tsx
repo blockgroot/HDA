@@ -55,6 +55,7 @@ export interface HashConnectProviderAPI {
   metadata?: HashConnectTypes.AppMetadata;
   installedExtensions: HashConnectTypes.WalletMetadata | null;
   status: string;
+  stake: (amount: number) => void;
 }
 
 const INITIAL_SAVE_DATA: SaveData = {
@@ -100,11 +101,12 @@ export const HashConnectAPIContext =
     network: "testnet",
     installedExtensions: null,
     status: "INITIALIZING",
+    stake: () => null,
   });
 
 //fetch this from config/move to config
-const tokenId = "0.0.30863559";
-const contractId = "0.0.30863562";
+export const tokenId = "0.0.30868866";
+export const contractId = "0.0.30868871";
 
 export default function HashConnectProvider({
   children,
@@ -247,7 +249,9 @@ export default function HashConnectProvider({
     else if (data.success && data.signedTransaction)
       console.log(Transaction.fromBytes(data.signedTransaction as Uint8Array));
 
-    getAccounts(saveData.accountIds[0]);
+    console.log("saveData", saveData);
+    console.log("saveDataRef", saveDataRef.current);
+    getAccounts(saveDataRef.current.accountIds[0]);
   };
 
   useEffect(() => {
@@ -311,13 +315,15 @@ export default function HashConnectProvider({
     setStatus("WALLET_CONNECTED");
   };
 
-  const stake = async (amount: string) => {
+  const stake = async (amount: number) => {
+    console.log("staked Amount", amount);
     const accountId: AccountId = AccountId.fromString(saveData?.accountIds[0]);
 
     const transaction = new ContractExecuteTransaction()
       .setContractId(contractId)
       .setGas(600_000)
-      .setPayableAmount(new Hbar(amount))
+      // .setPayableAmount(new Hbar(amount))
+      .setPayableAmount(amount)
       .setFunction(
         "stake",
         new ContractFunctionParameters().addAddress(
@@ -379,6 +385,7 @@ export default function HashConnectProvider({
         network: network,
         installedExtensions,
         status,
+        stake,
       }}
     >
       {children}
