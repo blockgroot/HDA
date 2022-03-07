@@ -1,18 +1,14 @@
 {
   "devnet": {
     "isProd": "false",
-    "alias": "devnet.terra.staderlabs.com"
+    "alias": "devnet.hedera.staderlabs.com"
   },
   "testnet": {
     "isProd": "false",
-    "alias": "testnet.terra.staderlabs.com"
-  },
-  "alpha": {
-    "isProd": "false",
-    "alias": "alpha.terra.staderlabs.com"
+    "alias": "testnet.hedera.staderlabs.com"
   },
   "main": {
     "isProd": "true",
-    "alias": "terra.staderlabs.com"
+    "alias": "hedera.staderlabs.com"
   }
 }

@@ -22,6 +22,10 @@ jobs:
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
+      - name: save env variable
+        id: saveEnv
+        run: echo "NEXT_PUBLIC_GIT_REF=${{ steps.extract_branch.outputs.branch }}" > .env.local
+      - run: cat .env.local
       - name: get isProd
         id: isProd
         uses: notiz-dev/github-action-json-property@release
