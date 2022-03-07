@@ -128,7 +128,7 @@ export const defaultAirdrops = [
 export const airdropsAPR = 0.61;
 export const ustFee = 0.5;
 export const ustConvertToLunaX = 0.75;
-export const ustFeeStaking = 0.9;
+export const ustFeeStaking = 0.6;
 export const ustFeeStakePlus = 0.3;
 export const ustFeeStrategies = 0.2;
 

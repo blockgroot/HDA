@@ -14,6 +14,7 @@ type Props = {
   tokenX: string;
   token: string;
   apy: number;
+  isAssocciated: boolean;
 };
 
 const deaultValue: Props = {
@@ -23,10 +24,11 @@ const deaultValue: Props = {
   tokenX: "HbarX",
   token: "Hbar",
   apy: 9.86,
+  isAssocciated: false,
 };
 
 function LSPoolsEstimate(props: Props) {
-  const { tvl, holdings, isLoading, tokenX, apy, token } = props;
+  const { tvl, holdings, isLoading, tokenX, apy, token, isAssocciated } = props;
 
   const renderElement = (
     <>
@@ -35,11 +37,12 @@ function LSPoolsEstimate(props: Props) {
           My {tokenX}
         </Typography>
         <Typography
-          variant={"h2"}
+          variant={"h3"}
           fontWeight={"medium"}
           className={classNames("mt-3", styles.value)}
         >
-          {(holdings / LUNA_MULTIPLIER).toFixed(6)}
+          {/* {(holdings / LUNA_MULTIPLIER).toFixed(6)} */}
+          {isAssocciated ? holdings : "Token not associated"}
         </Typography>
       </div>
 

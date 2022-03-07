@@ -15,6 +15,8 @@ import { ContractConfigType } from "@types_/liquid-staking-pool";
 import useUserHolding from "@hooks/useUserHolding";
 import { useWallet, WalletStatus } from "@terra-money/wallet-provider";
 import { Grid } from "@material-ui/core";
+import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolLiquidStaking";
+import useAccount from "@hooks/useAccount";
 
 import useHashConnect from "@hooks/useHashConnect";
 
@@ -22,7 +24,7 @@ const { liquidStaking: contractAddress } = config.contractAddresses;
 
 const defaultConfig: ContractConfigType = {
   min_deposit: 0,
-  max_deposit: 0,
+  max_deposit: 1000000,
   protocol_withdraw_fee: 0,
 };
 
@@ -37,7 +39,7 @@ function LSPools() {
   // } = useHashConnect();
 
   // const { accountIds, network, id } = walletData;
-  const wallet = useWallet();
+
   const { tvl, tvlLoading } = useLSPoolsEstimate();
   // const { data, isLoading, undelegationQuery } = useLPBatchHoldingLunaX();
 
@@ -52,45 +54,13 @@ function LSPools() {
     accountInfo,
   } = useHashConnect();
 
-  const { accountIds, network, id } = walletData;
+  const { hbarX, isAsocciated, hbar } = useAccount();
 
-  // const handleInitialization = async () => {
-  //   try {
-  //     const contractConfig = await terra.wasm.contractQuery(contractAddress, {
-  //       config: {},
-  //     });
-
-  //     const min_deposit = Number(contractConfig?.config?.min_deposit ?? 0);
-  //     const max_deposit = Number(contractConfig?.config?.max_deposit ?? 0);
-  //     const protocol_withdraw_fee = Number(
-  //       contractConfig?.config?.protocol_withdraw_fee ?? 0
-  //     );
-
-  //     return { min_deposit, max_deposit, protocol_withdraw_fee };
-  //   } catch (e) {
-  //     return { success: false, message: "Error!" + e };
-  //   }
-  // };
-
-  // const contractConfigQuery = useQuery(
-  //   LS_CONTRACT_CONFIG,
-  //   handleInitialization,
-  //   {
-  //     onSuccess: (res: ContractConfigType) => {
-  //       setConfig(res);
-  //     },
-  //     refetchOnWindowFocus: false,
-  //   }
-  // );
-
-  // if (
-  //   contractConfigQuery.isLoading ||
-  //   tvlLoading ||
-  //   holdingQuery.isLoading ||
-  //   wallet.status === WalletStatus.INITIALIZING
-  // ) {
-  //   return <Loader text={"Please wait while we set things up for you"} />;
-  // }
+  // const { accountIds, network, id } = walletData;
+  const handleAssocuiteToken = () => {
+    console.log("associateToken2");
+    associateToken();
+  };
 
   return (
     <div>
@@ -98,11 +68,12 @@ function LSPools() {
         <Grid item xs={12} md={4}>
           <LSPoolsEstimate
             tvl={0}
-            holdings={0}
+            holdings={hbarX}
             isLoading={false}
             token={"Hbar"}
             tokenX={"HbarX"}
             apy={9.86}
+            isAssocciated={isAsocciated}
           />
         </Grid>
         <Grid item xs={12} md={8}>
@@ -110,7 +81,9 @@ function LSPools() {
             tvl={tvl}
             tvlLoading={false}
             contractConfig={config}
-            holding={0}
+            holding={accountInfo?.balance.toBigNumber().toNumber() || 0}
+            isAssocciated={isAsocciated}
+            associateToken={handleAssocuiteToken}
           />
         </Grid>
       </Grid>

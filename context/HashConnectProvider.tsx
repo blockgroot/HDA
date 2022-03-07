@@ -102,6 +102,10 @@ export const HashConnectAPIContext =
     status: "INITIALIZING",
   });
 
+//fetch this from config/move to config
+const tokenId = "0.0.30863559";
+const contractId = "0.0.30863562";
+
 export default function HashConnectProvider({
   children,
   hashConnect,
@@ -111,13 +115,11 @@ export default function HashConnectProvider({
 }: PropsType) {
   debug = true;
   //Saving Wallet Details in Ustate
-  const [saveData, setSaveData] = useState<SaveData>(INITIAL_SAVE_DATA);
+  const [saveData, _setSaveData] = useState<SaveData>(INITIAL_SAVE_DATA);
   const [installedExtensions, setInstalledExtensions] =
     useState<HashConnectTypes.WalletMetadata | null>(null);
   const [accountInfo, setAccountInfo] = useState<AccountInfo | null>(null);
   // const [accountId, setAccountId] = useState<string | null>();
-
-  const [tokenId] = useState<string>("0.0.30842742");
 
   const [status, _setStatus] = useState<string>("INITIALIZING");
 
@@ -126,6 +128,13 @@ export default function HashConnectProvider({
   const setStatus = (status: string) => {
     statusRef.current = status;
     _setStatus(status);
+  };
+
+  const saveDataRef = useRef(saveData);
+
+  const setSaveData = (saveData: SaveData) => {
+    saveDataRef.current = saveData;
+    _setSaveData(saveData);
   };
 
   //? Initialize the package in mount
@@ -169,10 +178,10 @@ export default function HashConnectProvider({
       console.log("error found", error);
     } finally {
       if (localData) {
-        setSaveData((prevData) => ({ ...prevData, ...localData }));
+        setSaveData({ ...saveData, ...localData });
         await getAccounts(localData.accountIds[0]);
       } else {
-        setSaveData((prevData) => ({ ...prevData, ...saveData }));
+        setSaveData({ ...saveData, ...saveData });
         // await getAccounts(saveData.accountIds[0]);
       }
       // await getAccounts(saveData.accountIds[0]);
@@ -229,12 +238,16 @@ export default function HashConnectProvider({
     saveDataInLocalStorage(data);
   };
 
-  const transactionResponseHandler = async (data) => {
+  const transactionResponseHandler = async (
+    data: MessageTypes.TransactionResponse
+  ) => {
     console.log("received data", data);
     if (data.success && !data.signedTransaction)
       console.log(TransactionReceipt.fromBytes(data.receipt as Uint8Array));
     else if (data.success && data.signedTransaction)
       console.log(Transaction.fromBytes(data.signedTransaction as Uint8Array));
+
+    getAccounts(saveData.accountIds[0]);
   };
 
   useEffect(() => {
@@ -298,11 +311,35 @@ export default function HashConnectProvider({
     setStatus("WALLET_CONNECTED");
   };
 
+  const stake = async (amount: string) => {
+    const accountId: AccountId = AccountId.fromString(saveData?.accountIds[0]);
+
+    const transaction = new ContractExecuteTransaction()
+      .setContractId(contractId)
+      .setGas(600_000)
+      .setPayableAmount(new Hbar(amount))
+      .setFunction(
+        "stake",
+        new ContractFunctionParameters().addAddress(
+          accountId.toSolidityAddress()
+        )
+      );
+
+    const transactionBytes = await signAndMakeBytes(
+      transaction,
+      accountId.toString()
+    );
+    console.log("transactionBytes", transactionBytes);
+
+    await sendTransaction(transactionBytes, accountId.toString(), false);
+  };
+
   const associateToken = async () => {
     //Associate a token to an account and freeze the unsigned transaction for signing
-    const client = await init();
+    // const client = await init();
     // const accountId = AccountId.fromString(accountInfo?.accountIds[0]);
-    const accountId = saveData.accountIds[0];
+    console.log("associateToken");
+    const accountId = saveData?.accountIds[0];
     const transaction = await new TokenAssociateTransaction()
       .setAccountId(accountId)
       .setTokenIds([tokenId]);

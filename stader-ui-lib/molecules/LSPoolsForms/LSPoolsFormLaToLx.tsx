@@ -21,6 +21,7 @@ type Props = {
   minimumDeposit: number;
   maximumDeposit: number;
   ustWalletBalance: number;
+  stake: (amount: number) => void;
 };
 
 function LSPoolsFormLaToLx(props: Props) {
@@ -30,6 +31,7 @@ function LSPoolsFormLaToLx(props: Props) {
     minimumDeposit,
     maximumDeposit,
     ustWalletBalance,
+    stake,
   } = props;
 
   const { handleStake, outputAmountLunax, isLoading, resetQuery, data } =
@@ -39,13 +41,13 @@ function LSPoolsFormLaToLx(props: Props) {
   if (data?.success) {
     return <DepositSuccess reset={resetQuery} message={data?.message} />;
   }
-  const minDep = lunaFormatter(minimumDeposit);
-  const maxDep = Math.min(lunaFormatter(maximumDeposit), walletBalance);
+  const minDep = minimumDeposit;
+  const maxDep = maximumDeposit;
 
   const validation = Yup.object().shape({
     luna: Yup.number()
-      .max(maxDep, `Deposit amount should be less than ${maxDep} LUNA`)
-      .min(minDep, `Deposit amount should be more than ${minDep} LUNA`)
+      .max(maxDep, `Deposit amount should be less than ${maxDep} Hbar`)
+      .min(minDep, `Deposit amount should be more than ${minDep} Hbar`)
       .required(`Deposit amount should be more than ${minDep} LUNA`),
     ust: Yup.number().moreThan(0.9, "Not enough ust for transaction fees"),
   });
@@ -58,8 +60,9 @@ function LSPoolsFormLaToLx(props: Props) {
         ust: ustWalletBalance,
       }}
       onSubmit={(values) => {
+        console.log("stake");
         if (values.luna) {
-          handleStake(values.luna);
+          stake(values.luna);
         }
       }}
       validationSchema={validation}
@@ -74,7 +77,7 @@ function LSPoolsFormLaToLx(props: Props) {
           <form onSubmit={handleSubmit}>
             <div className={styles.available_amount_validation}>
               <Typography variant={"body3"} color={"secondary"}>
-                Available: {walletBalance.toFixed(6)} Hbar
+                Available: {walletBalance} Hbar
               </Typography>
 
               <Typography
@@ -154,7 +157,7 @@ function LSPoolsFormLaToLx(props: Props) {
                 }}
               />
               <Typography variant={"body3"} color={"textSecondary"}>
-                Transaction Fee: {ustFeeStaking} UST
+                Transaction Fee: {ustFeeStaking} Hbar
               </Typography>
             </div>
             <Divider color={"gradient"} />
@@ -162,6 +165,7 @@ function LSPoolsFormLaToLx(props: Props) {
               <ButtonOutlined
                 size={"large"}
                 disabled={!!Object.keys(errors).length || !values.luna}
+                type={"submit"}
               >
                 Stake
               </ButtonOutlined>
