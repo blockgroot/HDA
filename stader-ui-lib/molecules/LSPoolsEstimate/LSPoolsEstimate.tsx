@@ -77,7 +77,7 @@ function LSPoolsEstimate(props: Props) {
             fontWeight={"medium"}
             className={classNames("mr-2 text-gradient", styles.value)}
           >
-            {formatUST(demicrofy(tvl)).split(".")[0]}
+            {tvl / 100000000}
           </Typography>
           <Typography
             variant={"body2"}

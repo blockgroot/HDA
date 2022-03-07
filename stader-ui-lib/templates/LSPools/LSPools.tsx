@@ -40,7 +40,7 @@ function LSPools() {
 
   // const { accountIds, network, id } = walletData;
 
-  const { tvl, tvlLoading } = useLSPoolsEstimate();
+  // const { tvl, tvlLoading } = useLSPoolsEstimate();
   // const { data, isLoading, undelegationQuery } = useLPBatchHoldingLunaX();
 
   // const holdingQuery = useUserHolding();
@@ -54,6 +54,7 @@ function LSPools() {
     accountInfo,
     status,
     stake,
+    tvl,
   } = useHashConnect();
 
   const { hbarX, isAsocciated, hbar } = useAccount();
@@ -78,11 +79,11 @@ function LSPools() {
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
           <LSPoolsEstimate
-            tvl={0}
+            tvl={tvl}
             holdings={hbarX}
             isLoading={false}
-            token={"Hbar"}
-            tokenX={"HbarX"}
+            token={"hbar"}
+            tokenX={"hbarx"}
             apy={9.86}
             isAssocciated={isAsocciated}
           />

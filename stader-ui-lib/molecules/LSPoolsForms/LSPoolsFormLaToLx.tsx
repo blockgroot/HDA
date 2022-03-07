@@ -46,10 +46,10 @@ function LSPoolsFormLaToLx(props: Props) {
 
   const validation = Yup.object().shape({
     luna: Yup.number()
-      .max(maxDep, `Deposit amount should be less than ${maxDep} Hbar`)
-      .min(minDep, `Deposit amount should be more than ${minDep} Hbar`)
-      .required(`Deposit amount should be more than ${minDep} LUNA`),
-    ust: Yup.number().moreThan(0.9, "Not enough ust for transaction fees"),
+      .max(maxDep, `Deposit amount should be less than ${maxDep} hbar`)
+      .min(minDep, `Deposit amount should be more than ${minDep} hbar`)
+      .required(`Deposit amount should be more than ${minDep} hbar`),
+    ust: Yup.number().moreThan(2, "Not enough ust for transaction fees"),
   });
 
   return (
@@ -77,14 +77,14 @@ function LSPoolsFormLaToLx(props: Props) {
           <form onSubmit={handleSubmit}>
             <div className={styles.available_amount_validation}>
               <Typography variant={"body3"} color={"secondary"}>
-                Available: {walletBalance} Hbar
+                Available: {walletBalance} hbar
               </Typography>
 
               <Typography
                 variant={"body3"}
               >{`1 ${tokenLabel} = ${tvlExchangeRate.toFixed(
                 6
-              )} Hbar`}</Typography>
+              )} hbar`}</Typography>
             </div>
             {(errors.ust || errors.luna) && (
               <Typography
@@ -113,7 +113,7 @@ function LSPoolsFormLaToLx(props: Props) {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end" className="text-white">
-                      <span className={"text-white"}>Hbar</span>
+                      <span className={"text-white"}>hbar</span>
                     </InputAdornment>
                   ),
                 }}
@@ -136,7 +136,7 @@ function LSPoolsFormLaToLx(props: Props) {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end" className="text-white">
-                      <span className={"text-white"}>HbarX</span>
+                      <span className={"text-white"}>hbarx</span>
                     </InputAdornment>
                   ),
                 }}
@@ -157,7 +157,7 @@ function LSPoolsFormLaToLx(props: Props) {
                 }}
               />
               <Typography variant={"body3"} color={"textSecondary"}>
-                Transaction Fee: {ustFeeStaking} Hbar
+                Transaction Fee: 2 hbar
               </Typography>
             </div>
             <Divider color={"gradient"} />

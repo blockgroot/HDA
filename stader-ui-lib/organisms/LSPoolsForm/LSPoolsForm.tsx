@@ -14,7 +14,7 @@ export type TvlType = {
 };
 
 export type LSPoolProps = {
-  tvl: TvlType;
+  tvl: number;
   tvlLoading?: boolean;
   contractConfig: ContractConfigType;
   holding: number;
@@ -70,12 +70,12 @@ function LSPoolsForm(props: LSPoolProps) {
         <Box className={"mt-8 px-10 py-6"}>
           <div className="lg:mb-8">
             <div className="p-1 text-center mb-2">
-              <Typography variant={"h2"}>Associate HbarX</Typography>
+              <Typography variant={"h2"}>Associate hbarx</Typography>
             </div>
             <div className="p-1 text-center mb-2">
               <Typography variant={"body1"} color={"textSecondary"}>
-                To undertake staking and obtain HbarX, you must first associate
-                HbarX with your account.
+                To undertake staking and obtain hbarx, you must first associate
+                hbarx with your account.
               </Typography>
             </div>
           </div>
@@ -110,7 +110,7 @@ function LSPoolsForm(props: LSPoolProps) {
                 <LSPoolsFormLaToLx
                   tvlExchangeRate={1}
                   walletBalance={holding}
-                  ustWalletBalance={1}
+                  ustWalletBalance={5}
                   maximumDeposit={contractConfig.max_deposit}
                   minimumDeposit={contractConfig.min_deposit}
                   stake={doHandleStake}
@@ -118,7 +118,7 @@ function LSPoolsForm(props: LSPoolProps) {
               )}
               {tab === 1 && (
                 <LSPoolsFormLxToLa
-                  tvlExchangeRate={tvl?.exchangeRate}
+                  tvlExchangeRate={1}
                   maximumDeposit={contractConfig.max_deposit}
                   minimumDeposit={contractConfig.min_deposit}
                   holding={holding}

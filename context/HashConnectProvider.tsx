@@ -9,6 +9,7 @@ import {
   TransactionReceipt,
   Transaction,
   TokenDissociateTransaction,
+  ContractInfoQuery,
 } from "@hashgraph/sdk";
 import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -56,6 +57,7 @@ export interface HashConnectProviderAPI {
   installedExtensions: HashConnectTypes.WalletMetadata | null;
   status: string;
   stake: (amount: number) => void;
+  tvl: number;
 }
 
 const INITIAL_SAVE_DATA: SaveData = {
@@ -102,11 +104,12 @@ export const HashConnectAPIContext =
     installedExtensions: null,
     status: "INITIALIZING",
     stake: () => null,
+    tvl: 0,
   });
 
 //fetch this from config/move to config
-export const tokenId = "0.0.30868866";
-export const contractId = "0.0.30868871";
+export const tokenId = "0.0.30871737";
+export const contractId = "0.0.30871775";
 
 export default function HashConnectProvider({
   children,
@@ -121,6 +124,7 @@ export default function HashConnectProvider({
   const [installedExtensions, setInstalledExtensions] =
     useState<HashConnectTypes.WalletMetadata | null>(null);
   const [accountInfo, setAccountInfo] = useState<AccountInfo | null>(null);
+  const [tvl, setTvl] = useState<number>(0);
   // const [accountId, setAccountId] = useState<string | null>();
 
   const [status, _setStatus] = useState<string>("INITIALIZING");
@@ -252,6 +256,7 @@ export default function HashConnectProvider({
     console.log("saveData", saveData);
     console.log("saveDataRef", saveDataRef.current);
     getAccounts(saveDataRef.current.accountIds[0]);
+    getTvl();
   };
 
   useEffect(() => {
@@ -263,7 +268,7 @@ export default function HashConnectProvider({
     hashConnect.transactionResponseEvent.on(transactionResponseHandler);
     //Intialize the setup
     initializeHashConnect();
-
+    getTvl();
     // Attach event handlers
 
     return () => {
@@ -295,6 +300,18 @@ export default function HashConnectProvider({
     //   if (debug) console.log("====No Extension is not in browser====");
     //   return "wallet not installed";
     // }
+  };
+
+  const getTvl = async () => {
+    //Create the query
+    const query = new ContractInfoQuery().setContractId(contractId);
+    const client = await init();
+
+    //Sign the query with the client operator private key and submit to a Hedera network
+    const contractInfo = await query.execute(client);
+
+    console.log(contractInfo);
+    setTvl(contractInfo.balance.toTinybars().toNumber());
   };
 
   const getAccounts = async (accountId: string) => {
@@ -386,6 +403,7 @@ export default function HashConnectProvider({
         installedExtensions,
         status,
         stake,
+        tvl,
       }}
     >
       {children}

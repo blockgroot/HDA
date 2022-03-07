@@ -37,6 +37,8 @@ const WalletSelector = ({
 
   const { accountIds, network, id } = walletData;
 
+  // holding={accountInfo?.balance.toBigNumber().toNumber() || 0}
+
   const wallet: any = useWallet();
   const {
     truncatedWalletAddress,
@@ -70,7 +72,7 @@ const WalletSelector = ({
       <div className={styles.divider} />
       <Typography variant={"body2"} fontWeight={"bold"} className={"mr-1"}>
         {console.log(accountInfo?.balance.toString())}
-        {accountInfo?.balance.toString()}
+        {accountInfo?.balance.toBigNumber().toNumber()}
       </Typography>
       {/* <Typography variant={"body3"} fontWeight={"bold"} className={"inline"}>
         HBAR
@@ -129,8 +131,28 @@ const WalletSelector = ({
     if (isWalletDisconnected) {
       return <WalletButton>Connect Wallet</WalletButton>;
     }
-    return <WalletButton>{walletButtonElements}</WalletButton>;
-  }, [status, walletBalance]);
+    return (
+      <WalletButton>
+        <>
+          <Typography
+            variant={"body2"}
+            fontWeight={"medium"}
+            className={"inline ml-4 capitalize"}
+          >
+            {accountInfo?.accountId.toString()}
+          </Typography>
+          <div className={styles.divider} />
+          <Typography variant={"body2"} fontWeight={"bold"} className={"mr-1"}>
+            {console.log(accountInfo?.balance.toString())}
+            {accountInfo?.balance.toBigNumber().toNumber()}
+          </Typography>
+          {/* <Typography variant={"body3"} fontWeight={"bold"} className={"inline"}>
+        HBAR
+      </Typography> */}
+        </>
+      </WalletButton>
+    );
+  }, [status, accountInfo]);
 
   const iconOnlyWalletButton = useCallback(() => {
     // if(isWalletInitializing){
@@ -156,7 +178,7 @@ const WalletSelector = ({
       </div>
     );
     // }
-  }, [status, walletBalance]);
+  }, [status, accountInfo]);
 
   return (
     <div style={{ position: "relative" }}>
