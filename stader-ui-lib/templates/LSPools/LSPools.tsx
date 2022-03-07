@@ -52,6 +52,7 @@ function LSPools() {
     installedExtensions,
     associateToken,
     accountInfo,
+    status,
     stake,
   } = useHashConnect();
 
@@ -67,6 +68,10 @@ function LSPools() {
     console.log("stake2");
     stake(amount);
   };
+
+  if (status !== WalletStatus.WALLET_CONNECTED) {
+    return <WelcomeScreenPoolLiquidStaking />;
+  }
 
   return (
     <div>
