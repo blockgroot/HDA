@@ -148,7 +148,7 @@ function LSPoolsFormLaToLx(props: Props) {
                 total={walletBalance}
                 activeValue={lunaProps.value}
                 onClick={(value) => {
-                  let val = walletBalance * value;
+                  let val = Math.floor(walletBalance * value);
                   setFieldValue(
                     "lunax",
                     outputAmountLunax(val, tvlExchangeRate)

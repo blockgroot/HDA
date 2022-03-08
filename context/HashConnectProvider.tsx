@@ -108,8 +108,8 @@ export const HashConnectAPIContext =
   });
 
 //fetch this from config/move to config
-export const tokenId = "0.0.30871737";
-export const contractId = "0.0.30871775";
+export const tokenId = "0.0.30873456";
+export const contractId = "0.0.30873462";
 
 export default function HashConnectProvider({
   children,
@@ -339,7 +339,6 @@ export default function HashConnectProvider({
     const transaction = new ContractExecuteTransaction()
       .setContractId(contractId)
       .setGas(600_000)
-      // .setPayableAmount(new Hbar(amount))
       .setPayableAmount(amount)
       .setFunction(
         "stake",

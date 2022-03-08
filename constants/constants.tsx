@@ -156,7 +156,7 @@ export const LT_BANNER_TEXT = `Deposit to LunaX <> Luna LP pool to earn upto ${L
 
 // Liquid staking constants
 export const LUNA_MULTIPLIER = 1000000;
-export const tokenLabel = "HbarX";
+export const tokenLabel = "hbarx";
 export const GET_USER_STAKING_REWARDS = "stakingApiGetUserRewards/";
 export const GET_USER_STAKING_AIRDROPS = "stakingApiGetUserAirdrops/";
 
