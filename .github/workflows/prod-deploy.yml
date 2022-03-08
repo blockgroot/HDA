@@ -30,11 +30,11 @@ jobs:
       - name: "Set alias"
         run: |
           echo ${{steps.alias.outputs.prop}}
-          vercel alias set ${{ steps.deploy.outputs.DEPLOYMENT_URL }} devnet.terra.staderlabs.com -t $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+          vercel alias set ${{ steps.deploy.outputs.DEPLOYMENT_URL }} devnet.hedera.staderlabs.com -t $VERCEL_TOKEN --scope $VERCEL_ORG_ID
       - uses: chrnorm/deployment-action@releases/v1
         id: deployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          target_url: devnet.terra.staderlabs.com
+          target_url: devnet.hedera.staderlabs.com
           environment: manual-production-deployment
           ref: ${{ github.event.inputs.git-tag }}
