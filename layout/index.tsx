@@ -4,7 +4,6 @@ import Head from "next/head";
 import NProgress from "nprogress";
 import c from "classnames";
 
-import Banner from "../stader-ui-lib/molecules/Banner/Banner";
 import Sidebar from "../components/Sidebar";
 import Header from "../stader-ui-lib/organisms/Header/Header";
 
@@ -25,24 +24,18 @@ function MainLayout(props: any) {
   const router = useRouter();
 
   const [hideSidebar, setHideSidebar] = useState<Boolean>(true);
-  const [hideBanner, setHideBanner] = useState<Boolean>(false);
-
-  const handleHideBanner = () => setHideBanner(true);
 
   return (
     <>
       <Head>
         <title>Stader</title>
       </Head>
-      {!hideBanner && (
-        <Banner activePage={router.pathname} onClose={handleHideBanner} />
-      )}
 
       <Header />
       <div
         className={c(
           styles.mainContent,
-          hideBanner && styles.noBanner,
+          styles.noBanner,
           !hideSidebar && styles.sidebarVisible
         )}
       >
