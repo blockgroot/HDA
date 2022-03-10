@@ -1,9 +1,8 @@
-export { 
+export {
   LUNA_INPUT_MAXIMUM_DECIMAL_POINTS as NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
   LUNA_INPUT_MAXIMUM_INTEGER_POINTS as NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
-  formatLuna as formatNativeToken
+  formatLuna as formatNativeToken,
 } from "@anchor-protocol/notation";
-
 
 export const LIQUID_NATIVE_TOKEN_LABEL = "liquidNativeToken";
 export const NATIVE_TOKEN_LABEL = "nativeToken";
@@ -39,8 +38,7 @@ export const tooltips = {
     "Average 48 hour APR of the validator including autocompounding of rewards, Updated every 48 hours.",
   apr: "Combined APR of Pool & Reward strategy",
   aprAirdrops: "APR including airdrops measured based on the last 48 hours.",
-  totalHoldings:
-  `Total value of Deposits & Rewards calculated in ${NATIVE_TOKEN_LABEL}. Airdrops not included.`,
+  totalHoldings: `Total value of Deposits & Rewards calculated in ${NATIVE_TOKEN_LABEL}. Airdrops not included.`,
   uptime: "Percentage of time a validator was responsive over last 30 days",
   commission: "The commission rates charged to delegators",
   rewards: "Rewards accumulated on staking",
@@ -145,7 +143,8 @@ export const GET_ALL_USER_TRANSACTION_URL = "getAllUserTransactions/";
 export const SAVE_TRANSACTION_URL = "saveTransaction/";
 export const UPDATE_USER_DATA_URL = "updateUserData/";
 export const GET_NATIVE_TOKEN_PRICE_URL = "getNativeTokenPrice/";
-export const GET_TOKEN_PRICE_IN_NATIVE_TOKEN_URL = "getTokenPriceInNativeToken/";
+export const GET_TOKEN_PRICE_IN_NATIVE_TOKEN_URL =
+  "getTokenPriceInNativeToken/";
 export const GET_TOTAL_FARMED_REWARDS = "getTotalFarmedRewards/";
 export const GET_USER_FARMED_REWARDS = "getUserFarmedRewards/";
 export const GET_USER_SD_REWARDS = "stakingApiGetUserSdRewards/";
@@ -153,7 +152,8 @@ export const GET_KVY_APR_BY_POOL = "kyvGetAprByPool/";
 export const GAS_PRICES_URL = "https://fcd.terra.dev/v1/txs/gas_prices";
 
 export const messageMemo = "STADER";
-export const REDIRECT_TO_LIQUID_NATIVE_TOKEN = "STADER_REDIRECT_TO_LIQUID_NATIVE_TOKEN";
+export const REDIRECT_TO_LIQUID_NATIVE_TOKEN =
+  "STADER_REDIRECT_TO_LIQUID_NATIVE_TOKEN";
 export const WITHDRAW_FUNDS = "STADER_WITHDRAW_FUNDS";
 
 export const PAGE_LOADER_TEXT = "Please wait while we set things up for you...";

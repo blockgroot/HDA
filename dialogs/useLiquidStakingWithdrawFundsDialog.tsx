@@ -16,7 +16,11 @@ import SDButton from "../components/common/SDButton";
 import { toUserReadableError } from "../utils/ErrorHelper";
 import Loader from "../components/common/Loader";
 import SuccessAnimation from "../components/common/SuccessAnimation";
-import { messageMemo, NATIVE_TOKEN_LABEL, ustFee } from "../constants/constants";
+import {
+  messageMemo,
+  NATIVE_TOKEN_LABEL,
+  ustFee,
+} from "../constants/constants";
 import { nativeTokenFormatter } from "../utils/CurrencyHelper";
 
 export function useLiquidStakingWithdrawFundsDialog() {
@@ -174,7 +178,9 @@ function LiquidStakingWithdrawFundsDialog({
         .estimateFee(primaryWalletAddress, msgs)
         .then((fee: any) => {
           estimatedFee = parseFloat(
-            formatUSTWithPostfixUnits(demicrofy(fee.amount._coins.uNativeToken.amount))
+            formatUSTWithPostfixUnits(
+              demicrofy(fee.amount._coins.uNativeToken.amount)
+            )
           ).toFixed(2);
 
           setEstimatedTransactionFee(estimatedFee);
@@ -220,7 +226,9 @@ function LiquidStakingWithdrawFundsDialog({
                 <div>
                   <p className="amount-display">
                     {nativeTokenFormatter(amount)}{" "}
-                    <span className="amount-currency">{NATIVE_TOKEN_LABEL}</span>
+                    <span className="amount-currency">
+                      {NATIVE_TOKEN_LABEL}
+                    </span>
                   </p>
                 </div>
                 <div className="charge">

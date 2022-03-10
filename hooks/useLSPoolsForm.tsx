@@ -5,7 +5,7 @@ import {
   NATIVE_TOKEN_LABEL,
   NATIVE_TOKEN_MULTIPLIER,
   ustFee,
-  ustFeeStaking
+  ustFeeStaking,
 } from "@constants/constants";
 import { useAppContext } from "@libs/appContext";
 import { useWallet } from "@terra-money/wallet-provider";
@@ -184,7 +184,10 @@ function useLSPoolsForm() {
       return {};
     }
   };
-  const outputAmountLiquidNativeToken = (value: string | number, exchangeRate: number) => {
+  const outputAmountLiquidNativeToken = (
+    value: string | number,
+    exchangeRate: number
+  ) => {
     if (!value || !exchangeRate) {
       return "";
     }
@@ -211,7 +214,8 @@ function useLSPoolsForm() {
     outputAmountLiquidNativeToken: outputAmountLiquidNativeToken,
     handleUnstake: unStakingMutation.mutate,
     unStakingMutation,
-    outputAmountLiquidNativeTokenToNativeToken: outputAmountLiquidNativeTokenToNativeToken,
+    outputAmountLiquidNativeTokenToNativeToken:
+      outputAmountLiquidNativeTokenToNativeToken,
   };
 }
 

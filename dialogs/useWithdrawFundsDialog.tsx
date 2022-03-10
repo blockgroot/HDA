@@ -12,7 +12,11 @@ import React, { useEffect, useState } from "react";
 import Loader from "../components/common/Loader";
 import SDButton from "../components/common/SDButton";
 import SuccessAnimation from "../components/common/SuccessAnimation";
-import { messageMemo, NATIVE_TOKEN_LABEL, ustFee } from "../constants/constants";
+import {
+  messageMemo,
+  NATIVE_TOKEN_LABEL,
+  ustFee,
+} from "../constants/constants";
 import { nativeTokenFormatter } from "../utils/CurrencyHelper";
 import { toUserReadableError } from "../utils/ErrorHelper";
 import { firebase } from "../utils/firebase";
@@ -182,7 +186,9 @@ function WithdrawFundsDialog({
         .estimateFee(primaryWalletAddress, msgs)
         .then((fee: any) => {
           estimatedFee = parseFloat(
-            formatUSTWithPostfixUnits(demicrofy(fee.amount._coins.uNativeToken.amount))
+            formatUSTWithPostfixUnits(
+              demicrofy(fee.amount._coins.uNativeToken.amount)
+            )
           ).toFixed(2);
 
           setEstimatedTransactionFee(estimatedFee);
@@ -231,7 +237,9 @@ function WithdrawFundsDialog({
                 <div>
                   <p className="amount-display">
                     {nativeTokenFormatter(amount)}{" "}
-                    <span className="amount-currency">{NATIVE_TOKEN_LABEL}</span>
+                    <span className="amount-currency">
+                      {NATIVE_TOKEN_LABEL}
+                    </span>
                   </p>
                 </div>
                 <div className="charge">

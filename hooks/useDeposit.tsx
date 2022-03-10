@@ -6,7 +6,11 @@ import {
 } from "@anchor-protocol/notation";
 import { useAppContext } from "@libs/appContext";
 import { useWallet } from "@terra-money/wallet-provider";
-import { messageMemo, NATIVE_TOKEN_LABEL, ustFeeStaking } from "@constants/constants";
+import {
+  messageMemo,
+  NATIVE_TOKEN_LABEL,
+  ustFeeStaking,
+} from "@constants/constants";
 import { updateUser } from "@services/users";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import { useMutation, useQueryClient } from "react-query";

@@ -11,7 +11,7 @@ import {
   NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
   NATIVE_TOKEN_LABEL,
   NATIVE_TOKEN_MULTIPLIER,
-  ustFee
+  ustFee,
 } from "../constants/constants";
 import { toUserReadableError } from "@utils/ErrorHelper";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
@@ -289,8 +289,12 @@ function StakeDelegationDialog({
                       style={{ fontSize: 20 }}
                       className="amount"
                       value={undelegateAmount}
-                      maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
-                      maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
+                      maxIntegerPoinsts={
+                        NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS
+                      }
+                      maxDecimalPoints={
+                        NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS
+                      }
                       label="AMOUNT"
                       onChange={({ target }) => {
                         setSelectedPercentage("");
@@ -301,7 +305,9 @@ function StakeDelegationDialog({
                       }}
                       InputProps={{
                         endAdornment: (
-                          <InputAdornment position="end">{NATIVE_TOKEN_LABEL}</InputAdornment>
+                          <InputAdornment position="end">
+                            {NATIVE_TOKEN_LABEL}
+                          </InputAdornment>
                         ),
                       }}
                     />

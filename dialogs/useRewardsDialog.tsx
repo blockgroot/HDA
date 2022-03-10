@@ -25,7 +25,9 @@ import {
   ustFee,
   ustConvertToLiquidNativeToken,
   WITHDRAW_FUNDS,
-  LINK_LIQUID_NATIVE_TOKEN_OVER_NATIVE_TOKEN, NATIVE_TOKEN_LABEL, LIQUID_NATIVE_TOKEN_LABEL
+  LINK_LIQUID_NATIVE_TOKEN_OVER_NATIVE_TOKEN,
+  NATIVE_TOKEN_LABEL,
+  LIQUID_NATIVE_TOKEN_LABEL,
 } from "../constants/constants";
 import { nativeTokenFormatter } from "../utils/CurrencyHelper";
 import { toUserReadableError } from "../utils/ErrorHelper";
@@ -127,11 +129,17 @@ function RewardsDialog({
         if (ustWalletBalance < ustFee || !ustWalletBalance) {
           throw Error("InsufficientUST");
         } else {
-          const txfee = redirectToLuqidNativeToken ? ustConvertToLiquidNativeToken : ustFee;
+          const txfee = redirectToLuqidNativeToken
+            ? ustConvertToLiquidNativeToken
+            : ustFee;
           const tx = await wallet.post({
             msgs,
             fee: new StdFee(fee.gas, `${(txfee * 1000000).toFixed()}uusd`),
-            memo: `${redirectToLuqidNativeToken ? REDIRECT_TO_LIQUID_NATIVE_TOKEN : WITHDRAW_FUNDS}`,
+            memo: `${
+              redirectToLuqidNativeToken
+                ? REDIRECT_TO_LIQUID_NATIVE_TOKEN
+                : WITHDRAW_FUNDS
+            }`,
           });
 
           if (!(!!tx.result && !!tx.result.txhash)) {
@@ -151,7 +159,9 @@ function RewardsDialog({
               setSuccessMessage(`${nativeTokenFormatter(
                 rewards.total_rewards
               )} ${NATIVE_TOKEN_LABEL} has been exchanged for
-              ${nativeTokenFormatter(getLiquidNativeTokenMinted())} ${LIQUID_NATIVE_TOKEN_LABEL}!`);
+              ${nativeTokenFormatter(
+                getLiquidNativeTokenMinted()
+              )} ${LIQUID_NATIVE_TOKEN_LABEL}!`);
             } else {
               setSuccessMessage("Your funds have been withdrawn!");
             }
@@ -206,7 +216,9 @@ function RewardsDialog({
                 <div>
                   <p className="amount-display">
                     {nativeTokenFormatter(rewards.total_rewards)}{" "}
-                    <span className="amount-currency">{NATIVE_TOKEN_LABEL}</span>
+                    <span className="amount-currency">
+                      {NATIVE_TOKEN_LABEL}
+                    </span>
                   </p>
                 </div>
                 <div className="charge">
@@ -239,7 +251,8 @@ function RewardsDialog({
                 className="mt-10 place-content-center"
                 target={"_blank"}
               >
-                Why is {LIQUID_NATIVE_TOKEN_LABEL} better than {NATIVE_TOKEN_LABEL}?
+                Why is {LIQUID_NATIVE_TOKEN_LABEL} better than{" "}
+                {NATIVE_TOKEN_LABEL}?
               </Link>
               {errMsg && errMsg !== "" && (
                 <div className="error-message">

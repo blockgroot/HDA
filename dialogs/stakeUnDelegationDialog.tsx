@@ -11,7 +11,7 @@ import { MsgExecuteContract, StdFee } from "@terra-money/terra.js";
 import {
   NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
   NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
-  ustFee
+  ustFee,
 } from "../constants/constants";
 import moment from "moment";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
@@ -160,7 +160,8 @@ function StakeUnDelegationDialog({
                   </Grid>
                   <Grid item xs={3} md={3}>
                     <p className="row-item txt-center">
-                      {nativeTokenFormatter(subitem?.amount).toFixed(6)} {NATIVE_TOKEN_LABEL}
+                      {nativeTokenFormatter(subitem?.amount).toFixed(6)}{" "}
+                      {NATIVE_TOKEN_LABEL}
                     </p>
                   </Grid>
                   <Grid item xs={3} md={3}>
@@ -289,9 +290,15 @@ function StakeUnDelegationDialog({
                       <NumberInput
                         style={{ fontSize: 20, opacity: 1 }}
                         className="amount"
-                        value={nativeTokenFormatter(undelegateWithrawData.amount)}
-                        maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
-                        maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
+                        value={nativeTokenFormatter(
+                          undelegateWithrawData.amount
+                        )}
+                        maxIntegerPoinsts={
+                          NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS
+                        }
+                        maxDecimalPoints={
+                          NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS
+                        }
                         label="AMOUNT"
                         disabled={true}
                         InputProps={{

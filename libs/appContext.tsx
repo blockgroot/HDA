@@ -51,7 +51,10 @@ const AppProvider: FC = (props) => {
   const { wallets } = useWallet();
   const [walletBalance, setWalletBalance] = useState<string>("0");
   const [ustWalletBalance, setUstWalletBalance] = useState<string>("0");
-  const [balances, setBalances] = useState({ nativeTokenBalance: 0, ustBalance: 0 });
+  const [balances, setBalances] = useState({
+    nativeTokenBalance: 0,
+    ustBalance: 0,
+  });
   const walletAddress: string = wallets.length ? wallets[0].terraAddress : "";
 
   function walletBalanceByDenom(funds: any) {
@@ -89,7 +92,9 @@ const AppProvider: FC = (props) => {
       onSuccess: (res) => {
         const { uNativeToken, uusd } = res;
         setBalances({
-          nativeTokenBalance: parseFloat((uNativeToken / NATIVE_TOKEN_MULTIPLIER).toFixed(6)),
+          nativeTokenBalance: parseFloat(
+            (uNativeToken / NATIVE_TOKEN_MULTIPLIER).toFixed(6)
+          ),
           ustBalance: parseFloat((uusd / NATIVE_TOKEN_MULTIPLIER).toFixed(6)),
         });
         setUstWalletBalance(formatUSTWithPostfixUnits(demicrofy(uusd)));

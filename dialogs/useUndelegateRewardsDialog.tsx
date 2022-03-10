@@ -22,7 +22,7 @@ import {
   NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
   messageMemo,
   NATIVE_TOKEN_LABEL,
-  ustFee
+  ustFee,
 } from "../constants/constants";
 import { SP_PORTFOLIO_HOLDING } from "@constants/queriesKey";
 import { useAppContext } from "@libs/appContext";
@@ -164,7 +164,9 @@ function UndelegateDialog({
         .estimateFee(walletAddress, msgs)
         .then((fee: any) => {
           let estimatedFee = parseFloat(
-            formatUSTWithPostfixUnits(demicrofy(fee.amount._coins.uNativeToken.amount))
+            formatUSTWithPostfixUnits(
+              demicrofy(fee.amount._coins.uNativeToken.amount)
+            )
           );
 
           setEstimatedTransactionFee(estimatedFee);
@@ -221,7 +223,9 @@ function UndelegateDialog({
                   }}
                   InputProps={{
                     endAdornment: (
-                      <InputAdornment position="end">{NATIVE_TOKEN_LABEL}</InputAdornment>
+                      <InputAdornment position="end">
+                        {NATIVE_TOKEN_LABEL}
+                      </InputAdornment>
                     ),
                   }}
                 />

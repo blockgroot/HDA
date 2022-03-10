@@ -25,7 +25,9 @@ import {
   ustFee,
   ustConvertToLiquidNativeToken,
   WITHDRAW_FUNDS,
-  LINK_LIQUID_NATIVE_TOKEN_OVER_NATIVE_TOKEN, LIQUID_NATIVE_TOKEN_LABEL, NATIVE_TOKEN_LABEL
+  LINK_LIQUID_NATIVE_TOKEN_OVER_NATIVE_TOKEN,
+  LIQUID_NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_LABEL,
 } from "../constants/constants";
 import { nativeTokenFormatter } from "../utils/CurrencyHelper";
 import { toUserReadableError } from "../utils/ErrorHelper";
@@ -140,11 +142,17 @@ function WithdrawRewardsDialog({
         if (ustWalletBalance < ustFee || !ustWalletBalance) {
           throw Error("InsufficientUST");
         } else {
-          const txfee = redirectToLiquidNativeToken ? ustConvertToLiquidNativeToken : ustFee;
+          const txfee = redirectToLiquidNativeToken
+            ? ustConvertToLiquidNativeToken
+            : ustFee;
           const tx = await wallet.post({
             msgs,
             fee: new StdFee(fee.gas, `${(txfee * 1000000).toFixed()}uusd`),
-            memo: `${redirectToLiquidNativeToken ? REDIRECT_TO_LIQUID_NATIVE_TOKEN : WITHDRAW_FUNDS}`,
+            memo: `${
+              redirectToLiquidNativeToken
+                ? REDIRECT_TO_LIQUID_NATIVE_TOKEN
+                : WITHDRAW_FUNDS
+            }`,
           });
 
           if (!(!!tx.result && !!tx.result.txhash)) {
@@ -169,7 +177,9 @@ function WithdrawRewardsDialog({
               setSuccessMessage(`${nativeTokenFormatter(
                 getUndelegationAmount()
               )} ${NATIVE_TOKEN_LABEL} has been exchanged for
-              ${nativeTokenFormatter(getLiquidNativeTokenMinted())} ${LIQUID_NATIVE_TOKEN_LABEL}!`);
+              ${nativeTokenFormatter(
+                getLiquidNativeTokenMinted()
+              )} ${LIQUID_NATIVE_TOKEN_LABEL}!`);
             } else {
               setSuccessMessage("Your funds have been withdrawn!");
             }
@@ -224,7 +234,9 @@ function WithdrawRewardsDialog({
                 <div>
                   <p className="amount-display">
                     {nativeTokenFormatter(getUndelegationAmount())}{" "}
-                    <span className="amount-currency">{NATIVE_TOKEN_LABEL}</span>
+                    <span className="amount-currency">
+                      {NATIVE_TOKEN_LABEL}
+                    </span>
                   </p>
                 </div>
                 <div className="charge">
@@ -257,7 +269,8 @@ function WithdrawRewardsDialog({
                 className="mt-10 place-content-center"
                 target={"_blank"}
               >
-                Why is {LIQUID_NATIVE_TOKEN_LABEL} better than ${NATIVE_TOKEN_LABEL}?
+                Why is {LIQUID_NATIVE_TOKEN_LABEL} better than $
+                {NATIVE_TOKEN_LABEL}?
               </Link>
               {errMsg && errMsg !== "" && (
                 <div className="error-message">
