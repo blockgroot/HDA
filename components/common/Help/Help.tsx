@@ -14,9 +14,7 @@ const Help: React.FC<Props> = ({ className }: Props) => {
   // SHOW TOOLTIP with why this button was disabled
   const getFaqLink = (): string => {
     const pathname = router.pathname;
-    if (pathname.indexOf("stake-plus") > -1) {
-      return urls.faqStakePlus;
-    } else if (pathname.indexOf("lt") > -1) {
+    if (pathname.indexOf("lt") > -1) {
       return urls.faqLiquidStaking;
     }
 

@@ -1,6 +1,6 @@
 import SPValidatorRowHead from "@organisms/SPValidatorRowHead/SPValidatorRowHead";
 import { useState } from "react";
-import { StakeContractInfo, ValidatorStakingInfoMap } from "../../../components/StakePlus";
+import { StakeContractInfo, ValidatorStakingInfoMap } from "../../../components/Stake";
 import SPValidatorTableHead from "../../molecules/SPValidatorTableHead/SPValidatorTableHead";
 import styles from "./SPValidatorTable.module.css";
 

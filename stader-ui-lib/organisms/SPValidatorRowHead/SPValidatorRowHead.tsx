@@ -1,7 +1,7 @@
 import styles from "./SPValidatorTableRowHead.module.scss";
 import c from "classnames";
 import { Box, Icon, Typography } from "../../atoms";
-import { ValidatorInfo, ValidatorStakingInfoMap } from "../../../components/StakePlus";
+import { ValidatorInfo, ValidatorStakingInfoMap } from "../../../components/Stake";
 import { config } from "../../../config/config";
 
 type HeaderProps = {

@@ -33,20 +33,6 @@ export const mainnetConfig = {
     messagingSenderId: "267960070513",
     appId: "1:267960070513:web:2774dc1101258d83f346d0",
   },
-  stakePlus: {
-    terravaloper1we68q2zel6ajpxuzw5aqhh07zlxxywrkx7jcfz:
-      "terra1ndfl6uwa2ws3c85yz957r2hrjd0z32mstdusfm",
-    terravaloper19hflr9ay8usqxsxm4zzrsxfy3xz7hp6kv4ydnd:
-      "terra1alp4kyegj3amt8v27h7rnlz8tajqrv5afgyf4t",
-    terravaloper12g4nkvsjjnl0t7fvq3hdcw7y8dc9fq69nyeu9q:
-      "terra1437hnjajlgmcwzyqw58r03he3smhz90u6j7j3y",
-    terravaloper1alpf6snw2d76kkwjv3dp4l7pcl6cn9uyt0tcj9:
-      "terra15jlw2ac884q4j2mt8ytwzk4v5xhgkm0pj6gkqf",
-    terravaloper19z68rv3d7dzvvtlxzma89jxsrssf9j36ylsfwc:
-      "terra1r2txa0skwmfgvf5ytefzfzhrkrkadp7v0jue27",
-    terravaloper1t90gxaawul292g2vvqnr3g0p39tw5v6vsk5p96:
-      "terra1cpkk48dug6gc23kq4tqp4w7qe4pf3n898dujr8",
-  },
   validatorAprs: {
     terravaloper1we68q2zel6ajpxuzw5aqhh07zlxxywrkx7jcfz: "9.18",
     terravaloper1krj7amhhagjnyg2tkkuh6l0550y733jnjnnlzy: "9.42",

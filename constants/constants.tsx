@@ -65,8 +65,6 @@ export const urls = {
     "https://staderlabs.notion.site/Stader-Stake-Pools-FAQs-05baa5bf225a41b0a149531690a89957",
   faqCommunityFarming:
     "https://staderlabs.notion.site/Stader-Stake-Pools-FAQs-05baa5bf225a41b0a149531690a89957",
-  faqStakePlus:
-    "https://staderlabs.notion.site/Stake-FAQs-59d7280e4e2a46538e2155c59bc9c281",
   app: "https://alpha.staderlabs.com/",
   faqBanner:
     "https://www.notion.so/Stader-FAQ-f72944dd325644999add904c45857f88#46fe81a602d7451892bd2f410d4810b0",
@@ -129,7 +127,6 @@ export const airdropsAPR = 0.61;
 export const ustFee = 0.5;
 export const ustConvertToLunaX = 0.75;
 export const ustFeeStaking = 0.9;
-export const ustFeeStakePlus = 0.3;
 export const ustFeeStrategies = 0.2;
 
 export const ADD_LIQUIDITY_APR = 28.98;
