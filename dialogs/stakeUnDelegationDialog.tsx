@@ -1,18 +1,18 @@
 import React, { useCallback, useState } from "react";
 import { Grid, InputAdornment, Modal, Tooltip } from "@material-ui/core";
-import { tooltips } from "@constants/constants";
+import { NATIVE_TOKEN_LABEL, tooltips } from "@constants/constants";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import {
-  LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
-  LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
-} from "@anchor-protocol/notation";
 import { Dialog } from "@terra-dev/neumorphism-ui/components/Dialog";
 import { useDialog } from "@terra-dev/use-dialog";
 import { NumberInput } from "@terra-dev/neumorphism-ui/components/NumberInput";
 import arrowBack from "../assets/svg/arrow_back.svg";
-import { lunaFormatter } from "../utils/CurrencyHelper";
+import { nativeTokenFormatter } from "../utils/CurrencyHelper";
 import { MsgExecuteContract, StdFee } from "@terra-money/terra.js";
-import { ustFee } from "../constants/constants";
+import {
+  NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
+  NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
+  ustFee
+} from "../constants/constants";
 import moment from "moment";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
 import { toUserReadableError } from "@utils/ErrorHelper";
@@ -160,7 +160,7 @@ function StakeUnDelegationDialog({
                   </Grid>
                   <Grid item xs={3} md={3}>
                     <p className="row-item txt-center">
-                      {lunaFormatter(subitem?.amount).toFixed(6)} LUNA
+                      {nativeTokenFormatter(subitem?.amount).toFixed(6)} {NATIVE_TOKEN_LABEL}
                     </p>
                   </Grid>
                   <Grid item xs={3} md={3}>
@@ -289,9 +289,9 @@ function StakeUnDelegationDialog({
                       <NumberInput
                         style={{ fontSize: 20, opacity: 1 }}
                         className="amount"
-                        value={lunaFormatter(undelegateWithrawData.amount)}
-                        maxIntegerPoinsts={LUNA_INPUT_MAXIMUM_INTEGER_POINTS}
-                        maxDecimalPoints={LUNA_INPUT_MAXIMUM_DECIMAL_POINTS}
+                        value={nativeTokenFormatter(undelegateWithrawData.amount)}
+                        maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
+                        maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
                         label="AMOUNT"
                         disabled={true}
                         InputProps={{

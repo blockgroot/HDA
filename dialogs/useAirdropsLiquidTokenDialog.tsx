@@ -183,7 +183,7 @@ function AirdropsLiquidTokenDialog({
         .estimateFee(primaryWalletAddress, msgs)
         .then((fee: any) => {
           estimatedFee = parseFloat(
-            formatUSTWithPostfixUnits(demicrofy(fee.amount._coins.uluna.amount))
+            formatUSTWithPostfixUnits(demicrofy(fee.amount._coins.uNativeToken.amount))
           ).toFixed(2);
 
           setEstimatedTransactionFee(estimatedFee);

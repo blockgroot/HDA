@@ -1,4 +1,4 @@
-import { poolsDetails } from "@constants/constants";
+import { NATIVE_TOKEN_LABEL, poolsDetails } from "@constants/constants";
 import styles from "./SPoolTableRowHead.module.scss";
 import { Box, Icon, Tag, Typography } from "../../atoms";
 import SPPoolDepositForm from "@molecules/SPPoolDepositForm/SPPoolDepositForm";
@@ -35,7 +35,7 @@ const SPoolTableRowHead = (props: HeaderProps) => {
     onTransactionToggle,
     isTransactionOn,
   } = props;
-  const { ustBalance, lunaBalance } = useAppContext();
+  const { ustBalance, nativeTokenBalance } = useAppContext();
   const [bottomModal, setBottomModal] = useState<boolean>(false);
 
   const openModal = () => {
@@ -75,7 +75,7 @@ const SPoolTableRowHead = (props: HeaderProps) => {
                 {computedDeposit}
               </Typography>
               <Typography variant={"body3"} fontWeight={"medium"}>
-                LUNA
+                {NATIVE_TOKEN_LABEL}
               </Typography>
             </div>
           </div>
@@ -98,7 +98,7 @@ const SPoolTableRowHead = (props: HeaderProps) => {
             {computedDeposit}
           </Typography>
           <Typography variant={"body3"} fontWeight={"medium"}>
-            LUNA
+            {NATIVE_TOKEN_LABEL}
           </Typography>
         </div>
         <div className={styles.mobile_bottom_section}>
@@ -148,7 +148,7 @@ const SPoolTableRowHead = (props: HeaderProps) => {
             <div className={styles.form}>
               <Box noShadow noPadding className="p-6 h-full">
                 <SPPoolDepositForm
-                  walletBalance={lunaBalance}
+                  walletBalance={nativeTokenBalance}
                   ustWalletBalance={ustBalance}
                   maxDeposit={pool.maxDepositAmount}
                   minDeposit={pool.minDepositAmount}
@@ -174,7 +174,7 @@ const SPoolTableRowHead = (props: HeaderProps) => {
                   Deposit
                 </Typography>
                 <SPPoolDepositForm
-                  walletBalance={lunaBalance}
+                  walletBalance={nativeTokenBalance}
                   ustWalletBalance={ustBalance}
                   maxDeposit={pool.maxDepositAmount}
                   minDeposit={pool.minDepositAmount}

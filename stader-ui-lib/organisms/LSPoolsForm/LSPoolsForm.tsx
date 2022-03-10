@@ -14,7 +14,7 @@ function LSPoolsForm(props: LSPoolProps) {
     setTab(val);
   };
 
-  const { lunaBalance, ustBalance } = useAppContext();
+  const { nativeTokenBalance, ustBalance } = useAppContext();
 
   if (tvlLoading) {
     return (
@@ -38,7 +38,7 @@ function LSPoolsForm(props: LSPoolProps) {
               {tab === 0 && (
                 <LSPoolsFormLaToLx
                   tvlExchangeRate={tvl?.exchangeRate}
-                  walletBalance={lunaBalance}
+                  walletBalance={nativeTokenBalance}
                   ustWalletBalance={ustBalance}
                   maximumDeposit={contractConfig.max_deposit}
                   minimumDeposit={contractConfig.min_deposit}

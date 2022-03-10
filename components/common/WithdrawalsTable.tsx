@@ -13,8 +13,8 @@ import {
 import { InfoOutlined } from "@material-ui/icons";
 import moment from "moment";
 import useClipboard from "react-use-clipboard";
-import { lunaFormatter } from "../../utils/CurrencyHelper";
-import { tooltips } from "../../constants/constants";
+import { nativeTokenFormatter } from "../../utils/CurrencyHelper";
+import { NATIVE_TOKEN_LABEL, tooltips } from "../../constants/constants";
 import { sortWithdrawDate } from "../../utils/helper";
 
 interface Props {
@@ -96,7 +96,7 @@ const WithdrawalsTable: FC<Props> = ({
                             className="withdrawalTableBodyText"
                           >
                             {undelegation.token_amount
-                              ? lunaFormatter(
+                              ? nativeTokenFormatter(
                                   Number(undelegation.token_amount) *
                                     Number(undelegation.undelegation_er) *
                                     Number(
@@ -105,7 +105,7 @@ const WithdrawalsTable: FC<Props> = ({
                                 )
                               : "0"}
                             <span className="withdrawalTableBodyTextSmall">
-                              LUNA
+                              {NATIVE_TOKEN_LABEL}
                             </span>
                           </TableCell>
                           {undelegation.est_release_time ? (

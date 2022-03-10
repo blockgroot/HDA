@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { Typography } from "../../atoms";
-import styles from "./SPManageHoldingLunaLists.module.scss";
+import styles from "./SPManageHoldingNativeTokenLists.module.scss";
+import { NATIVE_TOKEN_LABEL } from "@constants/constants";
 
 interface Props {
   label: ReactNode;
@@ -8,7 +9,7 @@ interface Props {
   button: ReactNode;
 }
 
-export default function SPManageHoldingLunaLists({
+export default function SPManageHoldingNativeTokenLists({
   label,
   value,
   button,
@@ -21,7 +22,7 @@ export default function SPManageHoldingLunaLists({
           <Typography variant="h2" fontWeight="medium" className={styles.value}>
             {value}
           </Typography>
-          <Typography variant="body2">LUNA</Typography>
+          <Typography variant="body2">{NATIVE_TOKEN_LABEL}</Typography>
         </div>
       </div>
       {button}

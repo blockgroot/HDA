@@ -1,5 +1,5 @@
 import React from "react";
-import { urls } from "@constants/constants";
+import { NATIVE_TOKEN_LABEL, urls } from "@constants/constants";
 import Link from "@atoms/Link/Link";
 import styles from "./SdRewardsVesting.module.scss";
 
@@ -29,7 +29,7 @@ const VestingSubText: React.FC<IVestingSubTextProps> = ({
       </li>
       {!isLiquidStaking && (
         <li className="mx-2 my-3">
-          Undelegating Luna before July 20, 2022 leads to only 50% of the
+          Undelegating {NATIVE_TOKEN_LABEL} before July 20, 2022 leads to only 50% of the
           unvested SD rewards to vest.
           <Link
             href={urls.cfAnnouncementLink}

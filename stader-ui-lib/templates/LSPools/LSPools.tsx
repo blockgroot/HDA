@@ -2,7 +2,7 @@ import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
 import useLSPoolsEstimate from "../../../hooks/useLSPoolsEstimate";
 import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
 import LPMyHolding from "../../molecules/LPMyHolding/LPMyHolding";
-import useLPBatchHoldingLunaX from "../../../hooks/useLPBatchHoldingLunaX";
+import useLPBatchHoldingLuquidNativeToken from "@hooks/useLPBatchHoldingLuquidNativeToken";
 import LPPoolsWithdraw from "../../organisms/LPPoolsWithdraw/LPPoolsWithdraw";
 import { Typography } from "../../atoms";
 import Loader from "@atoms/Loader/Loader";
@@ -28,7 +28,7 @@ function LSPools() {
   const { terra } = useAppContext();
   const wallet = useWallet();
   const { tvl, tvlLoading } = useLSPoolsEstimate();
-  const { data, isLoading, undelegationQuery } = useLPBatchHoldingLunaX();
+  const { data, isLoading, undelegationQuery } = useLPBatchHoldingLuquidNativeToken();
 
   const holdingQuery = useUserHolding();
 
@@ -95,8 +95,8 @@ function LSPools() {
         <Grid item xs={12} md={4}>
           <LPMyHolding
             isLoading={isLoading}
-            lunaTokens={data?.lunaToken || 0}
-            lunaXTokens={data?.lunaXToken || 0}
+            nativeTokenTokens={data?.nativeToken || 0}
+            liquidNativeTokenTokens={data?.liquidNativeToken || 0}
           />
         </Grid>
         <Grid item xs={12} md={8}>

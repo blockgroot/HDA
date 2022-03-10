@@ -15,10 +15,10 @@ import {
 } from "@anchor-protocol/notation";
 import { useQuery } from "react-query";
 import { WALLET_BALANCES } from "@constants/queriesKey";
-import { LUNA_MULTIPLIER } from "@constants/constants";
+import { NATIVE_TOKEN_MULTIPLIER } from "@constants/constants";
 
 type WalletBalancesType = {
-  uluna: number;
+  uNativeToken: number;
   uusd: number;
 };
 
@@ -28,7 +28,7 @@ type AppContextType = {
   walletBalance: string;
   ustWalletBalance: string;
   updateWalletBalance: () => void;
-  lunaBalance: number;
+  nativeTokenBalance: number;
   ustBalance: number;
 };
 
@@ -43,7 +43,7 @@ const appContext: Context<AppContextType> = createContext({
   walletBalance: "0",
   ustWalletBalance: "0",
   updateWalletBalance: () => {},
-  lunaBalance: 0,
+  nativeTokenBalance: 0,
   ustBalance: 0,
 });
 
@@ -51,7 +51,7 @@ const AppProvider: FC = (props) => {
   const { wallets } = useWallet();
   const [walletBalance, setWalletBalance] = useState<string>("0");
   const [ustWalletBalance, setUstWalletBalance] = useState<string>("0");
-  const [balances, setBalances] = useState({ lunaBalance: 0, ustBalance: 0 });
+  const [balances, setBalances] = useState({ nativeTokenBalance: 0, ustBalance: 0 });
   const walletAddress: string = wallets.length ? wallets[0].terraAddress : "";
 
   function walletBalanceByDenom(funds: any) {
@@ -71,10 +71,10 @@ const AppProvider: FC = (props) => {
     try {
       let rawBalance = await terra.bank.balance(walletAddress);
 
-      const { uluna, uusd } = walletBalanceByDenom(rawBalance);
+      const { uNativeToken, uusd } = walletBalanceByDenom(rawBalance);
 
       return {
-        uluna: uluna || 0,
+        uNativeToken: uNativeToken || 0,
         uusd: uusd || 0,
       };
     } catch (e) {
@@ -87,13 +87,13 @@ const AppProvider: FC = (props) => {
     () => updateWalletBalance(walletAddress),
     {
       onSuccess: (res) => {
-        const { uluna, uusd } = res;
+        const { uNativeToken, uusd } = res;
         setBalances({
-          lunaBalance: parseFloat((uluna / LUNA_MULTIPLIER).toFixed(6)),
-          ustBalance: parseFloat((uusd / LUNA_MULTIPLIER).toFixed(6)),
+          nativeTokenBalance: parseFloat((uNativeToken / NATIVE_TOKEN_MULTIPLIER).toFixed(6)),
+          ustBalance: parseFloat((uusd / NATIVE_TOKEN_MULTIPLIER).toFixed(6)),
         });
         setUstWalletBalance(formatUSTWithPostfixUnits(demicrofy(uusd)));
-        setWalletBalance(formatUSTWithPostfixUnits(demicrofy(uluna)));
+        setWalletBalance(formatUSTWithPostfixUnits(demicrofy(uNativeToken)));
       },
       enabled: false,
     }
@@ -113,7 +113,7 @@ const AppProvider: FC = (props) => {
         walletBalance,
         ustWalletBalance,
         updateWalletBalance: walletBalancesQuery.refetch,
-        lunaBalance: balances.lunaBalance,
+        nativeTokenBalance: balances.nativeTokenBalance,
         ustBalance: balances.ustBalance,
       }}
     >

@@ -6,11 +6,11 @@ import { useLiquidStakingWithdrawFundsDialog } from "../dialogs/useLiquidStaking
 import { useAppContext } from "../libs/appContext";
 import { useWallet } from "@terra-money/wallet-provider";
 import { useQuery } from "react-query";
-import useLPBatchHoldingLunaX from "./useLPBatchHoldingLunaX";
+import useLPBatchHoldingLuquidNativeToken from "./useLPBatchHoldingLuquidNativeToken";
 
 type WalletFunds = {
   uusd: number;
-  uluna: number;
+  uNativeToken: number;
 };
 
 type Props = {
@@ -22,7 +22,7 @@ const { liquidStaking: contractAddress } = config.contractAddresses;
 const useLPWithdraw = ({ walletFunds }: Props) => {
   const { walletAddress, terra } = useAppContext();
   const wallet = useWallet();
-  const { data } = useLPBatchHoldingLunaX();
+  const { data } = useLPBatchHoldingLuquidNativeToken();
   const [openLiquidStakingWithdrawFundsDialog] =
     useLiquidStakingWithdrawFundsDialog();
 

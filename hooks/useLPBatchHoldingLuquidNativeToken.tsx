@@ -1,4 +1,4 @@
-import { lunaFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import { config } from "../config/config";
 import { useAppContext } from "@libs/appContext";
 import { useQuery } from "react-query";
@@ -16,27 +16,27 @@ const {
   loopStakingContract: loopStakingContract,
 } = config.contractAddresses;
 
-type LunaXprops = {
-  lunaToken: number;
-  lunaXToken: number;
+type LiquidNativeTokenProps = {
+  nativeToken: number;
+  liquidNativeToken: number;
   batches: any;
   holdings: any;
 };
 
-const useLPBatchHoldingLunaX = () => {
+const useLPBatchHoldingLuquidNativeToken = () => {
   const { walletAddress, terra } = useAppContext();
   const [batches, setBatches] = useState<any>([]);
-  const handleLunaInfo = async (walletAddress: string): Promise<LunaXprops> => {
+  const handleNativeTokenInfo = async (walletAddress: string): Promise<LiquidNativeTokenProps> => {
     // TODO: bchain - this works for now. but when we start adding more LunaX <> Luna pools we need to
     // create a separate custom hook to get the dex info.
     let userBalanceTerraswap = 0;
     let totalBalanceTerraswap = 0;
-    let totalLunaTerraswap = 0;
-    let totalLunaXTerraswap = 0;
-    let totalLunaLoop = 0;
-    let totalLunaXLoop = 0;
-    let lunaLoopToken = 0;
-    let lunaXLoopToken = 0;
+    let totalNativeTokenTerraswap = 0;
+    let totalLiquidNativeTokenTerraswap = 0;
+    let totalNativeTokenLoop = 0;
+    let totalLiquidNativeTokenLoop = 0;
+    let nativeTokenLoopToken = 0;
+    let liquidNativeTokenLoopToken = 0;
     let holdings: any;
     let batches: any;
 
@@ -68,14 +68,14 @@ const useLPBatchHoldingLunaX = () => {
           balance: { address: walletAddress },
         })
         .then((r: any) => {
-          userBalanceTerraswap = lunaFormatter(parseFloat(r.balance));
+          userBalanceTerraswap = nativeTokenFormatter(parseFloat(r.balance));
         }),
       terra.wasm
         .contractQuery(terraswapLpCw20Address, {
           token_info: {},
         })
         .then((r: any) => {
-          totalBalanceTerraswap = lunaFormatter(parseFloat(r.total_supply));
+          totalBalanceTerraswap = nativeTokenFormatter(parseFloat(r.total_supply));
         }),
       terra.wasm
         .contractQuery(terraswapPoolAddress, {
@@ -89,9 +89,9 @@ const useLPBatchHoldingLunaX = () => {
               asset.info.token &&
               asset.info.token.contract_addr
             ) {
-              totalLunaXTerraswap = lunaFormatter(parseFloat(asset.amount));
+              totalLiquidNativeTokenTerraswap = nativeTokenFormatter(parseFloat(asset.amount));
             } else {
-              totalLunaTerraswap = lunaFormatter(parseFloat(asset.amount));
+              totalNativeTokenTerraswap = nativeTokenFormatter(parseFloat(asset.amount));
             }
           });
         }),
@@ -102,22 +102,22 @@ const useLPBatchHoldingLunaX = () => {
       let userBalanceLoop = 0;
       let userStakedLpBalanceLoop = 0;
       let totalBalanceLoop = 0;
-      let totalLunaLoop = 0;
-      let totalLunaXLoop = 0;
+      let totalNativeTokenLoop = 0;
+      let totalLiquidNativeTokenLoop = 0;
       await Promise.all([
         terra.wasm
           .contractQuery(loopLpCw20Address, {
             token_info: {},
           })
           .then((r: any) => {
-            totalBalanceLoop = lunaFormatter(parseFloat(r.total_supply));
+            totalBalanceLoop = nativeTokenFormatter(parseFloat(r.total_supply));
           }),
         terra.wasm
           .contractQuery(loopLpCw20Address, {
             balance: { address: walletAddress },
           })
           .then((r: any) => {
-            userBalanceLoop = lunaFormatter(parseFloat(r.balance));
+            userBalanceLoop = nativeTokenFormatter(parseFloat(r.balance));
           }),
         terra.wasm
           .contractQuery(loopStakingContract, {
@@ -127,7 +127,7 @@ const useLPBatchHoldingLunaX = () => {
             },
           })
           .then((r: any) => {
-            userStakedLpBalanceLoop = lunaFormatter(parseFloat(r));
+            userStakedLpBalanceLoop = nativeTokenFormatter(parseFloat(r));
           }),
         terra.wasm
           .contractQuery(loopLpPoolAddress, {
@@ -141,36 +141,36 @@ const useLPBatchHoldingLunaX = () => {
                 asset.info.token &&
                 asset.info.token.contract_addr
               ) {
-                totalLunaXLoop = lunaFormatter(parseFloat(asset.amount));
+                totalLiquidNativeTokenLoop = nativeTokenFormatter(parseFloat(asset.amount));
               } else {
-                totalLunaLoop = lunaFormatter(parseFloat(asset.amount));
+                totalNativeTokenLoop = nativeTokenFormatter(parseFloat(asset.amount));
               }
             });
           }),
       ]);
 
-      lunaLoopToken =
-        ((userBalanceLoop + userStakedLpBalanceLoop) * totalLunaLoop) /
+      nativeTokenLoopToken =
+        ((userBalanceLoop + userStakedLpBalanceLoop) * totalNativeTokenLoop) /
         totalBalanceLoop;
-      lunaXLoopToken =
-        ((userBalanceLoop + userStakedLpBalanceLoop) * totalLunaXLoop) /
+      liquidNativeTokenLoopToken =
+        ((userBalanceLoop + userStakedLpBalanceLoop) * totalLiquidNativeTokenLoop) /
         totalBalanceLoop;
     }
 
-    const lunaTerraswapToken =
-      (userBalanceTerraswap * totalLunaTerraswap) / totalBalanceTerraswap;
-    const lunaXTerraswapToken =
-      (userBalanceTerraswap * totalLunaXTerraswap) / totalBalanceTerraswap;
+    const nativeTokenTerraswapToken =
+      (userBalanceTerraswap * totalNativeTokenTerraswap) / totalBalanceTerraswap;
+    const liquidNativeTokenXTerraswapToken =
+      (userBalanceTerraswap * totalLiquidNativeTokenTerraswap) / totalBalanceTerraswap;
 
-    const lunaToken = lunaTerraswapToken + lunaLoopToken;
-    const lunaXToken = lunaXTerraswapToken + lunaXLoopToken;
+    const nativeToken = nativeTokenTerraswapToken + nativeTokenLoopToken;
+    const liquidNativeToken = liquidNativeTokenXTerraswapToken + liquidNativeTokenLoopToken;
 
-    return { lunaToken, lunaXToken, batches, holdings };
+    return { nativeToken: nativeToken, liquidNativeToken: liquidNativeToken, batches, holdings };
   };
 
-  const { data, isLoading, refetch } = useQuery<LunaXprops>(
+  const { data, isLoading, refetch } = useQuery<LiquidNativeTokenProps>(
     [LS_BATCHES_HOLDING, walletAddress],
-    () => handleLunaInfo(walletAddress),
+    () => handleNativeTokenInfo(walletAddress),
     {
       enabled: false,
       onSuccess: (res) => {
@@ -224,4 +224,4 @@ const useLPBatchHoldingLunaX = () => {
   return { data, isLoading, undelegationQuery };
 };
 
-export default useLPBatchHoldingLunaX;
+export default useLPBatchHoldingLuquidNativeToken;
