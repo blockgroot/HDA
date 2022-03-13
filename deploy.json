@@ -7,7 +7,7 @@
     "isProd": "false",
     "alias": "testnet.hedera.staderlabs.com"
   },
-  "master": {
+  "main": {
     "isProd": "true",
     "alias": "hedera.staderlabs.com"
   }
