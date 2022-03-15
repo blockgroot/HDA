@@ -57,7 +57,7 @@ function LSPools() {
     tvl,
   } = useHashConnect();
 
-  const { hbarX, isAsocciated, hbar } = useAccount();
+  const { hbarX, isAsocciated } = useAccount();
 
   // const { accountIds, network, id } = walletData;
   const handleAssocuiteToken = () => {

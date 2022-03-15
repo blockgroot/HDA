@@ -3,37 +3,50 @@
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import {
-    AccountBalanceQuery, Client
+     TransactionId,AccountId,Transaction,PrivateKey
   } from "@hashgraph/sdk";
   import type { NextApiRequest, NextApiResponse } from 'next';
-  
+
+
+
   type Data = {
     result: string
-  }
+  };
+
+  
   
   const handler = async (
     req: NextApiRequest,
     res: NextApiResponse<Data>
   ) => {
-    const accountId = req.query.accountId as string;
-    const client = Client.forTestnet();
-    client.setOperator(process.env.OPERATOR_ID as string, process.env.OPERATOR_KEY as string);
-        //Create the account balance query
-    const query = new AccountBalanceQuery().setAccountId(accountId);
   
-    //Submit the query to a Hedera network
-    const accountBalance = await query.execute(client);
+    
+    const body = JSON.parse(req.body)
+
+    let trans = body.trans;
+    trans = Transaction.fromBytes(trans)
+    const signingAcctId = body.signingAcctId;
+    let nodeId = [new AccountId(3)];
+    let transId = TransactionId.generate(signingAcctId)
+
+    trans.setNodeAccountIds(nodeId);
+    trans.setTransactionId(transId);
+    
+    trans =  trans.freeze();
+
+    let transBytes = trans.toBytes();
+
+    const privKey = PrivateKey.fromString(process.env.OPERATOR_KEY as string);
+    const pubKey = privKey.publicKey;
+
+    const sig =  privKey.signTransaction(Transaction.fromBytes(transBytes) as any);
+
+    const out = trans.addSignature(pubKey, sig);
+
+    const outBytes = out.toBytes();
   
-    //Print the balance of hbars
-    console.log("The hbar account balance for this account is " +accountBalance.hbars);
-  
-  
-    res.status(200).json({ result:accountBalance.hbars.toTinybars().toString() })
+    res.status(200).json({ result:outBytes })
   }
   
   export default handler;
   
-  
-  
-  
-  //v2.0.7
