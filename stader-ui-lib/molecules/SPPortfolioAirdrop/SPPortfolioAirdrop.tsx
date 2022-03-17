@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { lunaFormatter, lunaFormatterOrion } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter, nativeTokenFormatterOrion } from "@utils/CurrencyHelper";
 import { Airdrop, Typography } from "../../atoms";
 import styles from "./SPPortfolioAirdrop.module.scss";
 import { AirdropsType } from "@types_/portfolio";
@@ -50,22 +50,22 @@ function SPPortfolioAirdrop(props: Props) {
       <>
         <AirdropCustomized
           label={"MIR"}
-          value={lunaFormatter(mir.amount)}
+          value={nativeTokenFormatter(mir.amount)}
           iconPath={"/static/mir.png"}
         />
         <AirdropCustomized
           label={"ORION"}
-          value={lunaFormatterOrion(orion.amount)}
+          value={nativeTokenFormatterOrion(orion.amount)}
           iconPath={"/static/orion.png"}
         />
         <AirdropCustomized
           label={"MINE"}
-          value={lunaFormatter(mine.amount)}
+          value={nativeTokenFormatter(mine.amount)}
           iconPath={"/static/pylon.png"}
         />
         <AirdropCustomized
           label={"TWD"}
-          value={lunaFormatter(twd.amount)}
+          value={nativeTokenFormatter(twd.amount)}
           iconPath={"/static/twd.png"}
         />
       </>
@@ -90,18 +90,18 @@ function SPPortfolioAirdrop(props: Props) {
       <>
         <AirdropCustomized
           label={"ORION"}
-          value={lunaFormatterOrion(orion.amount)}
+          value={nativeTokenFormatterOrion(orion.amount)}
           iconPath={"/static/orion.png"}
         />
         <AirdropCustomized
           label={"TWD"}
-          value={lunaFormatter(twd.amount)}
+          value={nativeTokenFormatter(twd.amount)}
           iconPath={"/static/twd.png"}
         />
 
         <AirdropCustomized
           label={"VKR"}
-          value={lunaFormatter(vkr.amount)}
+          value={nativeTokenFormatter(vkr.amount)}
           iconPath={"/static/valkyrie.png"}
         />
       </>
@@ -112,18 +112,18 @@ function SPPortfolioAirdrop(props: Props) {
       <div className={styles.airdrop_wrap}>
         <AirdropCustomized
           label={"ANC"}
-          value={lunaFormatter(anc.amount)}
+          value={nativeTokenFormatter(anc.amount)}
           iconPath={"/static/anc.png"}
         />
         <AirdropCustomized
           label={"MIR"}
-          value={lunaFormatter(mir.amount)}
+          value={nativeTokenFormatter(mir.amount)}
           iconPath={"/static/mir.png"}
         />
         {show === 3 && (
           <AirdropCustomized
             label={"MINE"}
-            value={lunaFormatter(mine.amount)}
+            value={nativeTokenFormatter(mine.amount)}
             iconPath={"/static/pylon.png"}
           />
         )}
@@ -145,13 +145,13 @@ function SPPortfolioAirdrop(props: Props) {
               <div className={styles.airdrop_dropdown_container}>
                 <AirdropCustomized
                   label={"ANC"}
-                  value={lunaFormatter(anc.amount)}
+                  value={nativeTokenFormatter(anc.amount)}
                   iconPath={"/static/anc.png"}
                 />
 
                 <AirdropCustomized
                   label={"VKR"}
-                  value={lunaFormatter(vkr.amount)}
+                  value={nativeTokenFormatter(vkr.amount)}
                   iconPath={"/static/valkyrie.png"}
                 />
                 {hiddenAirdrops()}

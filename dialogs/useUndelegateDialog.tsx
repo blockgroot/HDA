@@ -3,8 +3,6 @@ import { getAnalytics, logEvent } from "firebase/analytics";
 import {
   demicrofy,
   formatUSTWithPostfixUnits,
-  LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
-  LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
 } from "@anchor-protocol/notation";
 import { NumberInput } from "@terra-dev/neumorphism-ui/components/NumberInput";
 import { Modal, InputAdornment } from "@material-ui/core";
@@ -22,6 +20,9 @@ import SuccessAnimation from "../components/common/SuccessAnimation";
 import { saveTransaction } from "../services/transactions";
 import {
   messageMemo,
+  NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
+  NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
   transactionsTypeMap,
   ustFee,
 } from "../constants/constants";
@@ -195,7 +196,9 @@ function UndelegateDialog({
         .estimateFee(primaryWalletAddress, msgs)
         .then((fee: any) => {
           let estimatedFee = parseFloat(
-            formatUSTWithPostfixUnits(demicrofy(fee.amount._coins.uluna.amount))
+            formatUSTWithPostfixUnits(
+              demicrofy(fee.amount._coins.uNativeToken.amount)
+            )
           );
 
           setEstimatedTransactionFee(estimatedFee);
@@ -241,7 +244,9 @@ function UndelegateDialog({
               <p className="dialogHeader">Undelegate</p>
               <div className="w-100 d-flex justify-content-between">
                 <p className="title">{title}</p>
-                <p className="title">Deposited Luna: {maxAmount}</p>
+                <p className="title">
+                  Deposited {NATIVE_TOKEN_LABEL}: {maxAmount}
+                </p>
               </div>
 
               <div>
@@ -249,8 +254,8 @@ function UndelegateDialog({
                   style={{ fontSize: 20 }}
                   className="amount"
                   value={undelegateAmount}
-                  maxIntegerPoinsts={LUNA_INPUT_MAXIMUM_INTEGER_POINTS}
-                  maxDecimalPoints={LUNA_INPUT_MAXIMUM_DECIMAL_POINTS}
+                  maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
+                  maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
                   label="AMOUNT"
                   onChange={({ target }) => {
                     setSelectedPercentage("");
@@ -258,7 +263,9 @@ function UndelegateDialog({
                   }}
                   InputProps={{
                     endAdornment: (
-                      <InputAdornment position="end">LUNA</InputAdornment>
+                      <InputAdornment position="end">
+                        {NATIVE_TOKEN_LABEL}
+                      </InputAdornment>
                     ),
                   }}
                 />
@@ -348,7 +355,8 @@ function UndelegateDialog({
                 <ul>
                   <li style={{ marginBottom: 8 }}>
                     Only 50% of the unvested Community Farming SD Rewards will
-                    vest if you Unstake Luna before July 20, 2022
+                    vest if you Unstake {NATIVE_TOKEN_LABEL} before July 20,
+                    2022
                     <a
                       href="https://blog.staderlabs.com/cf-announcement-sd-token-vesting-562944044639"
                       target="_blank"

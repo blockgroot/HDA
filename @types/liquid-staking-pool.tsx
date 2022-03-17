@@ -1,5 +1,5 @@
 export type TvlType = {
-  uluna: number;
+  uNativeToken: number;
   valueInUSD: number;
   exchangeRate: number;
 };

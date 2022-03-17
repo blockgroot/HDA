@@ -1,26 +1,26 @@
 import { Button, Loader, SuccessAnimation, Typography } from "@atoms/index";
 import Link from "@atoms/Link/Link";
 import {
-  LINK_LUNAX_OVER_LUNA,
-  REDIRECT_TO_LUNAX,
-  ustConvertToLunaX,
+  LINK_LIQUID_NATIVE_TOKEN_OVER_NATIVE_TOKEN, LIQUID_NATIVE_TOKEN_LABEL, NATIVE_TOKEN_LABEL,
+  REDIRECT_TO_LIQUID_NATIVE_TOKEN,
+  ustConvertToLiquidNativeToken,
   ustFee,
-  WITHDRAW_FUNDS,
+  WITHDRAW_FUNDS
 } from "@constants/constants";
 import { SP_PORTFOLIO_HOLDING } from "@constants/queriesKey";
 import { defaultLiquidStakingState } from "@constants/sp-portfolio";
 import { useAppContext } from "@libs/appContext";
 import { Modal } from "@material-ui/core";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
-import { LunaXRedirectionInfo } from "@molecules/LunaXRedirectionInfo/LunaXRedirectionInfo";
-import { RedirectToLunaXTable } from "@molecules/RedirectToLunaXTable/RedirectToLunaXTable";
+import { LiquidNativeTokenRedirectionInfo } from "@molecules/LiquidNativeTokenRedirectionInfo/LiquidNativeTokenRedirectionInfo";
+import { RedirectToLiquidNativeTokenTable } from "@molecules/RedirectToLiquidNativeTokenTable/RedirectToLiquidNativeTokenTable";
 import { WithdrawFundTable } from "@molecules/WithdrawFundsTable/WithdrawFundsTable";
 import { Dialog } from "@terra-dev/neumorphism-ui/components/Dialog";
 import { MsgExecuteContract, StdFee } from "@terra-money/terra.js";
 import { useWallet } from "@terra-money/wallet-provider";
 import { LiquidStakingState } from "@types_/liquid-staking-pool";
 import { SPWithdrawModalProps } from "@types_/portfolio";
-import { lunaFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import { toUserReadableError } from "@utils/ErrorHelper";
 import { config } from "config/config";
 import { getAnalytics, logEvent } from "firebase/analytics";
@@ -59,7 +59,7 @@ function WithdrawFundsDialog(props: SPWithdrawModalProps) {
     logEvent(analytics, eventName);
   };
 
-  const withdrawFunds = async (redirectToLunaX: boolean) => {
+  const withdrawFunds = async (redirectToLiquidNativeToken: boolean) => {
     if (walletAddress) {
       let msgs: MsgExecuteContract[] = [];
       msgs.push(
@@ -72,7 +72,7 @@ function WithdrawFundsDialog(props: SPWithdrawModalProps) {
         })
       );
 
-      if (redirectToLunaX) {
+      if (redirectToLiquidNativeToken) {
         msgs.push(
           new MsgExecuteContract(
             walletAddress,
@@ -80,7 +80,7 @@ function WithdrawFundsDialog(props: SPWithdrawModalProps) {
             {
               deposit: {},
             },
-            { uluna: Math.floor(amount) }
+            { uNativeToken: Math.floor(amount) }
           )
         );
       }
@@ -91,11 +91,11 @@ function WithdrawFundsDialog(props: SPWithdrawModalProps) {
         if (ustBalance < ustFee || !ustBalance) {
           await Promise.reject(Error("Insufficient UST"));
         } else {
-          const txfee = redirectToLunaX ? ustConvertToLunaX : ustFee;
+          const txfee = redirectToLiquidNativeToken ? ustConvertToLiquidNativeToken : ustFee;
           const tx = await wallet.post({
             msgs,
             fee: new StdFee(fee.gas, `${(txfee * 1000000).toFixed()}uusd`),
-            memo: `${redirectToLunaX ? REDIRECT_TO_LUNAX : WITHDRAW_FUNDS}`,
+            memo: `${redirectToLiquidNativeToken ? REDIRECT_TO_LIQUID_NATIVE_TOKEN : WITHDRAW_FUNDS}`,
           });
 
           if (!(!!tx.result && !!tx.result.txhash)) {
@@ -111,11 +111,11 @@ function WithdrawFundsDialog(props: SPWithdrawModalProps) {
             resolve(updateWalletBalance());
           }, 4000);
         });
-        if (redirectToLunaX) {
-          setSuccessMessage(`${lunaFormatter(
+        if (redirectToLiquidNativeToken) {
+          setSuccessMessage(`${nativeTokenFormatter(
             amount
-          )} Luna has been exchanged for
-          ${lunaFormatter(getLunaxMinted())} LunaX!`);
+          )} ${NATIVE_TOKEN_LABEL} has been exchanged for
+          ${nativeTokenFormatter(getLiquidNativeTokenMinted())} ${LIQUID_NATIVE_TOKEN_LABEL}!`);
         } else {
           setSuccessMessage("Your funds have been withdrawn!");
         }
@@ -147,7 +147,7 @@ function WithdrawFundsDialog(props: SPWithdrawModalProps) {
     });
   }, []);
 
-  const getLunaxMinted = (): number => {
+  const getLiquidNativeTokenMinted = (): number => {
     return amount / parseFloat(liquidStakingState.exchange_rate);
   };
 
@@ -190,8 +190,8 @@ function WithdrawFundsDialog(props: SPWithdrawModalProps) {
               <div className="contract-details">
                 <div>
                   <p className="amount-display">
-                    {lunaFormatter(amount)}{" "}
-                    <span className="amount-currency">LUNA</span>
+                    {nativeTokenFormatter(amount)}{" "}
+                    <span className="amount-currency">{NATIVE_TOKEN_LABEL}</span>
                   </p>
                 </div>
                 <div className="charge">
@@ -203,7 +203,7 @@ function WithdrawFundsDialog(props: SPWithdrawModalProps) {
                 </div>
               </div>
               <div className="mt-3">
-                <LunaXRedirectionInfo />
+                <LiquidNativeTokenRedirectionInfo />
               </div>
               <Typography fontWeight="bold" variant="body3" className="mt-3">
                 Select an option
@@ -214,18 +214,18 @@ function WithdrawFundsDialog(props: SPWithdrawModalProps) {
                   withdrawFundsAction={withdrawFundsAction}
                   isWithdrawFundsDialog={true}
                 />
-                <RedirectToLunaXTable
+                <RedirectToLiquidNativeTokenTable
                   withdrawFundsAction={withdrawFundsAction}
                   isWithdrawFundsDialog={true}
                 />
               </div>
               <Link
-                href={LINK_LUNAX_OVER_LUNA}
+                href={LINK_LIQUID_NATIVE_TOKEN_OVER_NATIVE_TOKEN}
                 variant={"gradient"}
                 className="mt-10 place-content-center"
                 target={"_blank"}
               >
-                Why is LunaX better than Luna?
+                Why is {LIQUID_NATIVE_TOKEN_LABEL} better than {NATIVE_TOKEN_LABEL}?
               </Link>
               {error && (
                 <div className="error-message">

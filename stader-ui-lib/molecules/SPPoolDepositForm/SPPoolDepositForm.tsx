@@ -3,8 +3,13 @@ import { ButtonOutlined } from "@atoms/Button/Button";
 import { Box, Loader, SuccessAnimation, Typography } from "../../atoms";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { lunaFormatter } from "@utils/CurrencyHelper";
-import { ustFeeStaking } from "@constants/constants";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
+import {
+  NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
+  NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
+  NATIVE_TOKEN_LABEL,
+  ustFeeStaking
+} from "@constants/constants";
 import { useQuery } from "react-query";
 import { SP_GAS_ESTIMATE } from "@constants/queriesKey";
 import useDeposit from "@hooks/useDeposit";
@@ -14,10 +19,6 @@ import Link from "next/link";
 import styles from "./SPPoolDepositForm.module.scss";
 import CloseIcon from "@material-ui/icons/Close";
 import { NumberInput } from "@terra-dev/neumorphism-ui/components/NumberInput";
-import {
-  LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
-  LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
-} from "@anchor-protocol/notation";
 import { InputAdornment } from "@material-ui/core";
 
 interface Props {
@@ -82,14 +83,14 @@ const SPPoolDepositForm = (props: Props) => {
     });
   };
 
-  const minDep = lunaFormatter(minDeposit);
-  const maxDep = Math.min(lunaFormatter(maxDeposit), walletBalance);
+  const minDep = nativeTokenFormatter(minDeposit);
+  const maxDep = Math.min(nativeTokenFormatter(maxDeposit), walletBalance);
 
   const validation = Yup.object().shape({
-    luna: Yup.number()
-      .max(maxDep, `Deposit amount should be less than ${maxDep} LUNA`)
-      .min(minDep, `Deposit amount should be more than ${minDep} LUNA`)
-      .required(`Deposit amount should be more than ${minDep} LUNA`),
+    nativeToken: Yup.number()
+      .max(maxDep, `Deposit amount should be less than ${maxDep} ${NATIVE_TOKEN_LABEL}`)
+      .min(minDep, `Deposit amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`)
+      .required(`Deposit amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`),
     ust: Yup.number().moreThan(
       ustFeeStaking,
       "Not enough ust for transaction fees"
@@ -148,14 +149,14 @@ const SPPoolDepositForm = (props: Props) => {
   const renderElement = (
     <div>
       <Formik
-        initialValues={{ luna: 0, ust: ustWalletBalance || 0 }}
+        initialValues={{ nativeToken: 0, ust: ustWalletBalance || 0 }}
         onSubmit={(val) => {
-          handleSubmit(val.luna);
+          handleSubmit(val.nativeToken);
         }}
         validationSchema={validation}
       >
         {(formik) => {
-          const lunaProps = formik.getFieldProps("luna");
+          const nativeTokenProps = formik.getFieldProps("nativeToken");
           const { errors, values } = formik;
           return (
             <form onSubmit={formik.handleSubmit}>
@@ -165,29 +166,29 @@ const SPPoolDepositForm = (props: Props) => {
                   fontWeight={"medium"}
                   variant={"body3"}
                 >
-                  Available LUNA: {walletBalance || 0}
+                  Available ${NATIVE_TOKEN_LABEL}: {walletBalance || 0}
                 </Typography>
                 <Typography variant={"body3"} className={"text-light-800"}>
                   {errors.ust ||
-                    errors.luna ||
-                    (values.luna && `Transaction Fee: ${ustFeeStaking} UST`) ||
+                    errors.nativeToken ||
+                    (values.nativeToken && `Transaction Fee: ${ustFeeStaking} UST`) ||
                     null}
                 </Typography>
               </div>
               <NumberInput
-                {...lunaProps}
-                maxIntegerPoinsts={LUNA_INPUT_MAXIMUM_INTEGER_POINTS}
-                maxDecimalPoints={LUNA_INPUT_MAXIMUM_DECIMAL_POINTS}
+                {...nativeTokenProps}
+                maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
+                maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
                 label="Amount"
                 onChange={(e) => {
                   let value = e.target.value;
-                  formik.setFieldValue("luna", value);
+                  formik.setFieldValue("nativeToken", value);
                   handleChange(value);
                 }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end" className="adornment">
-                      <span className="text-white">LUNA</span>
+                      <span className="text-white">{NATIVE_TOKEN_LABEL}</span>
                     </InputAdornment>
                   ),
                 }}
@@ -196,10 +197,10 @@ const SPPoolDepositForm = (props: Props) => {
               <div className={styles.percentage_buttons}>
                 <PercentageButtons
                   total={walletBalance}
-                  activeValue={lunaProps.value}
+                  activeValue={nativeTokenProps.value}
                   onClick={(val) => {
                     formik.setFieldValue(
-                      "luna",
+                      "nativeToken",
                       (walletBalance * val).toFixed(6)
                     );
                     handleChange(walletBalance * val);

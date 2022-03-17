@@ -6,7 +6,11 @@ import {
 } from "@anchor-protocol/notation";
 import { useAppContext } from "@libs/appContext";
 import { useWallet } from "@terra-money/wallet-provider";
-import { messageMemo, ustFeeStaking } from "@constants/constants";
+import {
+  messageMemo,
+  NATIVE_TOKEN_LABEL,
+  ustFeeStaking,
+} from "@constants/constants";
 import { updateUser } from "@services/users";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import { useMutation, useQueryClient } from "react-query";
@@ -37,7 +41,6 @@ const useDeposit = () => {
   const { terra, walletAddress, updateWalletBalance } = useAppContext();
   const wallet = useWallet();
   const queryClient = useQueryClient();
-  // const {handleContractsAndPoolDetails} = useCommunityFarmingPools()
 
   const getEstimateTransFee = async (args: DepositProps) => {
     const { amount, contracts, poolId } = args;
@@ -55,14 +58,14 @@ const useDeposit = () => {
           pool_id: poolId,
         },
       },
-      { uluna: (amount * 1000000).toFixed() }
+      { uNativeToken: (amount * 1000000).toFixed() }
     );
     msgs.push(msg);
     const rawEstimatedFees = await terra.tx.estimateFee(walletAddress, msgs);
     const estimatedTxFee: number = parseFloat(
       parseFloat(
         formatUSTWithPostfixUnits(
-          demicrofy(rawEstimatedFees.amount._coins.uluna.amount)
+          demicrofy(rawEstimatedFees.amount._coins.uNativeToken.amount)
         )
       ).toFixed(2)
     );
@@ -93,7 +96,7 @@ const useDeposit = () => {
           },
         },
         {
-          uluna: (amount * 1000000).toFixed(),
+          uNativeToken: (amount * 1000000).toFixed(),
         }
       ) as any;
 
@@ -126,7 +129,7 @@ const useDeposit = () => {
         success: true,
         message: `Your deposit of ${parseFloat(amount.toString()).toFixed(
           4
-        )} LUNA is successful!`,
+        )} ${NATIVE_TOKEN_LABEL} is successful!`,
         depositedAmount,
         poolIndex,
       };

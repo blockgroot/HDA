@@ -33,9 +33,6 @@ export const devnetConfig = {
     messagingSenderId: "672706869906",
     appId: "1:672706869906:web:ff94f40cb9aa356f92c44b",
   },
-  stakePlus: {
-    pfc: "terra1n85jtvzwjc7lmj8wrjzgwrdygf8utwn9g7w0z7",
-  },
   validatorAprs: {
     terravaloper1vk20anceu6h9s00d27pjlvslz3avetkvnwmr35: "10",
     terravaloper1krj7amhhagjnyg2tkkuh6l0550y733jnjnnlzy: "12",

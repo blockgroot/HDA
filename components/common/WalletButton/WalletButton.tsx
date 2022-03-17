@@ -9,6 +9,7 @@ import {
 import wallet_icon from "../../../assets/svg/wallet_icon.svg";
 import greenTick from "../../../assets/svg/check_success.svg";
 import styles from "./WalletButton.module.scss";
+import { NATIVE_TOKEN_LABEL } from "@constants/constants";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 	walletAddress?: string | null;
@@ -32,11 +33,11 @@ const WalletButton: FC<Props> = ({
 				<div className={styles.btnContent}>
 					{walletAddress && <span className={styles.walletAddress}>{truncate(walletAddress)}</span>}
 					{walletFunds && <div className={styles.walletBalance}>
-						{walletFunds.uluna
-							? formatUSTWithPostfixUnits(demicrofy(walletFunds.uluna))
+						{walletFunds.uNativeToken
+							? formatUSTWithPostfixUnits(demicrofy(walletFunds.uNativeToken))
 							: 0
 						}{" "}
-						<span style={{ fontSize: 12 }}>LUNA</span>
+						<span style={{ fontSize: 12 }}>{NATIVE_TOKEN_LABEL}</span>
 					</div>}
 					{children}
 				</div>

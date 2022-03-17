@@ -16,12 +16,12 @@ export type PortfolioDataType = {
 };
 export type AirdropNames = "anc" | "mir" | "mine" | "vkr" | "orion" | "twd";
 export type AirdropsType = {
-  anc: { amount: number; amountInLuna: number };
-  mir: { amount: number; amountInLuna: number };
-  mine: { amount: number; amountInLuna: number };
-  vkr: { amount: number; amountInLuna: number };
-  orion: { amount: number; amountInLuna: number };
-  twd: { amount: number; amountInLuna: number };
+  anc: { amount: number; amountInNativeToken: number };
+  mir: { amount: number; amountInNativeToken: number };
+  mine: { amount: number; amountInNativeToken: number };
+  vkr: { amount: number; amountInNativeToken: number };
+  orion: { amount: number; amountInNativeToken: number };
+  twd: { amount: number; amountInNativeToken: number };
 };
 
 export interface SPWithdrawModalProps {

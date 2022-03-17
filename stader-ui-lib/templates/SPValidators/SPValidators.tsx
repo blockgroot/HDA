@@ -1,4 +1,4 @@
-import { StakeContractInfo, ValidatorStakingInfoMap } from "../../../components/StakePlus";
+import { StakeContractInfo, ValidatorStakingInfoMap } from "../../../components/Stake";
 import SPValidatorTable from "../../organisms/SPValidatorTable/SPValidatorTable";
 import styles from "./SPValidators.module.scss";
 

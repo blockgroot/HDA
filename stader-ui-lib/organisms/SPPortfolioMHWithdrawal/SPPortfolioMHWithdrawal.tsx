@@ -1,12 +1,12 @@
 import SDTooltip from "@atoms/SDTooltip/SDTooltip";
-import { tooltips } from "@constants/constants";
+import { LIQUID_NATIVE_TOKEN_LABEL, NATIVE_TOKEN_LABEL, tooltips } from "@constants/constants";
 import { defaultWithdrawProps } from "@constants/sp-portfolio";
 import { Tooltip } from "@material-ui/core";
 import { InfoOutlined } from "@material-ui/icons";
 import WithdrawFundsDialog from "@molecules/SPWithdrawModal/SPWithdrawModal";
 import { SPWithdrawModalProps } from "@types_/portfolio";
 import { getContractByName } from "@utils/contractFilters";
-import { lunaFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import { sortWithdrawDate } from "@utils/helper";
 import classNames from "classnames";
 import { useWithdrawRewardsDialog } from "dialogs/useWithdrawRewardsDialog";
@@ -72,13 +72,13 @@ function SPPortfolioMHWithdrawal({
                       <td>
                         {undelegation.undelegationInfo
                           .computed_undelegation_amount
-                          ? lunaFormatter(
+                          ? nativeTokenFormatter(
                               undelegation.undelegationInfo
                                 .computed_undelegation_amount
                             )
-                          : lunaFormatter(undelegation.amount)}{" "}
+                          : nativeTokenFormatter(undelegation.amount)}{" "}
                         <Typography variant={"body2"} className={"inline"}>
-                          LUNA
+                          {NATIVE_TOKEN_LABEL}
                         </Typography>
                       </td>
                       <td className={styles.desktop_only}>
@@ -211,13 +211,13 @@ function SPPortfolioMHWithdrawal({
                       <td>
                         {undelegation.undelegationInfo
                           .computed_undelegation_amount
-                          ? lunaFormatter(
+                          ? nativeTokenFormatter(
                               undelegation.undelegationInfo
                                 .computed_undelegation_amount
                             )
-                          : lunaFormatter(undelegation.amount)}{" "}
+                          : nativeTokenFormatter(undelegation.amount)}{" "}
                         <Typography variant={"body2"} className={"inline"}>
-                          LUNA
+                          {LIQUID_NATIVE_TOKEN_LABEL}
                         </Typography>
                       </td>
                       <td className={styles.desktop_only}>

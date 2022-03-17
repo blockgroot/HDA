@@ -9,7 +9,7 @@ module.exports = withImages({
     return [
       {
         source: "/",
-        destination: "/pools",
+        destination: "/lt-pools",
         permanent: true,
       },
     ];

@@ -1,5 +1,5 @@
 import React from "react";
-import { lunaFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import { Typography } from "../../atoms";
 import styles from "./PortfolioDepositRewards.module.scss";
 import classNames from "classnames";
@@ -8,6 +8,7 @@ import { Tooltip } from "@material-ui/core";
 import { InfoOutlined } from "@material-ui/icons";
 import SPPortfolioAirdrop from "../SPPortfolioAirdrop/SPPortfolioAirdrop";
 import SDTooltip from "@atoms/SDTooltip/SDTooltip";
+import { NATIVE_TOKEN_LABEL } from "@constants/constants";
 
 interface Props {
   portfolioBreakDown: PortfolioDataType;
@@ -37,10 +38,10 @@ function PortfolioDepositRewards(props: Props) {
                 variant={"h2"}
                 className={`${styles.airdrop_value} mr-2`}
               >
-                {lunaFormatter(deposits).toString()}
+                {nativeTokenFormatter(deposits).toString()}
               </Typography>
               <Typography variant={"body3"} className={styles.airdrop_label}>
-                LUNA
+                {NATIVE_TOKEN_LABEL}
               </Typography>
             </div>
           </div>
@@ -61,15 +62,15 @@ function PortfolioDepositRewards(props: Props) {
                 variant={"h2"}
                 className={`${styles.airdrop_value} mr-2`}
               >
-                {lunaFormatter(total_rewards)}
+                {nativeTokenFormatter(total_rewards)}
               </Typography>
               <Typography variant={"body3"} className={styles.airdrop_label}>
-                LUNA
+                {NATIVE_TOKEN_LABEL}
               </Typography>
               <SDTooltip
                 content={
-                  lunaFormatter(pending_rewards) +
-                  " Luna is yet to be moved to strategies."
+                  nativeTokenFormatter(pending_rewards) +
+                  ` ${NATIVE_TOKEN_LABEL} is yet to be moved to strategies.`
                 }
                 className="text-white ml-3"
                 fontSize={"small"}

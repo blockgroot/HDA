@@ -1,6 +1,6 @@
 import { SPPoolsTableHead } from "../../molecules";
 import useCommunityFarmingPools from "@hooks/useCommunityFarmingPools";
-import { lunaFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import styles from "./SPPoolTable.module.scss";
 import { useState } from "react";
 import { Loader } from "../../atoms";
@@ -50,7 +50,7 @@ export default function SPPoolTable() {
             poolName={pool.name}
             apr={pool.computedApr}
             computedDeposit={
-              lunaFormatter(pool.computed_deposit || pool.deposit) || "0"
+              nativeTokenFormatter(pool.computed_deposit || pool.deposit) || "0"
             }
             pool={pool}
             contracts={contractsInfo}

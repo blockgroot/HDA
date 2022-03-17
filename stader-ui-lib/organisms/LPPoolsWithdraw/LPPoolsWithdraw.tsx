@@ -1,9 +1,9 @@
-import { tooltips } from "@constants/constants";
+import { NATIVE_TOKEN_LABEL, tooltips } from "@constants/constants";
 import { WITHDRAW_PROTOCOL } from "@constants/queriesKey";
 import { useAppContext } from "@libs/appContext";
 import { InfoOutlined } from "@material-ui/icons";
 import LSPWithdrawFundsModal from "@molecules/WithdrawModals/LSPWithdrawFundsModal";
-import { lunaFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import { Box, Loader, Button, Typography } from "../../atoms";
 import { config } from "../../../config/config";
 import { useState } from "react";
@@ -134,7 +134,7 @@ function LPPoolsWithdraw({
                         <div className={styles.amount_wrap}>
                           <Typography>
                             {undelegation.token_amount
-                              ? lunaFormatter(
+                              ? nativeTokenFormatter(
                                   Number(undelegation.token_amount) *
                                     Number(undelegation.undelegation_er) *
                                     Number(
@@ -143,7 +143,7 @@ function LPPoolsWithdraw({
                                 )
                               : "0"}
                           </Typography>
-                          <Typography variant="body2">LUNA</Typography>
+                          <Typography variant="body2">{NATIVE_TOKEN_LABEL}</Typography>
                         </div>
                       </td>
                       <td className={classNames(styles.td, styles.time)}>

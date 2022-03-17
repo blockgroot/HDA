@@ -1,8 +1,8 @@
 export type AirdropsType = {
-  anc: { amount: number; amountInLuna: number };
-  mir: { amount: number; amountInLuna: number };
-  mine: { amount: number; amountInLuna: number };
-  vkr: { amount: number; amountInLuna: number };
+  anc: { amount: number; amountInNativeToken: number };
+  mir: { amount: number; amountInNativeToken: number };
+  mine: { amount: number; amountInNativeToken: number };
+  vkr: { amount: number; amountInNativeToken: number };
 };
 
 export type AirdropsArrayType = {
