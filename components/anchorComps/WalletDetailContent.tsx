@@ -25,13 +25,6 @@ const WalletDetailContent: FC<Props> = ({
     successDuration: 1000 * 6,
   });
 
-  const viewOnTerraFinder = useCallback(() => {
-    window.open(
-      `https://finder.terra.money/${wallet.network.chainID}/account/${primaryWalletAddress}`,
-      "_blank"
-    );
-  }, [wallet.network.chainID, primaryWalletAddress]);
-
   return (
     <>
       <div className={styles.walletLineItem}>

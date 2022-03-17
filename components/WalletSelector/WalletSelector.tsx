@@ -21,7 +21,6 @@ const WalletSelector = ({
 	toggleConnectWallet,
 }: Props) => {
 
-	// const createTerraWalletURL = "chrome-extension://aiifbnbfobpmeekipheeijimdpnlpgpp/index.html#/auth/new";
 	const [open, setOpen] = useState(false);
     const wallet = useWallet();
 
