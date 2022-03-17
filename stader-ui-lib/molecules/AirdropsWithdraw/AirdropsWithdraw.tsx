@@ -2,8 +2,8 @@ import { Airdrop, Box, Loader, Typography } from "../../atoms";
 import styles from "./AirdropsWithdraw.module.scss";
 import React, { useState } from "react";
 import {
-  lunaFormatter,
-  lunaFormatterOrion,
+  nativeTokenFormatter,
+  nativeTokenFormatterOrion,
 } from "../../../utils/CurrencyHelper";
 import { ButtonOutlined } from "../../atoms/Button/Button";
 import { AirdropsArrayType } from "../../../@types/airdrops";
@@ -90,8 +90,8 @@ export default function AirdropsWithdraw(props: Props) {
                 label={name}
                 value={
                   name === "orion"
-                    ? lunaFormatterOrion(airdrop.amount)
-                    : lunaFormatter(airdrop.amount)
+                    ? nativeTokenFormatterOrion(airdrop.amount)
+                    : nativeTokenFormatter(airdrop.amount)
                 }
                 iconPath={
                   Airdrops.find((airdrop) => airdrop.denom === name)?.logo || ""
@@ -118,8 +118,8 @@ export default function AirdropsWithdraw(props: Props) {
                       label={name}
                       value={
                         name === "orion"
-                          ? lunaFormatterOrion(airdrop.amount)
-                          : lunaFormatter(airdrop.amount)
+                          ? nativeTokenFormatterOrion(airdrop.amount)
+                          : nativeTokenFormatter(airdrop.amount)
                       }
                       iconPath={
                         Airdrops.find((airdrop) => airdrop.denom === name)
@@ -144,8 +144,8 @@ export default function AirdropsWithdraw(props: Props) {
                     label={name}
                     value={
                       name === "orion"
-                        ? lunaFormatterOrion(airdrop.amount)
-                        : lunaFormatter(airdrop.amount)
+                        ? nativeTokenFormatterOrion(airdrop.amount)
+                        : nativeTokenFormatter(airdrop.amount)
                     }
                     iconPath={
                       Airdrops.find((airdrop) => airdrop.denom === name)

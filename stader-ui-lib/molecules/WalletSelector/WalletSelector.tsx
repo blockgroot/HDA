@@ -10,6 +10,7 @@ import { useAppContext } from "../../../libs/appContext";
 import greenTick from "../../assets/svg/check_success.svg";
 import { CheckCircle, Info } from "@material-ui/icons";
 import classNames from "classnames";
+import { NATIVE_TOKEN_LABEL } from "@constants/constants";
 
 const WalletSelector = ({
   variant,
@@ -64,7 +65,7 @@ const WalletSelector = ({
         {walletBalance}
       </Typography>
       <Typography variant={"body3"} fontWeight={"bold"} className={"inline"}>
-        LUNA
+        {NATIVE_TOKEN_LABEL}
       </Typography>
     </>
   );

@@ -12,7 +12,7 @@ import { config } from "../../../config/config";
 import ArrowRight from "../../assets/svg/arrow_right.svg";
 import PercentageIcon from "../../assets/svg/percentage.svg";
 import BoltIcon from "../../assets/svg/bolt.svg";
-import { messageMemo, ustFeeStrategies } from "@constants/constants";
+import { messageMemo, NATIVE_TOKEN_LABEL, ustFeeStrategies } from "@constants/constants";
 import { getContractByName } from "@utils/contractFilters";
 import { toUserReadableError } from "@utils/ErrorHelper";
 import { useSuccessDialog } from "../../../dialogs/useSuccessDialog";
@@ -198,9 +198,7 @@ function StrategiesPage() {
                 shouldSlide={canChangePortfolio}
                 value={autoCompoundingDepositFraction}
                 title={"Auto Compound Rewards"}
-                description={
-                  "Stable coin rewards converted to Luna & All Luna rewards restaked."
-                }
+                description={`Stable coin rewards converted to ${NATIVE_TOKEN_LABEL} & All ${NATIVE_TOKEN_LABEL} rewards restaked.`}
                 onChange={(event, value) => {
                   updateDepositFraction(value as number, 1);
                 }}

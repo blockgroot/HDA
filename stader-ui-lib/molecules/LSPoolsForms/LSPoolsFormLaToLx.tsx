@@ -1,4 +1,11 @@
-import { tokenLabel, ustFeeStaking } from "@constants/constants";
+import {
+  NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
+  NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
+  LIQUID_NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_LABEL,
+  tokenLabel,
+  ustFeeStaking
+} from "@constants/constants";
 import { Formik } from "formik";
 import { Divider, Loader, Typography } from "../../atoms";
 import PercentageButtons from "../PercentageButtons/PercentageButtons";
@@ -7,12 +14,8 @@ import { ButtonOutlined } from "@atoms/Button/Button";
 import styles from "./LSPoolsFormLaToLx.module.scss";
 import DepositSuccess from "../DepositSuccess/DepositSuccess";
 import * as Yup from "yup";
-import { lunaFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import { NumberInput } from "@terra-dev/neumorphism-ui/components/NumberInput";
-import {
-  LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
-  LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
-} from "@anchor-protocol/notation";
 import { InputAdornment } from "@material-ui/core";
 
 type Props = {
@@ -32,34 +35,34 @@ function LSPoolsFormLaToLx(props: Props) {
     ustWalletBalance,
   } = props;
 
-  const { handleStake, outputAmountLunax, isLoading, resetQuery, data } =
+  const { handleStake, outputAmountLiquidNativeToken, isLoading, resetQuery, data } =
     useLSPoolsForm();
 
   if (isLoading) return <Loader position={"center"} />;
   if (data?.success) {
     return <DepositSuccess reset={resetQuery} message={data?.message} />;
   }
-  const minDep = lunaFormatter(minimumDeposit);
-  const maxDep = Math.min(lunaFormatter(maximumDeposit), walletBalance);
+  const minDep = nativeTokenFormatter(minimumDeposit);
+  const maxDep = Math.min(nativeTokenFormatter(maximumDeposit), walletBalance);
 
   const validation = Yup.object().shape({
-    luna: Yup.number()
-      .max(maxDep, `Deposit amount should be less than ${maxDep} LUNA`)
-      .min(minDep, `Deposit amount should be more than ${minDep} LUNA`)
-      .required(`Deposit amount should be more than ${minDep} LUNA`),
+    nativeToken: Yup.number()
+      .max(maxDep, `Deposit amount should be less than ${maxDep} ${NATIVE_TOKEN_LABEL}`)
+      .min(minDep, `Deposit amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`)
+      .required(`Deposit amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`),
     ust: Yup.number().moreThan(0.9, "Not enough ust for transaction fees"),
   });
 
   return (
     <Formik
       initialValues={{
-        luna: 0,
-        lunax: 0,
+        nativeToken: 0,
+        liquidNativeToken: 0,
         ust: ustWalletBalance,
       }}
       onSubmit={(values) => {
-        if (values.luna) {
-          handleStake(values.luna);
+        if (values.nativeToken) {
+          handleStake(values.nativeToken);
         }
       }}
       validationSchema={validation}
@@ -67,50 +70,50 @@ function LSPoolsFormLaToLx(props: Props) {
       {(formik) => {
         const { handleSubmit, getFieldProps, setFieldValue, values, errors } =
           formik;
-        const lunaProps = getFieldProps("luna");
-        const lunaxProps = getFieldProps("lunax");
+        const nativeTokenProps = getFieldProps("nativeToken");
+        const liquidNativeTokenProps = getFieldProps("liquidNativeToken");
 
         return (
           <form onSubmit={handleSubmit}>
             <div className={styles.available_amount_validation}>
               <Typography variant={"body3"} color={"secondary"}>
-                Available: {walletBalance.toFixed(6)} LUNA
+                Available: {walletBalance.toFixed(6)} {NATIVE_TOKEN_LABEL}
               </Typography>
 
               <Typography
                 variant={"body3"}
               >{`1 ${tokenLabel} = ${tvlExchangeRate.toFixed(
                 6
-              )} LUNA`}</Typography>
+              )} ${NATIVE_TOKEN_LABEL}`}</Typography>
             </div>
-            {(errors.ust || errors.luna) && (
+            {(errors.ust || errors.nativeToken) && (
               <Typography
                 variant={"caption1"}
                 color={"textSecondary"}
                 fontWeight={"medium"}
                 className={"block mt-3 text-center"}
               >
-                {errors.ust || errors.luna}
+                {errors.ust || errors.nativeToken}
               </Typography>
             )}
             <div className={"mt-4 mb-8 relative"}>
               <NumberInput
-                {...lunaProps}
-                maxIntegerPoinsts={LUNA_INPUT_MAXIMUM_INTEGER_POINTS}
-                maxDecimalPoints={LUNA_INPUT_MAXIMUM_DECIMAL_POINTS}
+                {...nativeTokenProps}
+                maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
+                maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
                 label="Enter Amount"
                 onChange={(e) => {
                   let value = e.target.value;
                   setFieldValue(
-                    "lunax",
-                    outputAmountLunax(value, tvlExchangeRate)
+                    "liquidNativeToken",
+                    outputAmountLiquidNativeToken(value, tvlExchangeRate)
                   );
-                  setFieldValue("luna", value);
+                  setFieldValue("nativeToken", value);
                 }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end" className="text-white">
-                      <span className={"text-white"}>LUNA</span>
+                      <span className={"text-white"}>{NATIVE_TOKEN_LABEL}</span>
                     </InputAdornment>
                   ),
                 }}
@@ -122,18 +125,18 @@ function LSPoolsFormLaToLx(props: Props) {
             </div>
             <div className={"mb-6"}>
               <NumberInput
-                {...lunaxProps}
-                maxIntegerPoinsts={LUNA_INPUT_MAXIMUM_INTEGER_POINTS}
-                maxDecimalPoints={LUNA_INPUT_MAXIMUM_DECIMAL_POINTS}
+                {...liquidNativeTokenProps}
+                maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
+                maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
                 label="Output Amount"
-                value={lunaxProps.value}
+                value={liquidNativeTokenProps.value}
                 onChange={() => {
                   return "";
                 }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end" className="text-white">
-                      <span className={"text-white"}>LunaX</span>
+                      <span className={"text-white"}>{LIQUID_NATIVE_TOKEN_LABEL}</span>
                     </InputAdornment>
                   ),
                 }}
@@ -143,14 +146,14 @@ function LSPoolsFormLaToLx(props: Props) {
             <div className={styles.percentage_buttons_container}>
               <PercentageButtons
                 total={walletBalance}
-                activeValue={lunaProps.value}
+                activeValue={nativeTokenProps.value}
                 onClick={(value) => {
                   let val = walletBalance * value;
                   setFieldValue(
-                    "lunax",
-                    outputAmountLunax(val, tvlExchangeRate)
+                    "liquidNativeToken",
+                    outputAmountLiquidNativeToken(val, tvlExchangeRate)
                   );
-                  setFieldValue("luna", val.toFixed(6));
+                  setFieldValue("nativeToken", val.toFixed(6));
                 }}
               />
               <Typography variant={"body3"} color={"textSecondary"}>
@@ -161,7 +164,7 @@ function LSPoolsFormLaToLx(props: Props) {
             <div className="mt-6 lg:mt-12 flex justify-center">
               <ButtonOutlined
                 size={"large"}
-                disabled={!!Object.keys(errors).length || !values.luna}
+                disabled={!!Object.keys(errors).length || !values.nativeToken}
               >
                 Stake
               </ButtonOutlined>

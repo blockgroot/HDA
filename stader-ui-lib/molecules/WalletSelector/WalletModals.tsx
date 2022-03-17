@@ -3,7 +3,7 @@ import useClipboard from "react-use-clipboard";
 import Divider from "../../atoms/Divider/Divider";
 import { Button, Typography } from "../../atoms";
 import ListItem from "../../atoms/ListItem/ListItem";
-import { urls } from "@constants/constants";
+import { NATIVE_TOKEN_LABEL, urls } from "@constants/constants";
 import styles from "./WalletSelector.module.scss";
 import {
   Connection,
@@ -54,7 +54,7 @@ export const ConnectedWalletModal: FC<ConnectedProps> = (props) => {
       <Divider color={"gradient"} />
       <ListItem className={"py-4"}>
         <Typography fontWeight={"bold"} variant={"body2"}>
-          LUNA
+          {NATIVE_TOKEN_LABEL}
         </Typography>
         <Typography fontWeight={"bold"} variant={"body2"}>
           {walletBalance}

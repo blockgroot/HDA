@@ -1,4 +1,4 @@
-import { demicrofy, formatLuna, truncate } from "@anchor-protocol/notation";
+import { demicrofy, truncate } from "@anchor-protocol/notation";
 
 import { FC, useCallback } from "react";
 import useClipboard from "react-use-clipboard";
@@ -6,6 +6,7 @@ import copy_address from "../../assets/svg/copy_address.svg";
 import CheckIcon from "@material-ui/icons/Check";
 
 import styles from "./WalletDetailContent.module.scss";
+import { formatNativeToken, NATIVE_TOKEN_LABEL } from "@constants/constants";
 
 interface Props {
   className?: any;
@@ -47,10 +48,10 @@ const WalletDetailContent: FC<Props> = ({
         className={styles.walletLineItem}
         style={{ borderBottom: "1px solid #2E2E2E" }}
       >
-        <span>LUNA</span>
+        <span>{NATIVE_TOKEN_LABEL}</span>
         <span>
-          {!!walletFunds && !!walletFunds.uluna
-            ? formatLuna(demicrofy(walletFunds.uluna))
+          {!!walletFunds && !!walletFunds.uNativeToken
+            ? formatNativeToken(demicrofy(walletFunds.uNativeToken))
             : 0}
         </span>
       </div>

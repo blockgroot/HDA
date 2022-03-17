@@ -3,8 +3,6 @@ import { getAnalytics, logEvent } from "firebase/analytics";
 import {
   demicrofy,
   formatUSTWithPostfixUnits,
-  LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
-  LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
 } from "@anchor-protocol/notation";
 import { NumberInput } from "@terra-dev/neumorphism-ui/components/NumberInput";
 import { InputAdornment, Modal } from "@material-ui/core";
@@ -19,7 +17,13 @@ import SDButton from "../components/common/SDButton";
 import { toUserReadableError } from "../utils/ErrorHelper";
 import Loader from "../components/common/Loader";
 import SuccessAnimation from "../components/common/SuccessAnimation";
-import { messageMemo, ustFee } from "../constants/constants";
+import {
+  NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
+  NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
+  messageMemo,
+  NATIVE_TOKEN_LABEL,
+  ustFee,
+} from "../constants/constants";
 import { SP_PORTFOLIO_HOLDING } from "@constants/queriesKey";
 import { useAppContext } from "@libs/appContext";
 import { useWallet } from "@terra-money/wallet-provider";
@@ -160,7 +164,9 @@ function UndelegateDialog({
         .estimateFee(walletAddress, msgs)
         .then((fee: any) => {
           let estimatedFee = parseFloat(
-            formatUSTWithPostfixUnits(demicrofy(fee.amount._coins.uluna.amount))
+            formatUSTWithPostfixUnits(
+              demicrofy(fee.amount._coins.uNativeToken.amount)
+            )
           );
 
           setEstimatedTransactionFee(estimatedFee);
@@ -208,8 +214,8 @@ function UndelegateDialog({
                   style={{ fontSize: 20 }}
                   className="amount"
                   value={undelegateAmount}
-                  maxIntegerPoinsts={LUNA_INPUT_MAXIMUM_INTEGER_POINTS}
-                  maxDecimalPoints={LUNA_INPUT_MAXIMUM_DECIMAL_POINTS}
+                  maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
+                  maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
                   label="AMOUNT"
                   onChange={({ target }) => {
                     setSelectedPercentage("");
@@ -217,7 +223,9 @@ function UndelegateDialog({
                   }}
                   InputProps={{
                     endAdornment: (
-                      <InputAdornment position="end">LUNA</InputAdornment>
+                      <InputAdornment position="end">
+                        {NATIVE_TOKEN_LABEL}
+                      </InputAdornment>
                     ),
                   }}
                 />

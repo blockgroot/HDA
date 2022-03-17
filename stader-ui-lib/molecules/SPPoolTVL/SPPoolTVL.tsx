@@ -2,6 +2,7 @@ import { Box, Loader, Typography } from "../../atoms";
 import styles from "./SPPoolTVL.module.scss";
 import useTVLRewardsInfo from "../../../hooks/useTVLRewardsInfo";
 import classNames from "classnames";
+import { NATIVE_TOKEN_LABEL } from "@constants/constants";
 
 function SPPoolTVL() {
   const { tvlRewards, isLoading } = useTVLRewardsInfo();
@@ -15,8 +16,8 @@ function SPPoolTVL() {
       >
         {tvlRewards.toLocaleString()}
       </Typography>
-      <Typography color={"secondary"} variant={"body1"} className={styles.luna}>
-        LUNA
+      <Typography color={"secondary"} variant={"body1"} className={styles.nativeToken}>
+        {NATIVE_TOKEN_LABEL}
       </Typography>
     </div>
   );

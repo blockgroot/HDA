@@ -1,11 +1,12 @@
 import { Button } from "@material-ui/core";
 import { LiquidStakingState } from "@types_/liquid-staking-pool";
 import { getContractByName } from "@utils/contractFilters";
-import { lunaFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import React from "react";
 import { useRewardsDialog } from "../../../dialogs/useRewardsDialog";
 import { useUndelegateRewardsDialog } from "../../../dialogs/useUndelegateRewardsDialog";
 import { Typography } from "../../atoms";
+import { NATIVE_TOKEN_LABEL } from "@constants/constants";
 
 interface Props {
   rewards: any[];
@@ -48,8 +49,8 @@ export default function PortfolioMHReward({
                   </p>
                 </div>
                 <p className="contentValue">
-                  {lunaFormatter(parseInt(rewardInfo.total_rewards))}{" "}
-                  <span className="contentValueSmall">LUNA</span>
+                  {nativeTokenFormatter(parseInt(rewardInfo.total_rewards))}{" "}
+                  <span className="contentValueSmall">{NATIVE_TOKEN_LABEL}</span>
                 </p>
               </div>
               <Button

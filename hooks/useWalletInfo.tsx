@@ -69,10 +69,10 @@ const useWalletInfo = () => {
   useEffect(() => {
     if (status === WalletStatus.WALLET_CONNECTED && walletAddress) {
       getWalletFund(walletAddress).then((res) => {
-        const { uluna, uusd } = walletBalanceByDenom(res);
+        const { uNativeToken: uNativeToken, uusd } = walletBalanceByDenom(res);
 
-        if (uluna) {
-          setWalletBalance(formatUSTWithPostfixUnits(demicrofy(uluna)));
+        if (uNativeToken) {
+          setWalletBalance(formatUSTWithPostfixUnits(demicrofy(uNativeToken)));
         } else {
           setWalletBalance("0");
         }

@@ -1,8 +1,8 @@
 import React from "react";
-import { lunaFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import { Box, Divider, Typography } from "../../atoms";
 import styles from "./PortfolioCFTotalHolding.module.scss";
-import { tooltips } from "@constants/constants";
+import { NATIVE_TOKEN_LABEL, tooltips } from "@constants/constants";
 import { InfoOutlined } from "@material-ui/icons";
 import { Grid, Tooltip, useMediaQuery } from "@material-ui/core";
 import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
@@ -27,11 +27,11 @@ function PortfolioCFTotalHolding({ totalKyvApr, totalHolding }: Props) {
       >
         <Grid item xs={6} md={12}>
           <div className={"flex items-end mb-7"}>
-            <Typography variant={"h1"} className={styles.luna_value}>
-              {lunaFormatter(totalHolding).toString()}
+            <Typography variant={"h1"} className={styles.nativeToken_value}>
+              {nativeTokenFormatter(totalHolding).toString()}
             </Typography>
-            <Typography variant={"body2"} className={styles.luna_label}>
-              LUNA
+            <Typography variant={"body2"} className={styles.nativeToken_label}>
+              {NATIVE_TOKEN_LABEL}
             </Typography>
           </div>
           <div className={"flex items-center"}>
@@ -65,7 +65,7 @@ function PortfolioCFTotalHolding({ totalKyvApr, totalHolding }: Props) {
           md={12}
           className="md:flex md:flex-col md:justify-end"
         >
-          <Typography variant={"h1"} className={styles.luna_value}>
+          <Typography variant={"h1"} className={styles.nativeToken_value}>
             {totalKyvApr && totalKyvApr > 0
               ? `${totalKyvApr.toFixed(2)}%`
               : "N.A"}

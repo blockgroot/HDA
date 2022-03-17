@@ -1,6 +1,6 @@
 import React from "react";
 import { MySDRewardsType } from "../../../hooks/usePortfolioCFRewards";
-import { lunaFormatter } from "../../../utils/CurrencyHelper";
+import { nativeTokenFormatter } from "../../../utils/CurrencyHelper";
 import { Typography } from "../../atoms";
 import { CFMySDContainer } from "../../molecules";
 
@@ -13,7 +13,7 @@ export default function PortfolioMySDToken({ userInfo, isLoading }: Props) {
 
   return (
     <CFMySDContainer
-      value={lunaFormatter(totalSdTokens).toLocaleString()}
+      value={nativeTokenFormatter(totalSdTokens).toLocaleString()}
       info={"Learn more about SD Token vesting."}
       // info={"SD earned will be updated every 6 hours."}
       isLoading={isLoading}

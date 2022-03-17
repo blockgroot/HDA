@@ -1,6 +1,4 @@
-import { InfoOutlined } from "@material-ui/icons";
-import { Tooltip } from "@material-ui/core";
-import { LUNA_MULTIPLIER } from "@constants/constants";
+import { LIQUID_NATIVE_TOKEN_LABEL, NATIVE_TOKEN_LABEL, NATIVE_TOKEN_MULTIPLIER } from "@constants/constants";
 import { Box, Loader, Typography } from "../../atoms";
 import { demicrofy, formatUST } from "@anchor-protocol/notation";
 import styles from "./LSPoolsEstimate.module.scss";
@@ -20,14 +18,14 @@ function LSPoolsEstimate(props: Props) {
     <>
       <div className="lg:mb-8">
         <Typography variant={"body1"} fontWeight={"bold"}>
-          My LunaX
+          My {LIQUID_NATIVE_TOKEN_LABEL}
         </Typography>
         <Typography
           variant={"h2"}
           fontWeight={"medium"}
           className={classNames("mt-3", styles.value)}
         >
-          {(holdings / LUNA_MULTIPLIER).toFixed(6)}
+          {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(6)}
         </Typography>
       </div>
 
@@ -62,14 +60,13 @@ function LSPoolsEstimate(props: Props) {
             fontWeight={"medium"}
             className={classNames("mr-2 text-gradient", styles.value)}
           >
-            {formatUST(demicrofy(tvl.uluna)).split(".")[0]}
+            {formatUST(demicrofy(tvl.uNativeToken)).split(".")[0]}
           </Typography>
           <Typography
             variant={"body2"}
             color={"secondary"}
-            className={styles.luna}
           >
-            LUNA
+            {NATIVE_TOKEN_LABEL}
           </Typography>
         </div>
       </div>
