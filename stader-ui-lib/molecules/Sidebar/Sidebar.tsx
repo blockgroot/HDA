@@ -4,8 +4,6 @@ import styles from "./Sidebar.module.scss";
 import HelpBtn from "@atoms/HelpBtn/Help";
 import { routes } from "@constants/routes";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import c from "classnames";
 
 interface Props {
   onClose: () => void;
@@ -13,12 +11,6 @@ interface Props {
 
 function Sidebar({ onClose }: Props) {
   const router = useRouter();
-
-  const stakerouteLink = {
-    title: "Stake",
-    path: "/stake-plus",
-    symbal: "+",
-  };
 
   return (
     <div className={styles.root}>
@@ -34,20 +26,6 @@ function Sidebar({ onClose }: Props) {
             key={route.title}
           />
         ))}
-        <div
-          className={c(styles.routeLink, {
-            [styles.active]: router.pathname === "/stake-plus",
-          })}
-        >
-          <Link href={stakerouteLink.path} key={stakerouteLink.path}>
-            {stakerouteLink.title}
-          </Link>
-          {stakerouteLink.symbal ? (
-            <span className={c(styles.textSuper)}>{stakerouteLink.symbal}</span>
-          ) : (
-            ""
-          )}
-        </div>
       </div>
       <HelpBtn />
     </div>

@@ -2,11 +2,12 @@ import React from "react";
 import { InfoOutlined } from "@material-ui/icons";
 import Router from "next/router";
 import { Button } from "../../atoms";
+import { NATIVE_TOKEN_LABEL } from "@constants/constants";
 
 function Deposit() {
   return (
     <div className="zeroStateContent">
-      <p className="header">You’ve not deposited any LUNA yet</p>
+      <p className="header">You’ve not deposited any {NATIVE_TOKEN_LABEL} yet</p>
       <Button
         variant={"solid"}
         size={"large"}

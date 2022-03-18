@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { getContractByName } from "@utils/contractFilters";
-import { lunaFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import { Box, Button, Divider, Typography } from "../../atoms";
 import PortfolioNoItem from "@molecules/PortfolioNoItem/PortfolioNoItem";
 import SPDepositUndelegateModal from "@molecules/SPDepositUndelegateModal/SPDepositUndelegateModal";
@@ -8,7 +8,7 @@ import { defaultDepositUndelegationProps } from "@constants/sp-portfolio";
 import { SPDepositUndelegationModalProps } from "@types_/portfolio";
 import PoolDescription from "@molecules/PoolDescription/PoolDescription";
 import styles from "./PortfolioMHDeposits.module.scss";
-import SPManageHoldingLunaLists from "@molecules/SPManageHoldingLunaLists/SPManageHoldingLunaLists";
+import SPManageHoldingNativeTokenLists from "@molecules/SPManageHoldingNativeTokenLists/SPManageHoldingNativeTokenLists";
 
 interface Props {
   contracts: any;
@@ -49,14 +49,14 @@ function PortfolioMHDeposits({
       <Box noPadding>
         {poolsInfo.length &&
           poolsInfo.map((pool: any, index: number) => (
-            <SPManageHoldingLunaLists
+            <SPManageHoldingNativeTokenLists
               key={pool.pool_id}
               label={<PoolDescription name={pool.pool_name} />}
               value={
                 pool.computed_deposit && pool.computed_deposit > 0
-                  ? lunaFormatter(pool.computed_deposit)
+                  ? nativeTokenFormatter(pool.computed_deposit)
                   : pool.deposit.staked > 0
-                  ? lunaFormatter(pool.deposit.staked)
+                  ? nativeTokenFormatter(pool.deposit.staked)
                   : 0
               }
               button={

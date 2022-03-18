@@ -1,8 +1,13 @@
 import {
-  LUNA_MULTIPLIER,
+
+  NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
+  NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
+  LIQUID_NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_MULTIPLIER,
   tokenLabel,
   urls,
-  ustFee,
+  ustFee
 } from "@constants/constants";
 import { Formik } from "formik";
 import { Divider, Loader, SuccessAnimation, Typography } from "../../atoms";
@@ -12,12 +17,8 @@ import { ButtonOutlined } from "@atoms/Button/Button";
 import styles from "./LSPoolsFormLaToLx.module.scss";
 import * as Yup from "yup";
 import { NumberInput } from "@terra-dev/neumorphism-ui/components/NumberInput";
-import {
-  LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
-  LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
-} from "@anchor-protocol/notation";
 import { InputAdornment } from "@material-ui/core";
-import { lunaFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 
 interface Props {
   tvlExchangeRate: number;
@@ -35,20 +36,20 @@ function LSPoolsFormLxToLa(props: Props) {
     minimumDeposit,
   } = props;
 
-  const { outputAmountLunaxToLuna, handleUnstake, unStakingMutation } =
+  const { outputAmountLiquidNativeTokenToNativeToken, handleUnstake, unStakingMutation } =
     useLSPoolsForm();
 
-  const availableAmount = (holding / LUNA_MULTIPLIER).toFixed(6);
-  const minDep = lunaFormatter(minimumDeposit);
+  const availableAmount = (holding / NATIVE_TOKEN_MULTIPLIER).toFixed(6);
+  const minDep = nativeTokenFormatter(minimumDeposit);
 
   const validation = Yup.object().shape({
-    lunax: Yup.number()
+    liquidNativeToken: Yup.number()
       .max(
         Number(availableAmount),
-        `Unstake amount should be less than ${availableAmount} LUNA`
+        `Unstake amount should be less than ${availableAmount} ${NATIVE_TOKEN_LABEL}`
       )
-      .min(minDep, `Unstake amount should be more than ${minDep} LUNA`)
-      .required(`Unstake amount should be more than ${minDep} LUNA`),
+      .min(minDep, `Unstake amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`)
+      .required(`Unstake amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`),
     ust: Yup.number().moreThan(ustFee, "Not enough ust for transaction fees"),
   });
 
@@ -75,13 +76,13 @@ function LSPoolsFormLxToLa(props: Props) {
   return (
     <Formik
       initialValues={{
-        luna: 0,
-        lunax: 0,
+        nativeToken: 0,
+        liquidNativeToken: 0,
         ust: ustWalletBalance,
       }}
       onSubmit={(values) => {
-        if (values.lunax) {
-          handleUnstake(values.lunax);
+        if (values.liquidNativeToken) {
+          handleUnstake(values.liquidNativeToken);
         }
       }}
       validationSchema={validation}
@@ -90,49 +91,49 @@ function LSPoolsFormLxToLa(props: Props) {
         const { handleSubmit, getFieldProps, setFieldValue, values, errors } =
           formik;
 
-        const lunaProps = getFieldProps("luna");
-        const lunaxProps = getFieldProps("lunax");
+        const nativeTokenProps = getFieldProps("nativeToken");
+        const liquidNativeTokenProps = getFieldProps("liquidNativeToken");
         return (
           <form onSubmit={handleSubmit}>
             <div className={styles.available_amount_validation}>
               <Typography variant={"body3"} color={"secondary"}>
-                Available: {availableAmount} LunaX
+                Available: {availableAmount} {LIQUID_NATIVE_TOKEN_LABEL}
               </Typography>
 
               <Typography
                 variant={"body3"}
               >{`1 ${tokenLabel} = ${tvlExchangeRate.toFixed(
                 6
-              )} LUNA`}</Typography>
+              )} ${NATIVE_TOKEN_LABEL}`}</Typography>
             </div>
-            {errors.lunax && (
+            {errors.liquidNativeToken && (
               <Typography
                 variant={"caption1"}
                 color={"textSecondary"}
                 fontWeight={"medium"}
                 className={"block mt-3 text-center"}
               >
-                {errors.lunax}
+                {errors.liquidNativeToken}
               </Typography>
             )}
             <div className={"mt-4 mb-8 relative"}>
               <NumberInput
-                {...lunaxProps}
-                maxIntegerPoinsts={LUNA_INPUT_MAXIMUM_INTEGER_POINTS}
-                maxDecimalPoints={LUNA_INPUT_MAXIMUM_DECIMAL_POINTS}
+                {...liquidNativeTokenProps}
+                maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
+                maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
                 label="Enter Amount"
                 onChange={(e) => {
                   let value = e.target.value;
                   setFieldValue(
-                    "luna",
-                    outputAmountLunaxToLuna(value, tvlExchangeRate)
+                    "nativeToken",
+                    outputAmountLiquidNativeTokenToNativeToken(value, tvlExchangeRate)
                   );
-                  setFieldValue("lunax", value);
+                  setFieldValue("liquidNativeToken", value);
                 }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end" className="text-white">
-                      <span className={"text-white"}>LunaX</span>
+                      <span className={"text-white"}>{LIQUID_NATIVE_TOKEN_LABEL}</span>
                     </InputAdornment>
                   ),
                 }}
@@ -144,18 +145,18 @@ function LSPoolsFormLxToLa(props: Props) {
             </div>
             <div className={"mb-6"}>
               <NumberInput
-                {...lunaProps}
-                maxIntegerPoinsts={LUNA_INPUT_MAXIMUM_INTEGER_POINTS}
-                maxDecimalPoints={LUNA_INPUT_MAXIMUM_DECIMAL_POINTS}
+                {...nativeTokenProps}
+                maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
+                maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
                 label="Output Amount"
-                value={lunaProps.value}
+                value={nativeTokenProps.value}
                 onChange={() => {
                   return "";
                 }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <span className={"text-white"}>LUNA</span>
+                      <span className={"text-white"}>{NATIVE_TOKEN_LABEL}</span>
                     </InputAdornment>
                   ),
                 }}
@@ -165,14 +166,14 @@ function LSPoolsFormLxToLa(props: Props) {
             <div className={styles.percentage_buttons_container}>
               <PercentageButtons
                 total={availableAmount}
-                activeValue={lunaxProps.value}
+                activeValue={liquidNativeTokenProps.value}
                 onClick={(value) => {
                   let val = Number(availableAmount) * value;
                   setFieldValue(
-                    "luna",
-                    outputAmountLunaxToLuna(val, tvlExchangeRate)
+                    "nativeToken",
+                    outputAmountLiquidNativeTokenToNativeToken(val, tvlExchangeRate)
                   );
-                  formik.setFieldValue("lunax", val.toFixed(6));
+                  formik.setFieldValue("liquidNativeToken", val.toFixed(6));
                 }}
               />
               <Typography variant={"body3"} color={"textSecondary"}>
@@ -181,14 +182,14 @@ function LSPoolsFormLxToLa(props: Props) {
             </div>
             <Divider color={"gradient"} />
             <div>
-              <div className={styles.lunax_to_luna_info}>
+              <div className={styles.liquidNativeToken_to_nativeToken_info}>
                 <Typography
                   variant={"body3"}
                   fontWeight={"medium"}
                   color={"secondary"}
                   component="li"
                 >
-                  Unstaking takes 21-24 days to unlock Luna. Unlock Luna
+                  Unstaking takes 21-24 days to unlock {NATIVE_TOKEN_LABEL}. Unlock {NATIVE_TOKEN_LABEL}
                   instantly{" "}
                   <a
                     href={urls.terraSwapSwap}
@@ -211,7 +212,7 @@ function LSPoolsFormLxToLa(props: Props) {
               </div>
             </div>
             <div className="mt-6 flex justify-center">
-              <ButtonOutlined size={"large"} disabled={!Boolean(values.lunax)}>
+              <ButtonOutlined size={"large"} disabled={!Boolean(values.liquidNativeToken)}>
                 Unstake
               </ButtonOutlined>
             </div>

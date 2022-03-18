@@ -10,7 +10,7 @@ import { useAppContext } from "../../../libs/appContext";
 import greenTick from "../../assets/svg/check_success.svg";
 import { CheckCircle, Info } from "@material-ui/icons";
 import classNames from "classnames";
-import useHashConnect from "@hooks/useHashConnect";
+import { NATIVE_TOKEN_LABEL } from "@constants/constants";
 
 const WalletSelector = ({
   variant,
@@ -26,18 +26,6 @@ const WalletSelector = ({
     anchorEl: null,
   });
   const { walletBalance } = useAppContext();
-  const {
-    connect,
-    walletData,
-    installedExtensions,
-    associateToken,
-    accountInfo,
-    status,
-  } = useHashConnect();
-
-  const { accountIds, network, id } = walletData;
-
-  // holding={accountInfo?.balance.toBigNumber().toNumber() || 0}
 
   const wallet: any = useWallet();
   const {
@@ -48,10 +36,13 @@ const WalletSelector = ({
     installWallet,
   } = useWalletInfo();
 
-  const isWalletConnected: boolean = status === WalletStatus.WALLET_CONNECTED;
-  const isWalletInitializing: boolean = status === WalletStatus.INITIALIZING;
+  const isWalletConnected: boolean =
+    wallet.status === WalletStatus.WALLET_CONNECTED;
+  const isWalletInitializing: boolean =
+    !wallet || wallet.status === WalletStatus.INITIALIZING;
   const isWalletDisconnected: boolean =
-    status === WalletStatus.WALLET_NOT_CONNECTED;
+    wallet.wallets.length === 0 ||
+    wallet.status === WalletStatus.WALLET_NOT_CONNECTED;
 
   const openModal = (e: any) => {
     setModal({ open: true, anchorEl: e.currentTarget });
@@ -67,16 +58,15 @@ const WalletSelector = ({
         fontWeight={"medium"}
         className={"inline ml-4 capitalize"}
       >
-        {accountInfo?.accountId.toString()}
+        {truncatedWalletAddress}
       </Typography>
       <div className={styles.divider} />
       <Typography variant={"body2"} fontWeight={"bold"} className={"mr-1"}>
-        {console.log(accountInfo?.balance.toString())}
-        {accountInfo?.balance.toBigNumber().toNumber()}
+        {walletBalance}
       </Typography>
-      {/* <Typography variant={"body3"} fontWeight={"bold"} className={"inline"}>
-        HBAR
-      </Typography> */}
+      <Typography variant={"body3"} fontWeight={"bold"} className={"inline"}>
+        {NATIVE_TOKEN_LABEL}
+      </Typography>
     </>
   );
 
@@ -114,7 +104,7 @@ const WalletSelector = ({
           </div>
         }
         className={"px-4 items-center flex"}
-        onClick={connect}
+        onClick={openModal}
         size={size || "small"}
         id="wallet-button"
       >
@@ -124,35 +114,14 @@ const WalletSelector = ({
   };
 
   const renderWalletButton = useCallback(() => {
-    // console.log("accountInfo", accountInfo?.balance.hbars?.toString());
     if (isWalletInitializing) {
       return <WalletButton>Initializing Wallet...</WalletButton>;
     }
     if (isWalletDisconnected) {
       return <WalletButton>Connect Wallet</WalletButton>;
     }
-    return (
-      <WalletButton>
-        <>
-          <Typography
-            variant={"body2"}
-            fontWeight={"medium"}
-            className={"inline ml-4 capitalize"}
-          >
-            {accountInfo?.accountId.toString()}
-          </Typography>
-          <div className={styles.divider} />
-          <Typography variant={"body2"} fontWeight={"bold"} className={"mr-1"}>
-            {console.log(accountInfo?.balance.toString())}
-            {accountInfo?.balance.toBigNumber().toNumber()}
-          </Typography>
-          {/* <Typography variant={"body3"} fontWeight={"bold"} className={"inline"}>
-        HBAR
-      </Typography> */}
-        </>
-      </WalletButton>
-    );
-  }, [status, accountInfo]);
+    return <WalletButton>{walletButtonElements}</WalletButton>;
+  }, [wallet.status, walletBalance]);
 
   const iconOnlyWalletButton = useCallback(() => {
     // if(isWalletInitializing){
@@ -178,7 +147,7 @@ const WalletSelector = ({
       </div>
     );
     // }
-  }, [status, accountInfo]);
+  }, [wallet.status, walletBalance]);
 
   return (
     <div style={{ position: "relative" }}>

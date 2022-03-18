@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, Typography } from "../../atoms";
 import { Button } from "@atoms/index";
-import { lunaFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import { getContractByName } from "@utils/contractFilters";
 import { useRewardsDialog } from "../../../dialogs/useRewardsDialog";
 import { useUndelegateRewardsDialog } from "../../../dialogs/useUndelegateRewardsDialog";
 import styles from "./PortfolioMHRewards.module.scss";
-import SPManageHoldingLunaLists from "@molecules/SPManageHoldingLunaLists/SPManageHoldingLunaLists";
+import SPManageHoldingNativeTokenLists from "@molecules/SPManageHoldingNativeTokenLists/SPManageHoldingNativeTokenLists";
 
 interface Props {
   rewards: any[];
@@ -27,7 +27,7 @@ export default function PortfolioMHReward({ rewards, contracts }: Props) {
         {rewards &&
           rewards.length > 0 &&
           rewards.map((rewardInfo: any) => (
-            <SPManageHoldingLunaLists
+            <SPManageHoldingNativeTokenLists
               key={rewardInfo.strategy_id}
               label={
                 <Typography
@@ -40,7 +40,7 @@ export default function PortfolioMHReward({ rewards, contracts }: Props) {
                     : "Auto Compounding"}
                 </Typography>
               }
-              value={lunaFormatter(parseInt(rewardInfo.total_rewards))}
+              value={nativeTokenFormatter(parseInt(rewardInfo.total_rewards))}
               button={
                 <Button
                   disabled={parseInt(rewardInfo.total_rewards) < 1000}

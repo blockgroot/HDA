@@ -3,7 +3,7 @@ import useClipboard from "react-use-clipboard";
 import Divider from "../../atoms/Divider/Divider";
 import { Button, Typography } from "../../atoms";
 import ListItem from "../../atoms/ListItem/ListItem";
-import { urls } from "@constants/constants";
+import { NATIVE_TOKEN_LABEL, urls } from "@constants/constants";
 import styles from "./WalletSelector.module.scss";
 import {
   Connection,
@@ -54,7 +54,7 @@ export const ConnectedWalletModal: FC<ConnectedProps> = (props) => {
       <Divider color={"gradient"} />
       <ListItem className={"py-4"}>
         <Typography fontWeight={"bold"} variant={"body2"}>
-          LUNA
+          {NATIVE_TOKEN_LABEL}
         </Typography>
         <Typography fontWeight={"bold"} variant={"body2"}>
           {walletBalance}
@@ -94,24 +94,10 @@ export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
           onClick={() => installWallet(ConnectType.CHROME_EXTENSION)}
           size={"small"}
         >
-          <Typography fontWeight={"medium"}>Load Terra Wallet</Typography>
+          <Typography fontWeight={"medium"}>HashPack Wallet</Typography>
         </Button>
       )}
 
-      {wallet.availableConnections
-        .filter((t) => t.type != ConnectType.READONLY)
-        .map((type) => (
-          <Button
-            variant={"flat"}
-            childClassName={"px-5"}
-            parentClassName={"mt-4 w-full"}
-            onClick={() => connectWallet(type)}
-            key={type.type}
-            size={"small"}
-          >
-            <Typography fontWeight={"medium"}>{type.name}</Typography>
-          </Button>
-        ))}
       <Typography
         fontWeight={"bold"}
         className={"text-white mt-5 text-center"}

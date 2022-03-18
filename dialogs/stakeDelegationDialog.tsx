@@ -1,16 +1,18 @@
 import React, { useCallback, useState } from "react";
 import { Grid, InputAdornment, Modal } from "@material-ui/core";
-import {
-  LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
-  LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
-} from "@anchor-protocol/notation";
 import { Dialog } from "@terra-dev/neumorphism-ui/components/Dialog";
 import { useDialog } from "@terra-dev/use-dialog";
 import { MsgExecuteContract, StdFee } from "@terra-money/terra.js";
 import { NumberInput } from "@terra-dev/neumorphism-ui/components/NumberInput";
 import arrowBack from "../assets/svg/arrow_back.svg";
-import { lunaFormatter } from "../utils/CurrencyHelper";
-import { LUNA_MULTIPLIER, ustFee } from "../constants/constants";
+import { nativeTokenFormatter } from "../utils/CurrencyHelper";
+import {
+  NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
+  NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
+  NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_MULTIPLIER,
+  ustFee,
+} from "../constants/constants";
 import { toUserReadableError } from "@utils/ErrorHelper";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
 import { useAppContext } from "@libs/appContext";
@@ -68,7 +70,7 @@ function StakeDelegationDialog({
 
   const updateUndelegateAmount = useCallback(
     (nextUndelegateAmount, maxUserAmount) => {
-      const userAmount = lunaFormatter(Number(maxUserAmount));
+      const userAmount = nativeTokenFormatter(Number(maxUserAmount));
       if (ustBalance < ustFee) {
         setValidationMsg("Not enough UST to pay for gas fees");
       } else if (nextUndelegateAmount > userAmount) {
@@ -134,7 +136,7 @@ function StakeDelegationDialog({
       const msg = new MsgExecuteContract(walletAddress, contractAddress, {
         queue_undelegate: {
           amount: `${(
-            parseFloat(undelegateAmount) * LUNA_MULTIPLIER
+            parseFloat(undelegateAmount) * NATIVE_TOKEN_MULTIPLIER
           ).toFixed()}`,
         },
       });
@@ -216,10 +218,10 @@ function StakeDelegationDialog({
                     </Grid>
                     <Grid item xs={4} md={4}>
                       <p className="row-item txt-center">
-                        {lunaFormatter(
+                        {nativeTokenFormatter(
                           item?.user_info?.total_amount?.amount
                         ).toFixed(6)}{" "}
-                        LUNA
+                        {NATIVE_TOKEN_LABEL}
                       </p>
                     </Grid>
                     <Grid item xs={4} md={4}>
@@ -287,8 +289,12 @@ function StakeDelegationDialog({
                       style={{ fontSize: 20 }}
                       className="amount"
                       value={undelegateAmount}
-                      maxIntegerPoinsts={LUNA_INPUT_MAXIMUM_INTEGER_POINTS}
-                      maxDecimalPoints={LUNA_INPUT_MAXIMUM_DECIMAL_POINTS}
+                      maxIntegerPoinsts={
+                        NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS
+                      }
+                      maxDecimalPoints={
+                        NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS
+                      }
                       label="AMOUNT"
                       onChange={({ target }) => {
                         setSelectedPercentage("");
@@ -299,7 +305,9 @@ function StakeDelegationDialog({
                       }}
                       InputProps={{
                         endAdornment: (
-                          <InputAdornment position="end">LUNA</InputAdornment>
+                          <InputAdornment position="end">
+                            {NATIVE_TOKEN_LABEL}
+                          </InputAdornment>
                         ),
                       }}
                     />
@@ -321,7 +329,7 @@ function StakeDelegationDialog({
                             updateUndelegateAmount(
                               (
                                 0.25 *
-                                lunaFormatter(
+                                nativeTokenFormatter(
                                   Number(
                                     validatorData?.user_info?.total_amount
                                       ?.amount
@@ -349,7 +357,7 @@ function StakeDelegationDialog({
                             updateUndelegateAmount(
                               (
                                 0.5 *
-                                lunaFormatter(
+                                nativeTokenFormatter(
                                   Number(
                                     validatorData?.user_info?.total_amount
                                       ?.amount
@@ -377,7 +385,7 @@ function StakeDelegationDialog({
                             updateUndelegateAmount(
                               (
                                 0.75 *
-                                lunaFormatter(
+                                nativeTokenFormatter(
                                   Number(
                                     validatorData?.user_info?.total_amount
                                       ?.amount
@@ -403,7 +411,7 @@ function StakeDelegationDialog({
                           className="optionItemText"
                           onClick={() =>
                             updateUndelegateAmount(
-                              lunaFormatter(
+                              nativeTokenFormatter(
                                 Number(
                                   validatorData?.user_info?.total_amount?.amount
                                 )

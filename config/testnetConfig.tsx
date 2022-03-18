@@ -27,14 +27,6 @@ export const testnetConfig = {
     messagingSenderId: "1011749195359",
     appId: "1:1011749195359:web:05482da2d1f6cbabd755ea",
   },
-  stakePlus: {
-    terravaloper1vk20anceu6h9s00d27pjlvslz3avetkvnwmr35:
-      "terra1n85jtvzwjc7lmj8wrjzgwrdygf8utwn9g7w0z7",
-    terravaloper1krj7amhhagjnyg2tkkuh6l0550y733jnjnnlzy:
-      "terra1l46z78v2mueqeaa9s6qjqtuefrnyrelpzllqhx",
-    terravaloper17qy25m5v2j42ye880n3xk2exz5tedsfe4p8w3c:
-      "terra1x2efanc92tfuj4cswje2u8dzvzezcukc53rrlr",
-  },
   validatorAprs: {
     terravaloper1vk20anceu6h9s00d27pjlvslz3avetkvnwmr35: "10",
     terravaloper1krj7amhhagjnyg2tkkuh6l0550y733jnjnnlzy: "12",

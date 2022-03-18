@@ -1,6 +1,12 @@
 import { MsgExecuteContract, StdFee } from "@terra-money/terra.js";
 import { config } from "../config/config";
-import { LUNA_MULTIPLIER, ustFee, ustFeeStaking } from "@constants/constants";
+import {
+  LIQUID_NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_MULTIPLIER,
+  ustFee,
+  ustFeeStaking,
+} from "@constants/constants";
 import { useAppContext } from "@libs/appContext";
 import { useWallet } from "@terra-money/wallet-provider";
 import { useMutation, useQueryClient } from "react-query";
@@ -30,7 +36,7 @@ function useLSPoolsForm() {
         {
           deposit: {},
         },
-        { uluna: (amount * LUNA_MULTIPLIER).toFixed() }
+        { uNativeToken: (amount * NATIVE_TOKEN_MULTIPLIER).toFixed() }
       );
 
       const txResult: any = await postTransaction(
@@ -61,7 +67,7 @@ function useLSPoolsForm() {
 
       return {
         success: true,
-        message: `Staking of ${amount} LUNA is successful!`,
+        message: `Staking of ${amount} ${NATIVE_TOKEN_LABEL} is successful!`,
       };
     } catch (err: any) {
       console.error(err);
@@ -79,7 +85,7 @@ function useLSPoolsForm() {
       const msg = new MsgExecuteContract(walletAddress, tokenAddress, {
         send: {
           contract: contractAddress,
-          amount: (amount * LUNA_MULTIPLIER).toFixed(),
+          amount: (amount * NATIVE_TOKEN_MULTIPLIER).toFixed(),
           msg: Buffer.from(
             JSON.stringify({
               queue_undelegate: {},
@@ -140,7 +146,7 @@ function useLSPoolsForm() {
 
       return {
         success: true,
-        message: `Unstaking of ${amount} LunaX is successful!`,
+        message: `Unstaking of ${amount} ${LIQUID_NATIVE_TOKEN_LABEL} is successful!`,
       };
     } catch (err: any) {
       throw new Error(err);
@@ -178,7 +184,10 @@ function useLSPoolsForm() {
       return {};
     }
   };
-  const outputAmountLunax = (value: string | number, exchangeRate: number) => {
+  const outputAmountLiquidNativeToken = (
+    value: string | number,
+    exchangeRate: number
+  ) => {
     if (!value || !exchangeRate) {
       return "";
     }
@@ -186,7 +195,7 @@ function useLSPoolsForm() {
     return (Number(value) / exchangeRate).toFixed(6);
   };
 
-  const outputAmountLunaxToLuna = (
+  const outputAmountLiquidNativeTokenToNativeToken = (
     value: string | number,
     exchangeRate: number
   ) => {
@@ -202,10 +211,11 @@ function useLSPoolsForm() {
     isLoading: stakingMutation.isLoading,
     resetQuery: stakingMutation.reset,
     data: stakingMutation.data,
-    outputAmountLunax,
+    outputAmountLiquidNativeToken: outputAmountLiquidNativeToken,
     handleUnstake: unStakingMutation.mutate,
     unStakingMutation,
-    outputAmountLunaxToLuna,
+    outputAmountLiquidNativeTokenToNativeToken:
+      outputAmountLiquidNativeTokenToNativeToken,
   };
 }
 

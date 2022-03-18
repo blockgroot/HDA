@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { lunaFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import { PortfolioDataType } from "@types_/portfolio";
+import { NATIVE_TOKEN_LABEL } from "@constants/constants";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -44,7 +45,7 @@ function PortfolioMyHoldingChart(props: ValueProps) {
       enabled: isTotal,
       y: {
         formatter: function (value: any) {
-          return `${lunaFormatter(value)} LUNA`; // The formatter function overrides format property
+          return `${nativeTokenFormatter(value)} ${NATIVE_TOKEN_LABEL}`; // The formatter function overrides format property
         },
       },
     },
@@ -61,14 +62,14 @@ function PortfolioMyHoldingChart(props: ValueProps) {
     let series = [100];
     if (portfolioBreakDown.total > 0) {
       let totalAirdrops =
-        airdrops.anc.amountInLuna +
-        airdrops.mir.amountInLuna +
-        airdrops.mine.amountInLuna +
-        airdrops.vkr.amountInLuna +
-        airdrops.orion.amountInLuna +
-        airdrops.twd.amountInLuna;
+        airdrops.anc.amountInNativeToken +
+        airdrops.mir.amountInNativeToken +
+        airdrops.mine.amountInNativeToken +
+        airdrops.vkr.amountInNativeToken +
+        airdrops.orion.amountInNativeToken +
+        airdrops.twd.amountInNativeToken;
 
-      totalAirdrops = lunaFormatter(totalAirdrops);
+      totalAirdrops = nativeTokenFormatter(totalAirdrops);
 
       series = [totalAirdrops, total_rewards, deposits];
     }

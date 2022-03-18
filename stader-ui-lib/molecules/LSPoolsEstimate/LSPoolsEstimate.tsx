@@ -1,6 +1,4 @@
-import { InfoOutlined } from "@material-ui/icons";
-import { Tooltip } from "@material-ui/core";
-import { LUNA_MULTIPLIER } from "@constants/constants";
+import { LIQUID_NATIVE_TOKEN_LABEL, NATIVE_TOKEN_LABEL, NATIVE_TOKEN_MULTIPLIER } from "@constants/constants";
 import { Box, Loader, Typography } from "../../atoms";
 import { demicrofy, formatUST } from "@anchor-protocol/notation";
 import styles from "./LSPoolsEstimate.module.scss";
@@ -11,38 +9,23 @@ type Props = {
   tvl: any;
   holdings: number;
   isLoading: boolean;
-  tokenX: string;
-  token: string;
-  apy: number;
-  isAssocciated: boolean;
-};
-
-const deaultValue: Props = {
-  tvl: 0,
-  holdings: 0,
-  isLoading: false,
-  tokenX: "HbarX",
-  token: "Hbar",
-  apy: 9.86,
-  isAssocciated: false,
 };
 
 function LSPoolsEstimate(props: Props) {
-  const { tvl, holdings, isLoading, tokenX, apy, token, isAssocciated } = props;
+  const { tvl, holdings, isLoading } = props;
 
   const renderElement = (
     <>
       <div className="lg:mb-8">
         <Typography variant={"body1"} fontWeight={"bold"}>
-          My {tokenX}
+          My {LIQUID_NATIVE_TOKEN_LABEL}
         </Typography>
         <Typography
-          variant={"h3"}
+          variant={"h2"}
           fontWeight={"medium"}
           className={classNames("mt-3", styles.value)}
         >
-          {/* {(holdings / LUNA_MULTIPLIER).toFixed(6)} */}
-          {isAssocciated ? holdings : "Token not associated"}
+          {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(6)}
         </Typography>
       </div>
 
@@ -64,7 +47,7 @@ function LSPoolsEstimate(props: Props) {
           fontWeight={"medium"}
           className={styles.value}
         >
-          {apy} %
+          9.86%
         </Typography>
       </div>
       <div>
@@ -77,14 +60,13 @@ function LSPoolsEstimate(props: Props) {
             fontWeight={"medium"}
             className={classNames("mr-2 text-gradient", styles.value)}
           >
-            {tvl / 100000000}
+            {formatUST(demicrofy(tvl.uNativeToken)).split(".")[0]}
           </Typography>
           <Typography
             variant={"body2"}
             color={"secondary"}
-            className={styles.luna}
           >
-            {token}
+            {NATIVE_TOKEN_LABEL}
           </Typography>
         </div>
       </div>

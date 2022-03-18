@@ -2,10 +2,10 @@ import { FC, useEffect } from "react";
 import c from "classnames";
 import CloseIcon from "@material-ui/icons/Close";
 
-import NavItem, { Route } from "./NavItem";
+import NavItem from "./NavItem";
 import styles from "./Sidebar.module.scss";
 import Help from "../common/Help";
-import Link from "next/link";
+import { routes } from "@constants/routes";
 
 interface Props {
   activePage: string;
@@ -13,55 +13,11 @@ interface Props {
   onToggleSidebar?: (hide: Boolean) => void;
 }
 
-const routes: Route[] = [
-  // {
-  //   title: "Stake Pools",
-  //   pages: [
-  //     {
-  //       label: "Pools",
-  //       path: "/pools",
-  //     },
-  //     {
-  //       label: "Strategies",
-  //       path: "/strategies",
-  //     },
-  //     {
-  //       label: "Portfolio",
-  //       path: "/portfolio",
-  //     },
-  //   ],
-  // },
-  {
-    title: "Liquid Staking",
-    pages: [
-      {
-        label: "Pools",
-        path: "/lt-pools",
-      },
-      // {
-      //   label: "Rewards",
-      //   path: "/lt-rewards",
-      // },
-    ],
-  },
-];
-// const coinlistRoute = {
-// 	title: "CoinList Sale",
-// 	path: "/coinlist-sale",
-// }
-
-const stakerouteLink = {
-  title: "Stake",
-  path: "/stake-plus",
-  symbal: "+",
-};
-
 const Sidebar: FC<Props> = ({
   activePage,
   hide = false,
   onToggleSidebar = () => {},
 }: Props) => {
-  const currentRouteIsStakePlus = activePage;
   return (
     <div className={c(styles.sidebar, hide ? styles.hide : styles.show)}>
       <div className={styles.header}>
@@ -74,7 +30,7 @@ const Sidebar: FC<Props> = ({
         ))}
       </div>
       <div className={styles.ovl} onClick={() => onToggleSidebar(!hide)} />
-      <div style={{ flex: 1 }}></div>
+      <div style={{ flex: 1 }}/>
       <Help className={styles.helpBtn} />
     </div>
   );

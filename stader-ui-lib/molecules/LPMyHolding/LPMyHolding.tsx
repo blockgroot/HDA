@@ -1,7 +1,7 @@
 import {
-  ADD_LIQUIDITY_APR,
-  LT_SD_TOKENS_FARMED_PER_DAY,
-  urls,
+  ADD_LIQUIDITY_APR, LIQUID_NATIVE_TOKEN_LABEL,
+  LT_SD_TOKENS_FARMED_PER_DAY, NATIVE_TOKEN_LABEL,
+  urls
 } from "../../../constants/constants";
 import { Box, Divider, Loader, Typography } from "../../atoms";
 import styles from "./LPMyHolding.module.scss";
@@ -10,14 +10,14 @@ import { InfoOutlined } from "@material-ui/icons";
 import SDTooltip from "@atoms/SDTooltip/SDTooltip";
 
 interface Props {
-  lunaTokens: number;
-  lunaXTokens: number;
+  nativeTokenTokens: number;
+  liquidNativeTokenTokens: number;
   isLoading: boolean;
 }
 
 export default function LPMyHolding({
-  lunaTokens,
-  lunaXTokens,
+  nativeTokenTokens,
+  liquidNativeTokenTokens,
   isLoading,
 }: Props) {
   return (
@@ -41,18 +41,18 @@ export default function LPMyHolding({
           <>
             <div className="flex mb-5">
               <img
-                src={"/static/lunax.png"}
-                alt={"lunax"}
+                src={"/static/liquidNativeToken.png"}
+                alt={LIQUID_NATIVE_TOKEN_LABEL}
                 width={40}
                 className={"mr-4"}
               />
-              <img src={"/static/luna.png"} alt={"luna"} width={40} />
+              <img src={"/static/nativeToken.png"} alt={NATIVE_TOKEN_LABEL} width={40} />
             </div>
             <Typography variant={"body1"} fontWeight={"bold"}>
               My LP Holdings
             </Typography>
             <Typography variant={"body1"} className={"mt-5"}>
-              {lunaXTokens.toFixed(6)} LunaX - {lunaTokens.toFixed(6)} LUNA
+              {liquidNativeTokenTokens.toFixed(6)} {LIQUID_NATIVE_TOKEN_LABEL} - {nativeTokenTokens.toFixed(6)} {NATIVE_TOKEN_LABEL}
             </Typography>
             <div className="flex items-center mt-6">
               <Typography variant={"body1"}>APR</Typography>

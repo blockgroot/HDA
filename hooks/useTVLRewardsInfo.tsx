@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { config } from "../config/config";
 import { airdropsAPR } from "../constants/constants";
 
-import { lunaFormatter } from "../utils/CurrencyHelper";
+import { nativeTokenFormatter } from "../utils/CurrencyHelper";
 import { getContractByName } from "../utils/contractFilters";
-import { getLunaPrice } from "../services/currency";
+import { getNativeTokenPrice } from "../services/currency";
 import { getKyvApr } from "../services/rewards";
 import { useAppContext } from "../libs/appContext";
 import useWalletInfo from "./useWalletInfo";
@@ -28,7 +28,7 @@ const useTVLRewardsInfo = () => {
         get_all_contracts: {},
       });
 
-      const lunaPrice: any = await getLunaPrice();
+      const nativeTokenPrice: any = await getNativeTokenPrice();
 
       const poolsContractAddress = getContractByName(contracts, "Pools");
 
@@ -75,9 +75,9 @@ const useTVLRewardsInfo = () => {
           }
         )
       );
-      tvlRewards = Math.round(lunaFormatter(tvlRewards));
+      tvlRewards = Math.round(nativeTokenFormatter(tvlRewards));
       tvlRewardsInfo.tvlRewards = Math.round(
-        lunaFormatter(tvlRewardsInfo.tvlRewards)
+        nativeTokenFormatter(tvlRewardsInfo.tvlRewards)
       );
 
       return tvlRewardsInfo.tvlRewards;

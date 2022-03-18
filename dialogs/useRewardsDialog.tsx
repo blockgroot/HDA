@@ -5,8 +5,8 @@ import { defaultLiquidStakingState } from "@constants/sp-portfolio";
 import { useAppContext } from "@libs/appContext";
 import { Modal } from "@material-ui/core";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
-import { LunaXRedirectionInfo } from "@molecules/LunaXRedirectionInfo/LunaXRedirectionInfo";
-import { RedirectToLunaXTable } from "@molecules/RedirectToLunaXTable/RedirectToLunaXTable";
+import { LiquidNativeTokenRedirectionInfo } from "@molecules/LiquidNativeTokenRedirectionInfo/LiquidNativeTokenRedirectionInfo";
+import { RedirectToLiquidNativeTokenTable } from "@molecules/RedirectToLiquidNativeTokenTable/RedirectToLiquidNativeTokenTable";
 import { WithdrawFundTable } from "@molecules/WithdrawFundsTable/WithdrawFundsTable";
 import { Dialog } from "@terra-dev/neumorphism-ui/components/Dialog";
 import { useDialog } from "@terra-dev/use-dialog";
@@ -21,13 +21,15 @@ import Loader from "../components/common/Loader";
 import SDButton from "../components/common/SDButton";
 import SuccessAnimation from "../components/common/SuccessAnimation";
 import {
-  REDIRECT_TO_LUNAX,
+  REDIRECT_TO_LIQUID_NATIVE_TOKEN,
   ustFee,
-  ustConvertToLunaX,
+  ustConvertToLiquidNativeToken,
   WITHDRAW_FUNDS,
-  LINK_LUNAX_OVER_LUNA,
+  LINK_LIQUID_NATIVE_TOKEN_OVER_NATIVE_TOKEN,
+  NATIVE_TOKEN_LABEL,
+  LIQUID_NATIVE_TOKEN_LABEL,
 } from "../constants/constants";
-import { lunaFormatter } from "../utils/CurrencyHelper";
+import { nativeTokenFormatter } from "../utils/CurrencyHelper";
 import { toUserReadableError } from "../utils/ErrorHelper";
 
 export function useRewardsDialog() {
@@ -85,7 +87,7 @@ function RewardsDialog({
     });
   }, []);
 
-  const getLunaxMinted = (): number => {
+  const getLiquidNativeTokenMinted = (): number => {
     return rewards.total_rewards / parseFloat(liquidStakingState.exchange_rate);
   };
 
@@ -94,7 +96,7 @@ function RewardsDialog({
     logEvent(analytics, eventName);
   };
 
-  const redeemRewards = async (redirectToLunaX: boolean) => {
+  const redeemRewards = async (redirectToLuqidNativeToken: boolean) => {
     if (walletAddress && walletAddress !== "") {
       setSpinner(true);
       let msgs = [];
@@ -106,7 +108,7 @@ function RewardsDialog({
           },
         })
       );
-      if (redirectToLunaX) {
+      if (redirectToLuqidNativeToken) {
         msgs.push(
           new MsgExecuteContract(
             walletAddress,
@@ -114,7 +116,7 @@ function RewardsDialog({
             {
               deposit: {},
             },
-            { uluna: Math.floor(rewards.total_rewards) }
+            { uNativeToken: Math.floor(rewards.total_rewards) }
           )
         );
       }
@@ -127,11 +129,17 @@ function RewardsDialog({
         if (ustWalletBalance < ustFee || !ustWalletBalance) {
           throw Error("InsufficientUST");
         } else {
-          const txfee = redirectToLunaX ? ustConvertToLunaX : ustFee;
+          const txfee = redirectToLuqidNativeToken
+            ? ustConvertToLiquidNativeToken
+            : ustFee;
           const tx = await wallet.post({
             msgs,
             fee: new StdFee(fee.gas, `${(txfee * 1000000).toFixed()}uusd`),
-            memo: `${redirectToLunaX ? REDIRECT_TO_LUNAX : WITHDRAW_FUNDS}`,
+            memo: `${
+              redirectToLuqidNativeToken
+                ? REDIRECT_TO_LIQUID_NATIVE_TOKEN
+                : WITHDRAW_FUNDS
+            }`,
           });
 
           if (!(!!tx.result && !!tx.result.txhash)) {
@@ -147,11 +155,13 @@ function RewardsDialog({
                 );
               }, 5000);
             });
-            if (redirectToLunaX) {
-              setSuccessMessage(`${lunaFormatter(
+            if (redirectToLuqidNativeToken) {
+              setSuccessMessage(`${nativeTokenFormatter(
                 rewards.total_rewards
-              )} Luna has been exchanged for
-              ${lunaFormatter(getLunaxMinted())} LunaX!`);
+              )} ${NATIVE_TOKEN_LABEL} has been exchanged for
+              ${nativeTokenFormatter(
+                getLiquidNativeTokenMinted()
+              )} ${LIQUID_NATIVE_TOKEN_LABEL}!`);
             } else {
               setSuccessMessage("Your funds have been withdrawn!");
             }
@@ -205,8 +215,10 @@ function RewardsDialog({
               <div className="contract-details">
                 <div>
                   <p className="amount-display">
-                    {lunaFormatter(rewards.total_rewards)}{" "}
-                    <span className="amount-currency">LUNA</span>
+                    {nativeTokenFormatter(rewards.total_rewards)}{" "}
+                    <span className="amount-currency">
+                      {NATIVE_TOKEN_LABEL}
+                    </span>
                   </p>
                 </div>
                 <div className="charge">
@@ -218,7 +230,7 @@ function RewardsDialog({
                 </div>
               </div>
               <div className="mt-3">
-                <LunaXRedirectionInfo />
+                <LiquidNativeTokenRedirectionInfo />
               </div>
               <Typography fontWeight="bold" variant="body3" className="mt-3">
                 Select an option
@@ -228,18 +240,19 @@ function RewardsDialog({
                   withdrawFundsAction={redeemRewards}
                   isWithdrawFundsDialog={false}
                 />
-                <RedirectToLunaXTable
+                <RedirectToLiquidNativeTokenTable
                   withdrawFundsAction={redeemRewards}
                   isWithdrawFundsDialog={false}
                 />
               </div>
               <Link
-                href={LINK_LUNAX_OVER_LUNA}
+                href={LINK_LIQUID_NATIVE_TOKEN_OVER_NATIVE_TOKEN}
                 variant={"gradient"}
                 className="mt-10 place-content-center"
                 target={"_blank"}
               >
-                Why is LunaX better than Luna?
+                Why is {LIQUID_NATIVE_TOKEN_LABEL} better than{" "}
+                {NATIVE_TOKEN_LABEL}?
               </Link>
               {errMsg && errMsg !== "" && (
                 <div className="error-message">

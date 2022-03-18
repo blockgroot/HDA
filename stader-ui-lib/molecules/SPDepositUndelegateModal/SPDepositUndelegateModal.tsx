@@ -1,9 +1,5 @@
 import React, { useCallback, useState } from "react";
 import { getAnalytics, logEvent } from "firebase/analytics";
-import {
-  LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
-  LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
-} from "@anchor-protocol/notation";
 import { NumberInput } from "@terra-dev/neumorphism-ui/components/NumberInput";
 import { InputAdornment, Modal } from "@material-ui/core";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
@@ -11,7 +7,14 @@ import { Dialog } from "@terra-dev/neumorphism-ui/components/Dialog";
 import { MsgExecuteContract, StdFee } from "@terra-money/terra.js";
 
 import { toUserReadableError } from "@utils/ErrorHelper";
-import { messageMemo, ustFee } from "@constants/constants";
+import {
+  NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
+  NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
+  LIQUID_NATIVE_TOKEN_LABEL,
+  messageMemo,
+  NATIVE_TOKEN_LABEL,
+  ustFee
+} from "@constants/constants";
 import { Button, Loader, SuccessAnimation } from "@atoms/index";
 import { useAppContext } from "@libs/appContext";
 import { useWallet } from "@terra-money/wallet-provider";
@@ -173,7 +176,7 @@ function SPDepositUndelegateModal(props: SPDepositUndelegationModalProps) {
               <p className="dialogHeader">Undelegate</p>
               <div className="w-full flex justify-between mb-4">
                 <p className="title">{title}</p>
-                <p className="title">Deposited Luna: {maxAmount}</p>
+                <p className="title">Deposited {NATIVE_TOKEN_LABEL}: {maxAmount}</p>
               </div>
 
               <div>
@@ -181,8 +184,8 @@ function SPDepositUndelegateModal(props: SPDepositUndelegationModalProps) {
                   style={{ fontSize: 20 }}
                   className="amount"
                   value={undelegateAmount}
-                  maxIntegerPoinsts={LUNA_INPUT_MAXIMUM_INTEGER_POINTS}
-                  maxDecimalPoints={LUNA_INPUT_MAXIMUM_DECIMAL_POINTS}
+                  maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
+                  maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
                   label="AMOUNT"
                   onChange={({ target }) => {
                     setSelectedPercentage("");
@@ -190,7 +193,7 @@ function SPDepositUndelegateModal(props: SPDepositUndelegationModalProps) {
                   }}
                   InputProps={{
                     endAdornment: (
-                      <InputAdornment position="end">LUNA</InputAdornment>
+                      <InputAdornment position="end">{NATIVE_TOKEN_LABEL}</InputAdornment>
                     ),
                   }}
                 />
@@ -285,7 +288,7 @@ function SPDepositUndelegateModal(props: SPDepositUndelegationModalProps) {
                 <ul className={styles.list}>
                   <li>
                     Only 50% of the unvested Community Farming SD Rewards will
-                    vest if you Unstake Luna before July 20, 2022
+                    vest if you Unstake {NATIVE_TOKEN_LABEL} before July 20, 2022
                     <a
                       href="https://blog.staderlabs.com/cf-announcement-sd-token-vesting-562944044639"
                       target="_blank"
@@ -296,7 +299,7 @@ function SPDepositUndelegateModal(props: SPDepositUndelegationModalProps) {
                     </a>
                   </li>
                   <li>
-                    Move your Luna to Lunax at the time of withdrawal to keep SD token vesting as is.
+                    Move your {NATIVE_TOKEN_LABEL} to {LIQUID_NATIVE_TOKEN_LABEL} at the time of withdrawal to keep SD token vesting as is.
                   </li>
                   <li>
                     Undelegations are processed in 3-day batches and may take up

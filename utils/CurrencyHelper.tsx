@@ -1,10 +1,10 @@
-export function lunaFormatter(amount: number) {
+export function nativeTokenFormatter(amount: number) {
   let formattedAmount = parseFloat((amount / 1000000).toString()).toFixed(6);
 
   return parseFloat(formattedAmount);
 }
 
-export function lunaFormatterOrion(amount: number) {
+export function nativeTokenFormatterOrion(amount: number) {
   let formattedAmount = parseFloat((amount / 100000000).toString()).toFixed(8);
 
   return parseFloat(formattedAmount);
