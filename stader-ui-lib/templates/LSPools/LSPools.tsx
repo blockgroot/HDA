@@ -15,6 +15,7 @@ import { ContractConfigType } from "@types_/liquid-staking-pool";
 import useUserHolding from "@hooks/useUserHolding";
 import { useWallet, WalletStatus } from "@terra-money/wallet-provider";
 import { Grid } from "@material-ui/core";
+import AssociateNow from "@organisms/AssociateNow/AssociateNow";
 
 const { liquidStaking: contractAddress } = config.contractAddresses;
 
@@ -83,6 +84,7 @@ function LSPools() {
           />
         </Grid>
         <Grid item xs={12} md={8}>
+          <AssociateNow />
           <LSPoolsForm
             tvl={tvl}
             tvlLoading={tvlLoading}
