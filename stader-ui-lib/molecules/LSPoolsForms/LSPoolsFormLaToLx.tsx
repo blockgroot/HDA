@@ -4,7 +4,7 @@ import {
   LIQUID_NATIVE_TOKEN_LABEL,
   NATIVE_TOKEN_LABEL,
   tokenLabel,
-  ustFeeStaking
+  ustFeeStaking,
 } from "@constants/constants";
 import { Formik } from "formik";
 import { Divider, Loader, Typography } from "../../atoms";
@@ -14,7 +14,7 @@ import { ButtonOutlined } from "@atoms/Button/Button";
 import styles from "./LSPoolsFormLaToLx.module.scss";
 import DepositSuccess from "../DepositSuccess/DepositSuccess";
 import * as Yup from "yup";
-import { nativeTokenFormatter } from "@utils/CurrencyHelper";
+import { nativeTokenFormatter } from "../../../utils/CurrencyHelper";
 import { NumberInput } from "@terra-dev/neumorphism-ui/components/NumberInput";
 import { InputAdornment } from "@material-ui/core";
 
@@ -35,8 +35,13 @@ function LSPoolsFormLaToLx(props: Props) {
     ustWalletBalance,
   } = props;
 
-  const { handleStake, outputAmountLiquidNativeToken, isLoading, resetQuery, data } =
-    useLSPoolsForm();
+  const {
+    handleStake,
+    outputAmountLiquidNativeToken,
+    isLoading,
+    resetQuery,
+    data,
+  } = useLSPoolsForm();
 
   if (isLoading) return <Loader position={"center"} />;
   if (data?.success) {
@@ -47,9 +52,17 @@ function LSPoolsFormLaToLx(props: Props) {
 
   const validation = Yup.object().shape({
     nativeToken: Yup.number()
-      .max(maxDep, `Deposit amount should be less than ${maxDep} ${NATIVE_TOKEN_LABEL}`)
-      .min(minDep, `Deposit amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`)
-      .required(`Deposit amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`),
+      .max(
+        maxDep,
+        `Deposit amount should be less than ${maxDep} ${NATIVE_TOKEN_LABEL}`
+      )
+      .min(
+        minDep,
+        `Deposit amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`
+      )
+      .required(
+        `Deposit amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`
+      ),
     ust: Yup.number().moreThan(0.9, "Not enough ust for transaction fees"),
   });
 
@@ -136,7 +149,9 @@ function LSPoolsFormLaToLx(props: Props) {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end" className="text-white">
-                      <span className={"text-white"}>{LIQUID_NATIVE_TOKEN_LABEL}</span>
+                      <span className={"text-white"}>
+                        {LIQUID_NATIVE_TOKEN_LABEL}
+                      </span>
                     </InputAdornment>
                   ),
                 }}
