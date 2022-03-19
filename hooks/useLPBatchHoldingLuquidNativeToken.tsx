@@ -189,14 +189,14 @@ const useLPBatchHoldingLuquidNativeToken = () => {
     };
   };
 
-  const { data, isLoading, refetch } = useQuery<LiquidNativeTokenProps>(
+  const { data, isLoading, refetch } = useQuery(
     [LS_BATCHES_HOLDING, walletAddress],
     () => handleNativeTokenInfo(walletAddress),
     {
       enabled: false,
       onSuccess: (res) => {
         setBatches(res.batches);
-      },
+      }
     }
   );
 

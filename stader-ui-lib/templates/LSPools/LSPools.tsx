@@ -16,6 +16,7 @@ import useUserHolding from "@hooks/useUserHolding";
 import { useWallet, WalletStatus } from "@terra-money/wallet-provider";
 import { Grid } from "@material-ui/core";
 import AssociateNow from "@organisms/AssociateNow/AssociateNow";
+import { TOKEN_ID, useMockAccount, useTestnetClient } from "../../../mock/mock";
 
 const { liquidStaking: contractAddress } = config.contractAddresses;
 
@@ -26,6 +27,9 @@ const defaultConfig: ContractConfigType = {
 };
 
 function LSPools() {
+
+  const account = useMockAccount();
+  const client = useTestnetClient(account);
   const { terra } = useAppContext();
   const wallet = useWallet();
   const { tvl, tvlLoading } = useLSPoolsEstimate();
@@ -84,7 +88,7 @@ function LSPools() {
           />
         </Grid>
         <Grid item xs={12} md={8}>
-          <AssociateNow />
+          <AssociateNow isAssociated={false} account={account} tokenId={TOKEN_ID} client={client}/>
           <LSPoolsForm
             tvl={tvl}
             tvlLoading={tvlLoading}
