@@ -1,16 +1,22 @@
 import React, { FC, useCallback, useState } from "react";
 import { ClickAwayListener, Popper } from "@material-ui/core";
-import { useWallet, WalletStatus } from "@terra-money/wallet-provider";
+
 import { Button, Typography } from "../../atoms";
-import { ConnectedWalletModal, DisconnectWalletModal } from "./WalletModals";
 import styles from "./WalletSelector.module.scss";
 import Icon from "../../atoms/Icon/Icon";
-import useWalletInfo from "../../../hooks/useWalletInfo";
-import { useAppContext } from "../../../libs/appContext";
+
 import greenTick from "../../assets/svg/check_success.svg";
 import { CheckCircle, Info } from "@material-ui/icons";
 import classNames from "classnames";
 import { NATIVE_TOKEN_LABEL } from "@constants/constants";
+import useHashConnect from "@hooks/useHashConnect";
+import useAccount from "@hooks/useUserAccount";
+
+export const WalletStatus = {
+  WALLET_CONNECTED: "WALLET_CONNECTED",
+  INITIALIZING: "INITIALIZING",
+  WALLET_NOT_CONNECTED: "WALLET_NOT_CONNECTED",
+};
 
 const WalletSelector = ({
   variant,
@@ -25,24 +31,25 @@ const WalletSelector = ({
     open: false,
     anchorEl: null,
   });
-  const { walletBalance } = useAppContext();
 
-  const wallet: any = useWallet();
   const {
-    truncatedWalletAddress,
-    walletAddress,
-    disconnectWallet,
-    connectWallet,
-    installWallet,
-  } = useWalletInfo();
+    connect,
+    associateToken,
+    accountInfo,
+    walletData: saveData,
+    network: network,
+    installedExtensions,
+    status,
+    stake,
+    tvl,
+  } = useHashConnect();
 
-  const isWalletConnected: boolean =
-    wallet.status === WalletStatus.WALLET_CONNECTED;
-  const isWalletInitializing: boolean =
-    !wallet || wallet.status === WalletStatus.INITIALIZING;
+  const { hbarX, isAsocciated, hbar, accountId } = useAccount();
+
+  const isWalletConnected: boolean = status === WalletStatus.WALLET_CONNECTED;
+  const isWalletInitializing: boolean = status === WalletStatus.INITIALIZING;
   const isWalletDisconnected: boolean =
-    wallet.wallets.length === 0 ||
-    wallet.status === WalletStatus.WALLET_NOT_CONNECTED;
+    status === WalletStatus.WALLET_NOT_CONNECTED;
 
   const openModal = (e: any) => {
     setModal({ open: true, anchorEl: e.currentTarget });
@@ -58,11 +65,11 @@ const WalletSelector = ({
         fontWeight={"medium"}
         className={"inline ml-4 capitalize"}
       >
-        {truncatedWalletAddress}
+        {accountId}
       </Typography>
       <div className={styles.divider} />
       <Typography variant={"body2"} fontWeight={"bold"} className={"mr-1"}>
-        {walletBalance}
+        {hbar}
       </Typography>
       <Typography variant={"body3"} fontWeight={"bold"} className={"inline"}>
         {NATIVE_TOKEN_LABEL}
@@ -70,21 +77,21 @@ const WalletSelector = ({
     </>
   );
 
-  const connectedWalletModal = (
-    <ConnectedWalletModal
-      walletBalance={walletBalance}
-      disconnectWallet={disconnectWallet}
-      walletAddress={walletAddress}
-      truncatedWalletAddress={truncatedWalletAddress}
-    />
-  );
+  // const connectedWalletModal = (
+  //   <ConnectedWalletModal
+  //     walletBalance={walletBalance}
+  //     disconnectWallet={disconnectWallet}
+  //     walletAddress={walletAddress}
+  //     truncatedWalletAddress={truncatedWalletAddress}
+  //   />
+  // );
 
-  const disconnectWalletModal = (
-    <DisconnectWalletModal
-      connectWallet={connectWallet}
-      installWallet={installWallet}
-    />
-  );
+  // const disconnectWalletModal = (
+  //   <DisconnectWalletModal
+  //     connectWallet={connectWallet}
+  //     installWallet={installWallet}
+  //   />
+  // );
 
   const WalletButton: FC = (props) => {
     return (
@@ -92,19 +99,21 @@ const WalletSelector = ({
         variant={variant || "outlined"}
         icon={
           <div className={styles.wallet_icon}>
-            {walletAddress && (
-              <img
-                alt=""
-                src={greenTick}
-                width="10"
-                className={styles.wallet_connected_badge}
-              />
-            )}
+            <img
+              alt=""
+              src={greenTick}
+              width="10"
+              className={styles.wallet_connected_badge}
+            />
+
             <Icon name={"wallet"} height={20} width={20} />
           </div>
         }
         className={"px-4 items-center flex"}
-        onClick={openModal}
+        // onClick={openModal}
+        onClick={() => {
+          if (!isWalletConnected) connect();
+        }}
         size={size || "small"}
         id="wallet-button"
       >
@@ -121,7 +130,7 @@ const WalletSelector = ({
       return <WalletButton>Connect Wallet</WalletButton>;
     }
     return <WalletButton>{walletButtonElements}</WalletButton>;
-  }, [wallet.status, walletBalance]);
+  }, [status]);
 
   const iconOnlyWalletButton = useCallback(() => {
     // if(isWalletInitializing){
@@ -147,7 +156,7 @@ const WalletSelector = ({
       </div>
     );
     // }
-  }, [wallet.status, walletBalance]);
+  }, [status]);
 
   return (
     <div style={{ position: "relative" }}>
@@ -157,8 +166,8 @@ const WalletSelector = ({
         <ClickAwayListener onClickAway={closeModal}>
           <div className={styles.wallet_dropdown_container}>
             <WalletDropDown>
-              {isWalletConnected && connectedWalletModal}
-              {isWalletDisconnected && disconnectWalletModal}
+              {/* {isWalletConnected && connectedWalletModal}
+              {isWalletDisconnected && disconnectWalletModal} */}
             </WalletDropDown>
           </div>
         </ClickAwayListener>

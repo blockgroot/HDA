@@ -1,11 +1,5 @@
-export {
-  LUNA_INPUT_MAXIMUM_DECIMAL_POINTS as NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
-  LUNA_INPUT_MAXIMUM_INTEGER_POINTS as NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
-  formatLuna as formatNativeToken,
-} from "@anchor-protocol/notation";
-
-export const LIQUID_NATIVE_TOKEN_LABEL = "liquidNativeToken";
-export const NATIVE_TOKEN_LABEL = "nativeToken";
+export const LIQUID_NATIVE_TOKEN_LABEL = "HbarX";
+export const NATIVE_TOKEN_LABEL = "Hbar";
 
 export const tvlCap = {
   limit: 200000,

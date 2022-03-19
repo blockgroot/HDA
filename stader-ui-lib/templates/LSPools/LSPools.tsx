@@ -1,22 +1,20 @@
 import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
-import useLSPoolsEstimate from "../../../hooks/useLSPoolsEstimate";
+
 import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
 import LPMyHolding from "../../molecules/LPMyHolding/LPMyHolding";
-import useLPBatchHoldingLuquidNativeToken from "@hooks/useLPBatchHoldingLuquidNativeToken";
+
 import LPPoolsWithdraw from "../../organisms/LPPoolsWithdraw/LPPoolsWithdraw";
 import { Typography } from "../../atoms";
 import Loader from "@atoms/Loader/Loader";
-import { useQuery } from "react-query";
-import { LS_CONTRACT_CONFIG } from "@constants/queriesKey";
+
 import { config } from "../../../config/config";
-import { useAppContext } from "@libs/appContext";
 import { useState } from "react";
 import { ContractConfigType } from "@types_/liquid-staking-pool";
-import useUserHolding from "@hooks/useUserHolding";
-import { useWallet, WalletStatus } from "@terra-money/wallet-provider";
-import { Grid } from "@material-ui/core";
 
-const { liquidStaking: contractAddress } = config.contractAddresses;
+import { Grid } from "@material-ui/core";
+import useAccount from "@hooks/useUserAccount";
+import useHashConnect from "@hooks/useHashConnect";
+import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolLiquidStaking";
 
 const defaultConfig: ContractConfigType = {
   min_deposit: 0,
@@ -25,92 +23,79 @@ const defaultConfig: ContractConfigType = {
 };
 
 function LSPools() {
-  const { terra } = useAppContext();
-  const wallet = useWallet();
-  const { tvl, tvlLoading } = useLSPoolsEstimate();
-  const { data, isLoading, undelegationQuery } = useLPBatchHoldingLuquidNativeToken();
+  const {
+    connect,
+    associateToken,
+    accountInfo,
+    walletData: saveData,
+    network: network,
+    installedExtensions,
+    status,
+    stake,
+    tvl,
+  } = useHashConnect();
 
-  const holdingQuery = useUserHolding();
+  const { hbarX, isAsocciated, hbar, accountId } = useAccount();
 
-  const [config, setConfig] = useState<ContractConfigType>(defaultConfig);
+  // const holdingQuery = useUserHolding();
 
-  const handleInitialization = async () => {
-    try {
-      const contractConfig = await terra.wasm.contractQuery(contractAddress, {
-        config: {},
-      });
+  // const [config, setConfig] = useState<ContractConfigType>(defaultConfig);
 
-      const min_deposit = Number(contractConfig?.config?.min_deposit ?? 0);
-      const max_deposit = Number(contractConfig?.config?.max_deposit ?? 0);
-      const protocol_withdraw_fee = Number(
-        contractConfig?.config?.protocol_withdraw_fee ?? 0
-      );
+  // const handleInitialization = async () => {
+  //   try {
+  //     const contractConfig = await terra.wasm.contractQuery(contractAddress, {
+  //       config: {},
+  //     });
 
-      return { min_deposit, max_deposit, protocol_withdraw_fee };
-    } catch (e) {
-      return { success: false, message: "Error!" + e };
-    }
-  };
+  //     const min_deposit = Number(contractConfig?.config?.min_deposit ?? 0);
+  //     const max_deposit = Number(contractConfig?.config?.max_deposit ?? 0);
+  //     const protocol_withdraw_fee = Number(
+  //       contractConfig?.config?.protocol_withdraw_fee ?? 0
+  //     );
 
-  const contractConfigQuery = useQuery(
-    LS_CONTRACT_CONFIG,
-    handleInitialization,
-    {
-      onSuccess: (res: ContractConfigType) => {
-        setConfig(res);
-      },
-      refetchOnWindowFocus: false,
-    }
-  );
+  //     return { min_deposit, max_deposit, protocol_withdraw_fee };
+  //   } catch (e) {
+  //     return { success: false, message: "Error!" + e };
+  //   }
+  // };
 
-  if (
-    contractConfigQuery.isLoading ||
-    tvlLoading ||
-    holdingQuery.isLoading ||
-    wallet.status === WalletStatus.INITIALIZING
-  ) {
-    return <Loader text={"Please wait while we set things up for you"} />;
+  // const contractConfigQuery = useQuery(
+  //   LS_CONTRACT_CONFIG,
+  //   handleInitialization,
+  //   {
+  //     onSuccess: (res: ContractConfigType) => {
+  //       setConfig(res);
+  //     },
+  //     refetchOnWindowFocus: false,
+  //   }
+  // );
+
+  // if (
+  //   contractConfigQuery.isLoading ||
+  //   tvlLoading ||
+  //   holdingQuery.isLoading ||
+  //   wallet.status === WalletStatus.INITIALIZING
+  // ) {
+  //   return <Loader text={"Please wait while we set things up for you"} />;
+
+  // }
+
+  if (status !== "WALLET_CONNECTED") {
+    return <WelcomeScreenPoolLiquidStaking />;
   }
 
   return (
     <div>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
-          <LSPoolsEstimate
-            tvl={tvl}
-            holdings={holdingQuery.holding}
-            isLoading={holdingQuery.isLoading || tvlLoading}
-          />
+      <Grid container direction="column" spacing={3} alignItems="center">
+        <Grid item xs={12} md={8}>
+          <LSPoolsEstimate tvl={tvl} holdings={hbarX} isLoading={false} />
         </Grid>
         <Grid item xs={12} md={8}>
           <LSPoolsForm
             tvl={tvl}
-            tvlLoading={tvlLoading}
-            contractConfig={config}
-            holding={holdingQuery.holding}
-          />
-        </Grid>
-      </Grid>
-      <Grid container spacing={3} className={"mt-12 mb-16"}>
-        <Grid item xs={12} md={4}>
-          <LPMyHolding
-            isLoading={isLoading}
-            nativeTokenTokens={data?.nativeToken || 0}
-            liquidNativeTokenTokens={data?.liquidNativeToken || 0}
-          />
-        </Grid>
-        <Grid item xs={12} md={8}>
-          <Typography
-            variant={"h3"}
-            fontWeight={"bold"}
-            className={"mb-4 md:mb-14"}
-          >
-            Withdrawals
-          </Typography>
-          <LPPoolsWithdraw
-            isLoading={undelegationQuery.isLoading}
-            undelegations={undelegationQuery.data}
-            refetchQuery={undelegationQuery.refetch}
+            tvlLoading={false}
+            contractConfig={defaultConfig}
+            holding={hbar}
           />
         </Grid>
       </Grid>

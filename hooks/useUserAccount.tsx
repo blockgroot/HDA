@@ -8,10 +8,12 @@ export default function useAccount() {
   const [isAsocciated, setIsAssociated] = useState<boolean>(false);
   const [hbarX, setHbarX] = useState<number>(0);
   const [hbar, setHbar] = useState<number>(0);
+  const [accountId, setAccountId] = useState<string>("");
 
   useEffect(() => {
     if (accountInfo) {
-      setHbarX(accountInfo.balance.toBigNumber().toNumber());
+      setHbar(accountInfo.balance.toBigNumber().toNumber());
+      setAccountId(accountInfo.accountId.toString());
       const _isAssociated: boolean =
         accountInfo.tokenRelationships._map.has(tokenId);
       setIsAssociated(_isAssociated);
@@ -25,5 +27,5 @@ export default function useAccount() {
     }
   }, [accountInfo]);
 
-  return { hbarX, isAsocciated };
+  return { hbarX, isAsocciated, hbar, accountId };
 }

@@ -39,11 +39,11 @@ function MainLayout(props: any) {
           !hideSidebar && styles.sidebarVisible
         )}
       >
-        <Sidebar
+        {/* <Sidebar
           activePage={router.pathname}
           hide={hideSidebar}
           onToggleSidebar={setHideSidebar}
-        />
+        /> */}
 
         <div className={c("layout-child", styles.layoutChild)}>
           <div className={"layout-child-container"}>{props.children}</div>

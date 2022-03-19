@@ -125,7 +125,7 @@ export default function HashConnectProvider({
     useState<HashConnectTypes.WalletMetadata | null>(null);
   const [accountInfo, setAccountInfo] = useState<AccountInfo | null>(null);
   const [tvl, setTvl] = useState<number>(0);
-  // const [accountId, setAccountId] = useState<string | null>();
+  const [accountId, setAccountId] = useState<string | null>();
 
   const [status, _setStatus] = useState<string>("INITIALIZING");
 
@@ -233,6 +233,7 @@ export default function HashConnectProvider({
   ) => {
     if (debug) console.debug("====foundExtensionEvent====", data);
     // Do a thing
+    console.log("foundExtensionEventHandler", data);
     setStatus("WALLET_NOT_CONNECTED");
     setInstalledExtensions(data as HashConnectTypes.WalletMetadata);
   };
@@ -260,12 +261,9 @@ export default function HashConnectProvider({
   };
 
   useEffect(() => {
-    hashConnect.additionalAccountResponseEvent.on(
-      additionalAccountResponseEventHandler
-    );
-    hashConnect.foundExtensionEvent.on(foundExtensionEventHandler);
+    hashConnect.foundExtensionEvent.once(foundExtensionEventHandler);
     hashConnect.pairingEvent.on(pairingEventHandler);
-    hashConnect.transactionResponseEvent.on(transactionResponseHandler);
+    //
     //Intialize the setup
     initializeHashConnect();
     getTvl();
@@ -273,18 +271,11 @@ export default function HashConnectProvider({
 
     return () => {
       // Detach existing handlers
-      hashConnect.additionalAccountResponseEvent.off(
-        additionalAccountResponseEventHandler
-      );
+
       hashConnect.foundExtensionEvent.off(foundExtensionEventHandler);
       hashConnect.pairingEvent.off(pairingEventHandler);
-      hashConnect.transactionResponseEvent.off(transactionResponseHandler);
     };
   }, []);
-
-  useEffect(() => {
-    console.log("installedExtensions2", installedExtensions);
-  }, [installedExtensions]);
 
   useEffect(() => {
     console.log("status", status);
@@ -310,7 +301,7 @@ export default function HashConnectProvider({
     //Sign the query with the client operator private key and submit to a Hedera network
     const contractInfo = await query.execute(client);
 
-    console.log(contractInfo);
+    // console.log(contractInfo);
     setTvl(contractInfo.balance.toTinybars().toNumber());
   };
 
@@ -353,7 +344,13 @@ export default function HashConnectProvider({
     );
     console.log("transactionBytes", transactionBytes);
 
-    await sendTransaction(transactionBytes, accountId.toString(), false);
+    let response = await sendTransaction(
+      transactionBytes,
+      accountId.toString(),
+      false
+    );
+    console.log("response", response);
+    //  hashConnect.transactionResponseEvent.on(transactionResponseHandler);
   };
 
   const associateToken = async () => {

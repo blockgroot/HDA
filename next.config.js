@@ -18,4 +18,8 @@ module.exports = withImages({
     includePaths: [path.join(__dirname, "styles")],
     prependData: `@import "./styles/_mixins.scss";`,
   },
+  compiler: {
+    // ssr and displayName are configured by default
+    styledComponents: true,
+  },
 });

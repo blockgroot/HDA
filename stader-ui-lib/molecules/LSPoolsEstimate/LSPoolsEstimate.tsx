@@ -1,6 +1,9 @@
-import { LIQUID_NATIVE_TOKEN_LABEL, NATIVE_TOKEN_LABEL, NATIVE_TOKEN_MULTIPLIER } from "@constants/constants";
+import {
+  LIQUID_NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_MULTIPLIER,
+} from "@constants/constants";
 import { Box, Loader, Typography } from "../../atoms";
-import { demicrofy, formatUST } from "@anchor-protocol/notation";
 import styles from "./LSPoolsEstimate.module.scss";
 import classNames from "classnames";
 import SDTooltip from "@atoms/SDTooltip/SDTooltip";
@@ -14,73 +17,93 @@ type Props = {
 function LSPoolsEstimate(props: Props) {
   const { tvl, holdings, isLoading } = props;
 
-  const renderElement = (
-    <>
-      <div className="lg:mb-8">
-        <Typography variant={"body1"} fontWeight={"bold"}>
-          My {LIQUID_NATIVE_TOKEN_LABEL}
-        </Typography>
-        <Typography
-          variant={"h2"}
-          fontWeight={"medium"}
-          className={classNames("mt-3", styles.value)}
-        >
-          {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(6)}
-        </Typography>
-      </div>
+  if (isLoading) {
+    return <Loader height={100} className={"mx-auto"} />;
+  }
 
-      <div className="lg:mb-8">
-        <div className={"flex items-center mb-3"}>
-          <Typography variant={"body1"} fontWeight={"bold"}>
-            APY
-          </Typography>
-          <SDTooltip
-            content={
-              "Average 48 hours APY including airdrops & autocompounding of rewards."
-            }
-            className="text-white ml-1"
-            fontSize="small"
-          />
-        </div>
-        <Typography
-          variant={"h2"}
-          fontWeight={"medium"}
-          className={styles.value}
-        >
-          9.86%
-        </Typography>
-      </div>
-      <div>
-        <Typography variant={"body1"} fontWeight={"bold"}>
-          TVL
-        </Typography>
-        <div className={"flex items-center mt-3"}>
-          <Typography
-            variant={"h2"}
-            fontWeight={"medium"}
-            className={classNames("mr-2 text-gradient", styles.value)}
-          >
-            {formatUST(demicrofy(tvl.uNativeToken)).split(".")[0]}
-          </Typography>
-          <Typography
-            variant={"body2"}
-            color={"secondary"}
-          >
-            {NATIVE_TOKEN_LABEL}
-          </Typography>
-        </div>
-      </div>
-    </>
-  );
   return (
-    <Box className={styles.root} noPadding>
-      {isLoading ? (
-        <Loader height={100} className={"mx-auto"} />
-      ) : (
-        renderElement
-      )}
-    </Box>
+    <div className={styles.root}>
+      <div className={styles.container}>
+        <div className="flex flex-row justify-between w-full  align-middle p-3">
+          <div>
+            <Typography variant={"body1"} fontWeight={"bold"}>
+              My {LIQUID_NATIVE_TOKEN_LABEL}
+            </Typography>
+          </div>
+
+          <div>
+            <div className={"flex items-center mb-3"}>
+              <Typography variant={"body1"} fontWeight={"bold"}>
+                APY
+              </Typography>
+              <SDTooltip
+                content={
+                  "Average 48 hours APY including airdrops & autocompounding of rewards."
+                }
+                className="text-white ml-1"
+                fontSize="small"
+              />
+            </div>
+          </div>
+          <div>
+            <Typography variant={"body1"} fontWeight={"bold"}>
+              TVL
+            </Typography>
+          </div>
+        </div>
+
+        <Box
+          noPadding
+          className="w-full flex flex-row justify-between align-middle p-3"
+        >
+          <div>
+            <Typography
+              variant={"h2"}
+              fontWeight={"medium"}
+              className={classNames("mt-3", styles.value)}
+            >
+              {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(6)}
+            </Typography>
+          </div>
+
+          <div>
+            <Typography
+              variant={"h2"}
+              fontWeight={"medium"}
+              className={classNames("mt-3", styles.value)}
+            >
+              {tvl}
+            </Typography>
+          </div>
+          <div>
+            <div className=" flex flex-row justify-between align-middle">
+              <Typography
+                variant={"h2"}
+                fontWeight={"medium"}
+                className={classNames("mr-2 mt-3 text-gradient", styles.value)}
+              >
+                {holdings}
+              </Typography>
+              <Typography
+                variant={"body2"}
+                color={"secondary"}
+                className={classNames(
+                  "mr-2 mt-6 justify-center text-center align-middle ",
+                  styles.value
+                )}
+              >
+                {NATIVE_TOKEN_LABEL}
+              </Typography>
+            </div>
+          </div>
+        </Box>
+      </div>
+    </div>
   );
 }
 
 export default LSPoolsEstimate;
+
+// {
+//   isLoading ? <Loader height={100} className={"mx-auto"} /> : renderElement;
+// }
