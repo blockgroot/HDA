@@ -1743,22 +1743,21 @@
     tweetnacl "^1.0.3"
     utf8 "^3.0.0"
 
-"@hashgraph/proto@2.1.4":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@hashgraph/proto/-/proto-2.1.4.tgz#b11853464a28bdc9518853fe00bf9ced71480d35"
-  integrity sha512-gZP206s1SuWb4By8BIyAtRwXoO59ARfhShg4YIG+7Cp0rWXe0I1D+uQm4HRaPIWMU0S7xXUec/JPwnMefetTSg==
+"@hashgraph/proto@2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@hashgraph/proto/-/proto-2.1.3.tgz#c3e4d435ad9f33a3be612eece2f48d0f60508f2c"
+  integrity sha512-0XYRQPdOAz92g6mwdsDRYNohDNqxAnDF1hT4HkvV6859iBxmMVZi8QqkqETmZ2k1HIByQ1XAz5WVraIgM6zYJw==
   dependencies:
-    long "^4.0.0"
     protobufjs "^6.11.2"
 
-"@hashgraph/sdk@^2.10.1":
-  version "2.10.1"
-  resolved "https://registry.yarnpkg.com/@hashgraph/sdk/-/sdk-2.10.1.tgz#94b55dc492e1ea3c5e9f78ba05ff06957b5cf24e"
-  integrity sha512-5vnh1S5gnwBSRlh6EEqYVOnBeTPiuzcz9A+Sb0nC/DfhjSkhlMo9gTiWCDJxDYktsoXrhrTNwETg0KRsHjh8zw==
+"@hashgraph/sdk@2.9.1":
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/@hashgraph/sdk/-/sdk-2.9.1.tgz#9f294a4fc6a9cf43b4b7c525b0de4d3c6c2291ca"
+  integrity sha512-iZ9lHcXbCdnXqEU0L9u+ZGWPBGdITy6r6VI2l9hz7mdGCBZ5vx+omX4ID9WVIBW3o7ltjbNjFv9iYu+7DzJxsA==
   dependencies:
     "@grpc/grpc-js" "^1.5.3"
     "@hashgraph/cryptography" "^1.1.0-beta.5"
-    "@hashgraph/proto" "2.1.4"
+    "@hashgraph/proto" "2.1.3"
     bignumber.js "^9.0.2"
     crypto-js "^4.1.1"
     js-base64 "^3.7.2"
