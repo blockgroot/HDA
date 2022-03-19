@@ -13,6 +13,8 @@ import community_pool from "../../assets/svg/community_pool.svg";
 import copy_address from "../../assets/svg/copy_address.svg";
 import info_outline from "../../assets/svg/info_outline.svg";
 import wallet_icon from "../../assets/svg/wallet_icon.svg";
+import check_success from "../../assets/svg/check_success.svg";
+import check_success_aqua from "../../assets/svg/check_success_aqua.svg";
 
 export const icons = {
   clipboard: copy_address,
@@ -29,9 +31,13 @@ export const icons = {
   blue_chip_pool: blueChip_pool,
   arrow_up: arrow_up,
   arrow_down: arrow_down,
+  check_success: check_success,
+  check_success_aqua: check_success_aqua,
 };
 
 export interface IconType extends React.ComponentPropsWithoutRef<"img"> {
   name: keyof typeof icons;
   color?: string;
+  width: number;
+  height: number;
 }
