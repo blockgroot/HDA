@@ -107,9 +107,16 @@ export const HashConnectAPIContext =
     tvl: 0,
   });
 
-//fetch this from config/move to config
-export const tokenId = "0.0.30873456";
-export const contractId = "0.0.30873462";
+// //fetch this from config/move to config
+// export const tokenId = "0.0.30873456";
+// export const contractId = "0.0.30873462";
+
+// - Token ID: 0.0.33981601
+// - Staking contract ID: 0.0.33981604
+// - Rewards contract ID: 0.0.33981605
+
+export const tokenId = "0.0.33985079";
+export const contractId = "0.0.33985082";
 
 export default function HashConnectProvider({
   children,
@@ -245,24 +252,29 @@ export default function HashConnectProvider({
     saveDataInLocalStorage(data);
   };
 
-  const transactionResponseHandler = async (
-    data: MessageTypes.TransactionResponse
-  ) => {
-    console.log("received data", data);
-    if (data.success && !data.signedTransaction)
-      console.log(TransactionReceipt.fromBytes(data.receipt as Uint8Array));
-    else if (data.success && data.signedTransaction)
-      console.log(Transaction.fromBytes(data.signedTransaction as Uint8Array));
+  // const transactionResponseHandler = async (
+  //   data: MessageTypes.TransactionResponse
+  // ) => {
+  //   console.log("received data", data);
+  //   if (data.success && !data.signedTransaction)
+  //     console.log(TransactionReceipt.fromBytes(data.receipt as Uint8Array));
+  //   else if (data.success && data.signedTransaction)
+  //     console.log(Transaction.fromBytes(data.signedTransaction as Uint8Array));
 
-    console.log("saveData", saveData);
-    console.log("saveDataRef", saveDataRef.current);
-    getAccounts(saveDataRef.current.accountIds[0]);
-    getTvl();
+  //   console.log("saveData", saveData);
+  //   console.log("saveDataRef", saveDataRef.current);
+  //   // getAccounts(saveDataRef.current.accountIds[0]);
+  //   // getTvl();
+  // };
+
+  const transactionHandler = (data: MessageTypes.Transaction) => {
+    console.log("received data", data);
   };
 
   useEffect(() => {
     hashConnect.foundExtensionEvent.once(foundExtensionEventHandler);
     hashConnect.pairingEvent.on(pairingEventHandler);
+    hashConnect.transactionEvent.on(transactionHandler);
     //
     //Intialize the setup
     initializeHashConnect();
@@ -274,6 +286,7 @@ export default function HashConnectProvider({
 
       hashConnect.foundExtensionEvent.off(foundExtensionEventHandler);
       hashConnect.pairingEvent.off(pairingEventHandler);
+      hashConnect.transactionEvent.off(transactionHandler);
     };
   }, []);
 
@@ -325,17 +338,19 @@ export default function HashConnectProvider({
 
   const stake = async (amount: number) => {
     console.log("staked Amount", amount);
+    const isAssociated = accountInfo.tokenRelationships._map.has(tokenId);
+    console.log("isAssociated", isAssociated);
     const accountId: AccountId = AccountId.fromString(saveData?.accountIds[0]);
 
     const transaction = new ContractExecuteTransaction()
       .setContractId(contractId)
-      .setGas(600_000)
+      .setGas(2_000_000)
       .setPayableAmount(amount)
       .setFunction(
         "stake",
-        new ContractFunctionParameters().addAddress(
-          accountId.toSolidityAddress()
-        )
+        new ContractFunctionParameters()
+          .addAddress(accountId.toSolidityAddress())
+          .addBool(isAssociated)
       );
 
     const transactionBytes = await signAndMakeBytes(
@@ -344,12 +359,24 @@ export default function HashConnectProvider({
     );
     console.log("transactionBytes", transactionBytes);
 
-    let response = await sendTransaction(
+    const response: MessageTypes.TransactionResponse = await sendTransaction(
       transactionBytes,
       accountId.toString(),
       false
     );
     console.log("response", response);
+
+    if (response.success && !response.signedTransaction)
+      console.log(TransactionReceipt.fromBytes(response.receipt as Uint8Array));
+    else if (response.success && response.signedTransaction)
+      console.log(
+        Transaction.fromBytes(response.signedTransaction as Uint8Array)
+      );
+
+    console.log("saveData", saveData);
+    console.log("saveDataRef", saveDataRef.current);
+    getAccounts(accountId.toString());
+    getTvl();
     //  hashConnect.transactionResponseEvent.on(transactionResponseHandler);
   };
 
@@ -384,8 +411,9 @@ export default function HashConnectProvider({
         returnTransaction: return_trans,
       },
     };
-    const newTx = await hashConnect.sendTransaction(topic, transaction);
-    console.log("transaction sent", newTx);
+    const response = await hashConnect.sendTransaction(topic, transaction);
+    console.log("transaction sent", response);
+    return response;
   };
 
   return (

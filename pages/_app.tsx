@@ -1,23 +1,17 @@
-import React, { useEffect } from "react";
+import { ThemeProvider } from "@terra-dev/neumorphism-ui/themes/ThemeProvider";
+import { HashConnect } from "hashconnect";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { getAnalytics, logEvent, setCurrentScreen } from "firebase/analytics";
-import TagManager from "react-gtm-module";
-import { ThemeProvider } from "@terra-dev/neumorphism-ui/themes/ThemeProvider";
 // import "bootstrap/dist/css/bootstrap.css";
 import "nprogress/nprogress.css";
-import "../styles/_main.scss";
-import "../styles/globals.css";
-
-import { theme } from "../theme";
-import { firebase } from "../utils/firebase";
-import { config } from "../config/config";
-import reportWebVitals from "../utils/reportWebVitals";
-
+import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { HashConnect } from "hashconnect";
 import HashConnectProvider from "../context/HashConnectProvider";
-const hashConnect = new HashConnect(true);
+import "../styles/globals.css";
+import "../styles/_main.scss";
+import { theme } from "../theme";
+
+const hashConnect = new HashConnect(false);
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient({

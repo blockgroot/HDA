@@ -38,7 +38,7 @@ function LSPoolsEstimate(props: Props) {
               </Typography>
               <SDTooltip
                 content={
-                  "Average 48 hours APY including airdrops & autocompounding of rewards."
+                  "Average 48 hours APY including autocompounding of rewards."
                 }
                 className="text-white ml-1"
                 fontSize="small"
@@ -62,7 +62,7 @@ function LSPoolsEstimate(props: Props) {
               fontWeight={"medium"}
               className={classNames("mt-3", styles.value)}
             >
-              {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(6)}
+              {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(2)}
             </Typography>
           </div>
 
@@ -72,7 +72,7 @@ function LSPoolsEstimate(props: Props) {
               fontWeight={"medium"}
               className={classNames("mt-3", styles.value)}
             >
-              {tvl}
+              0%
             </Typography>
           </div>
           <div>
@@ -82,7 +82,7 @@ function LSPoolsEstimate(props: Props) {
                 fontWeight={"medium"}
                 className={classNames("mr-2 mt-3 text-gradient", styles.value)}
               >
-                {holdings}
+                {(tvl / NATIVE_TOKEN_MULTIPLIER).toFixed(2)}
               </Typography>
               <Typography
                 variant={"body2"}

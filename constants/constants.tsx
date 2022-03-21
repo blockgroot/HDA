@@ -1,5 +1,7 @@
 export const LIQUID_NATIVE_TOKEN_LABEL = "HbarX";
 export const NATIVE_TOKEN_LABEL = "Hbar";
+export const NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS = 6;
+export const NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS = 6;
 
 export const tvlCap = {
   limit: 200000,
@@ -155,10 +157,8 @@ export const PAGE_LOADER_TEXT = "Please wait while we set things up for you...";
 export const LT_SD_TOKENS_FARMED_PER_DAY = "15,000";
 export const LT_BANNER_TEXT = `Deposit to ${LIQUID_NATIVE_TOKEN_LABEL} <> ${NATIVE_TOKEN_LABEL} LP pool to earn upto ${LT_SD_TOKENS_FARMED_PER_DAY} SD tokens per day!`;
 
-
-
 // Liquid staking constants
-export const NATIVE_TOKEN_MULTIPLIER = 1000000;
+export const NATIVE_TOKEN_MULTIPLIER = 100000000;
 export const tokenLabel = LIQUID_NATIVE_TOKEN_LABEL;
 export const GET_USER_STAKING_REWARDS = "stakingApiGetUserRewards/";
 export const GET_USER_STAKING_AIRDROPS = "stakingApiGetUserAirdrops/";

@@ -24,15 +24,17 @@ type Props = {
   minimumDeposit: number;
   maximumDeposit: number;
   ustWalletBalance: number;
+  handleStake: (amount: number) => void;
 };
 
-function LSPoolsFormLaToLx(props: Props) {
+function LSPoolsFormStake(props: Props) {
   const {
     tvlExchangeRate = 0,
     walletBalance,
     minimumDeposit,
     maximumDeposit,
     ustWalletBalance,
+    handleStake,
   } = props;
 
   // const {
@@ -50,20 +52,23 @@ function LSPoolsFormLaToLx(props: Props) {
   const minDep = nativeTokenFormatter(minimumDeposit);
   const maxDep = Math.min(nativeTokenFormatter(maximumDeposit), walletBalance);
 
+  // console.log(minDep, maxDep);
+  console.log("handleStake", handleStake);
+
   const validation = Yup.object().shape({
     nativeToken: Yup.number()
       .max(
-        maxDep,
-        `Deposit amount should be less than ${maxDep} ${NATIVE_TOKEN_LABEL}`
+        maximumDeposit,
+        `Deposit amount should be less than ${maximumDeposit} ${NATIVE_TOKEN_LABEL}`
       )
       .min(
-        minDep,
-        `Deposit amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`
+        minimumDeposit,
+        `Deposit amount should be more than ${minimumDeposit} ${NATIVE_TOKEN_LABEL}`
       )
       .required(
-        `Deposit amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`
+        `Deposit amount should be more than ${maximumDeposit} ${NATIVE_TOKEN_LABEL}`
       ),
-    ust: Yup.number().moreThan(0.9, "Not enough ust for transaction fees"),
+    // ust: Yup.number().moreThan(0.0, "Not enough ust for transaction fees"),
   });
 
   return (
@@ -76,7 +81,7 @@ function LSPoolsFormLaToLx(props: Props) {
         }}
         onSubmit={(values) => {
           if (values.nativeToken) {
-            // handleStake(values.nativeToken);
+            handleStake(values.nativeToken);
           }
         }}
         validationSchema={validation}
@@ -100,16 +105,7 @@ function LSPoolsFormLaToLx(props: Props) {
                   6
                 )} ${NATIVE_TOKEN_LABEL}`}</Typography>
               </div>
-              {(errors.ust || errors.nativeToken) && (
-                <Typography
-                  variant={"caption1"}
-                  color={"textSecondary"}
-                  fontWeight={"medium"}
-                  className={"block mt-3 text-center"}
-                >
-                  {errors.ust || errors.nativeToken}
-                </Typography>
-              )}
+
               <div className={"mt-4 mb-8 relative"}>
                 <NumberInput
                   {...nativeTokenProps}
@@ -176,14 +172,25 @@ function LSPoolsFormLaToLx(props: Props) {
                     setFieldValue("nativeToken", val.toFixed(6));
                   }}
                 />
-                <Typography variant={"body3"} color={"textSecondary"}>
+                {/* <Typography variant={"body3"} color={"textSecondary"}>
                   Transaction Fee: {ustFeeStaking} UST
-                </Typography>
+                </Typography> */}
               </div>
+              {(errors.ust || errors.nativeToken) && (
+                <Typography
+                  variant={"body2"}
+                  color={"textSecondary"}
+                  fontWeight={"medium"}
+                  className={"block mt-3 text-center"}
+                >
+                  {errors.ust || errors.nativeToken}
+                </Typography>
+              )}
               <div className="mt-6 lg:mt-12 flex justify-center">
                 <ButtonOutlined
                   className="w-[200px] h-[48px]"
                   disabled={!!Object.keys(errors).length || !values.nativeToken}
+                  type="submit"
                 >
                   Stake
                 </ButtonOutlined>
@@ -196,4 +203,4 @@ function LSPoolsFormLaToLx(props: Props) {
   );
 }
 
-export default LSPoolsFormLaToLx;
+export default LSPoolsFormStake;

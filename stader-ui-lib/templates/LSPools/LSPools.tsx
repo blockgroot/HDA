@@ -1,24 +1,14 @@
-import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
-
-import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
-import LPMyHolding from "../../molecules/LPMyHolding/LPMyHolding";
-
-import LPPoolsWithdraw from "../../organisms/LPPoolsWithdraw/LPPoolsWithdraw";
-import { Typography } from "../../atoms";
-import Loader from "@atoms/Loader/Loader";
-
-import { config } from "../../../config/config";
-import { useState } from "react";
-import { ContractConfigType } from "@types_/liquid-staking-pool";
-
-import { Grid } from "@material-ui/core";
-import useAccount from "@hooks/useUserAccount";
 import useHashConnect from "@hooks/useHashConnect";
+import useAccount from "@hooks/useUserAccount";
+import { Grid } from "@material-ui/core";
+import { ContractConfigType } from "@types_/liquid-staking-pool";
 import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolLiquidStaking";
+import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
+import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
 
 const defaultConfig: ContractConfigType = {
   min_deposit: 0,
-  max_deposit: 0,
+  max_deposit: 10000,
   protocol_withdraw_fee: 0,
 };
 
@@ -36,6 +26,9 @@ function LSPools() {
   } = useHashConnect();
 
   const { hbarX, isAsocciated, hbar, accountId } = useAccount();
+
+  console.log("hbar", hbar);
+  console.log("stake", stake);
 
   // const holdingQuery = useUserHolding();
 
@@ -92,10 +85,10 @@ function LSPools() {
         </Grid>
         <Grid item xs={12} md={8}>
           <LSPoolsForm
-            tvl={tvl}
             tvlLoading={false}
             contractConfig={defaultConfig}
             holding={hbar}
+            handleStake={stake}
           />
         </Grid>
       </Grid>

@@ -5,10 +5,10 @@ export type TvlType = {
 };
 
 export type LSPoolProps = {
-  tvl: TvlType;
   tvlLoading?: boolean;
   contractConfig: ContractConfigType;
   holding: number;
+  handleStake: (amount: number) => void;
 };
 
 export type ContractConfigType = {

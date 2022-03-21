@@ -17,9 +17,11 @@ export default function useAccount() {
       const _isAssociated: boolean =
         accountInfo.tokenRelationships._map.has(tokenId);
       setIsAssociated(_isAssociated);
+      console.log("isAssociated", _isAssociated);
       if (_isAssociated) {
         const tokenRelationship: TokenRelationship =
           accountInfo.tokenRelationships._map.get(tokenId) as TokenRelationship;
+        console.log("tokenRelationship", tokenRelationship.balance.toNumber());
         setHbarX(tokenRelationship.balance.toNumber());
 
         //setHbarX(accountInfo.tokenRelationships._map.get(tokenId).hbarX);
