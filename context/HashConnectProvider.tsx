@@ -226,6 +226,7 @@ export default function HashConnectProvider({
 
     let dataToSave = JSON.stringify(saveObj);
     localStorage.setItem(SAVE_KEY, dataToSave);
+    setSelectedAccount(saveObj.accountIds[0]);
     await getAccounts(saveObj.accountIds[0]);
   };
 
