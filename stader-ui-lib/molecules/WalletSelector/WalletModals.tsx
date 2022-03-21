@@ -5,11 +5,7 @@ import { Button, Typography } from "../../atoms";
 import ListItem from "../../atoms/ListItem/ListItem";
 import { NATIVE_TOKEN_LABEL, urls } from "@constants/constants";
 import styles from "./WalletSelector.module.scss";
-import {
-  Connection,
-  ConnectType,
-  useWallet,
-} from "@terra-money/wallet-provider";
+
 import copy_address from "../../../assets/svg/copy_address.svg";
 import CheckIcon from "@material-ui/icons/Check";
 
@@ -75,44 +71,44 @@ export const ConnectedWalletModal: FC<ConnectedProps> = (props) => {
   );
 };
 
-interface DisconnectedProps {
-  connectWallet: (type: Connection) => void;
-  installWallet: (props: ConnectType) => void;
-}
+// interface DisconnectedProps {
+//   connectWallet: (type: Connection) => void;
+//   installWallet: (props: ConnectType) => void;
+// }
 
-export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
-  const { connectWallet, installWallet } = props;
-  const wallet = useWallet();
+// export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
+//   const { connectWallet, installWallet } = props;
+//   const wallet = useWallet();
 
-  return (
-    <>
-      {wallet.availableInstallTypes.includes(ConnectType.CHROME_EXTENSION) && (
-        <Button
-          variant={"flat"}
-          childClassName={"px-5"}
-          parentClassName={"w-full"}
-          onClick={() => installWallet(ConnectType.CHROME_EXTENSION)}
-          size={"small"}
-        >
-          <Typography fontWeight={"medium"}>HashPack Wallet</Typography>
-        </Button>
-      )}
+//   return (
+//     <>
+//       {wallet.availableInstallTypes.includes(ConnectType.CHROME_EXTENSION) && (
+//         <Button
+//           variant={"flat"}
+//           childClassName={"px-5"}
+//           parentClassName={"w-full"}
+//           onClick={() => installWallet(ConnectType.CHROME_EXTENSION)}
+//           size={"small"}
+//         >
+//           <Typography fontWeight={"medium"}>HashPack Wallet</Typography>
+//         </Button>
+//       )}
 
-      <Typography
-        fontWeight={"bold"}
-        className={"text-white mt-5 text-center"}
-        variant={"caption1"}
-      >
-        By connecting a wallet, you agree to our{" "}
-        <a
-          href={urls.termsOfService}
-          target="_blank"
-          rel="noreferrer"
-          className={styles.term_of_service}
-        >
-          Terms of Service
-        </a>
-      </Typography>
-    </>
-  );
-};
+//       <Typography
+//         fontWeight={"bold"}
+//         className={"text-white mt-5 text-center"}
+//         variant={"caption1"}
+//       >
+//         By connecting a wallet, you agree to our{" "}
+//         <a
+//           href={urls.termsOfService}
+//           target="_blank"
+//           rel="noreferrer"
+//           className={styles.term_of_service}
+//         >
+//           Terms of Service
+//         </a>
+//       </Typography>
+//     </>
+//   );
+// };

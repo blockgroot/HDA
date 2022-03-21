@@ -1,7 +1,7 @@
 import LSPoolsFormStake from "@molecules/LSPoolsForms/LSPoolsFormStake";
 import LSPoolsFormUnstake from "@molecules/LSPoolsForms/LSPoolsFormUnstake";
 import { Box, Loader, Tab, Tabs, Typography, Link } from "../../atoms";
-import { useState } from "react";
+import React, { useState } from "react";
 import { LSPoolProps } from "@types_/liquid-staking-pool";
 import styles from "./LSPoolsForm.module.scss";
 import { ButtonOutlined } from "@atoms/Button/Button";
@@ -71,7 +71,7 @@ function LSPoolsForm(props: LSPoolProps) {
 
   console.log("transactionStatus", transactionStatus);
 
-  const handleClick = (e) => {
+  const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     console.log("handleClick");
     setTransactionStatus("");

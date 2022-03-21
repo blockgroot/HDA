@@ -1,6 +1,6 @@
 import React from "react";
 import WhiteInfoIcon from "../../assets/svg/info_icon_white.svg";
-import Link from "@atoms/Link/Link";
+import { Link } from "../../atoms/";
 import { COIN_LIST_SALE_CONSTANTS } from "@constants/coin-list-sale";
 
 const VestingNote = () => {

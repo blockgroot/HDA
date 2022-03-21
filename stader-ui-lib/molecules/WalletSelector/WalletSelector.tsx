@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from "react";
-import { ClickAwayListener, Popper } from "@material-ui/core";
+import { ClickAwayListener } from "@material-ui/core";
 
 import { Button, Typography } from "../../atoms";
 import styles from "./WalletSelector.module.scss";
@@ -34,7 +34,6 @@ const WalletSelector = ({
 
   const {
     connect,
-    associateToken,
     accountInfo,
     walletData: saveData,
     network: network,
@@ -44,7 +43,7 @@ const WalletSelector = ({
     tvl,
   } = useHashConnect();
 
-  const { hbarX, isAsocciated, hbar, accountId } = useAccount();
+  const { hbarX, hbar, accountId } = useAccount();
 
   const isWalletConnected: boolean = status === WalletStatus.WALLET_CONNECTED;
   const isWalletInitializing: boolean = status === WalletStatus.INITIALIZING;
@@ -130,6 +129,7 @@ const WalletSelector = ({
       return <WalletButton>Connect Wallet</WalletButton>;
     }
     return <WalletButton>{walletButtonElements}</WalletButton>;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   const iconOnlyWalletButton = useCallback(() => {
@@ -156,6 +156,7 @@ const WalletSelector = ({
       </div>
     );
     // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   return (

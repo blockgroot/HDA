@@ -131,7 +131,7 @@ export default function HashConnectProvider({
     useState<HashConnectTypes.WalletMetadata | null>(null);
   const [accountInfo, setAccountInfo] = useState<AccountInfo | null>(null);
   const [tvl, setTvl] = useState<number>(0);
-  const [accountId, setAccountId] = useState<string | null>();
+  const [selectedAccount, setSelectedAccount] = useState<string | null>();
 
   const [status, _setStatus] = useState<string>("INITIALIZING");
   const [transactionStatus, setTransActionStatus] = useState<string>("");
@@ -192,7 +192,8 @@ export default function HashConnectProvider({
     } finally {
       if (localData) {
         setSaveData({ ...saveData, ...localData });
-        await getAccounts(localData?.accountIds[0]);
+        localData.accountIds && setSelectedAccount(localData.accountIds[0]);
+        localData.accountIds && (await getAccounts(localData.accountIds[0]));
       } else {
         setSaveData({ ...saveData, ...saveData });
         // await getAccounts(saveData.accountIds[0]);
@@ -340,7 +341,9 @@ export default function HashConnectProvider({
     console.log("staked Amount", amount);
     setTransActionStatus("START");
 
-    const accountId: AccountId = AccountId.fromString(saveData?.accountIds[0]);
+    const accountId: AccountId = AccountId.fromString(
+      selectedAccount as string
+    );
 
     const transaction = new ContractExecuteTransaction()
       .setContractId(contractId)

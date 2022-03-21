@@ -1,6 +1,6 @@
 import React from "react";
 import { NATIVE_TOKEN_LABEL, urls } from "@constants/constants";
-import Link from "@atoms/Link/Link";
+import { Link } from "../../atoms/";
 import styles from "./SdRewardsVesting.module.scss";
 
 interface IVestingSubTextProps {
@@ -29,8 +29,8 @@ const VestingSubText: React.FC<IVestingSubTextProps> = ({
       </li>
       {!isLiquidStaking && (
         <li className="mx-2 my-3">
-          Undelegating {NATIVE_TOKEN_LABEL} before July 20, 2022 leads to only 50% of the
-          unvested SD rewards to vest.
+          Undelegating {NATIVE_TOKEN_LABEL} before July 20, 2022 leads to only
+          50% of the unvested SD rewards to vest.
           <Link
             href={urls.cfAnnouncementLink}
             target={"_blank"}

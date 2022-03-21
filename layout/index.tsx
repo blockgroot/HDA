@@ -1,12 +1,9 @@
-import React, { useState } from "react";
-import Router, { useRouter } from "next/router";
-import Head from "next/head";
-import NProgress from "nprogress";
 import c from "classnames";
-
-import Sidebar from "../components/Sidebar";
+import Head from "next/head";
+import Router from "next/router";
+import NProgress from "nprogress";
+import React, { useState } from "react";
 import Header from "../stader-ui-lib/organisms/Header/Header";
-
 import styles from "./Layout.module.scss";
 
 NProgress.configure({ showSpinner: false });
@@ -21,8 +18,6 @@ NProgress.configure({ showSpinner: false });
 };
 
 function MainLayout(props: any) {
-  const router = useRouter();
-
   const [hideSidebar, setHideSidebar] = useState<Boolean>(true);
 
   return (
@@ -39,12 +34,6 @@ function MainLayout(props: any) {
           !hideSidebar && styles.sidebarVisible
         )}
       >
-        {/* <Sidebar
-          activePage={router.pathname}
-          hide={hideSidebar}
-          onToggleSidebar={setHideSidebar}
-        /> */}
-
         <div className={c("layout-child", styles.layoutChild)}>
           <div className={"layout-child-container"}>{props.children}</div>
         </div>

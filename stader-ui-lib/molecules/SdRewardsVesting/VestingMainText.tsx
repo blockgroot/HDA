@@ -1,6 +1,5 @@
 import React from "react";
-import Link from "@atoms/Link/Link";
-
+import { Link } from "../../atoms/";
 function VestingMainText() {
   return (
     <p>
