@@ -1,22 +1,20 @@
-import {
-  NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
-  NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
-  LIQUID_NATIVE_TOKEN_LABEL,
-  NATIVE_TOKEN_LABEL,
-  tokenLabel,
-  ustFeeStaking,
-} from "@constants/constants";
-import { Formik } from "formik";
-import { Divider, Loader, Typography } from "../../atoms";
-import PercentageButtons from "../PercentageButtons/PercentageButtons";
 // import useLSPoolsForm from "../../../hooks/useLSPoolsForm";
 import { ButtonOutlined } from "@atoms/Button/Button";
-import styles from "./LSPoolsFormLaToLx.module.scss";
-import DepositSuccess from "../DepositSuccess/DepositSuccess";
-import * as Yup from "yup";
-import { nativeTokenFormatter } from "../../../utils/CurrencyHelper";
+import {
+  LIQUID_NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
+  NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
+  NATIVE_TOKEN_LABEL,
+  tokenLabel,
+} from "@constants/constants";
 import { InputAdornment } from "@material-ui/core";
 import { NumberInput } from "@terra-dev/neumorphism-ui/components/NumberInput";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { nativeTokenFormatter } from "../../../utils/CurrencyHelper";
+import { Typography } from "../../atoms";
+import PercentageButtons from "../PercentageButtons/PercentageButtons";
+import styles from "./LSPoolsFormLaToLx.module.scss";
 
 type Props = {
   tvlExchangeRate: number;
@@ -53,7 +51,6 @@ function LSPoolsFormStake(props: Props) {
   const maxDep = Math.min(nativeTokenFormatter(maximumDeposit), walletBalance);
 
   // console.log(minDep, maxDep);
-  console.log("handleStake", handleStake);
 
   const validation = Yup.object().shape({
     nativeToken: Yup.number()
@@ -87,8 +84,14 @@ function LSPoolsFormStake(props: Props) {
         validationSchema={validation}
       >
         {(formik) => {
-          const { handleSubmit, getFieldProps, setFieldValue, values, errors } =
-            formik;
+          const {
+            handleSubmit,
+            getFieldProps,
+            setFieldValue,
+            values,
+            errors,
+            isSubmitting,
+          } = formik;
           const nativeTokenProps = getFieldProps("nativeToken");
           const liquidNativeTokenProps = getFieldProps("liquidNativeToken");
 
@@ -172,9 +175,9 @@ function LSPoolsFormStake(props: Props) {
                     setFieldValue("nativeToken", val.toFixed(6));
                   }}
                 />
-                {/* <Typography variant={"body3"} color={"textSecondary"}>
-                  Transaction Fee: {ustFeeStaking} UST
-                </Typography> */}
+                <Typography variant={"body3"} color={"textSecondary"}>
+                  Transaction Fee: Approx 1 {NATIVE_TOKEN_LABEL}
+                </Typography>
               </div>
               {(errors.ust || errors.nativeToken) && (
                 <Typography

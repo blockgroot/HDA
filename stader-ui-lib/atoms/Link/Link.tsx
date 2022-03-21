@@ -10,7 +10,7 @@ interface Props extends ComponentPropsWithoutRef<"a"> {
   href: string;
 }
 
-function Link({ children, variant, href, className, ...props }: Props) {
+export function Link({ children, variant, href, className, ...props }: Props) {
   const rootClasses = classNames(styles.root, className);
   const textClasses = classNames(styles.text, {
     ["text-gradient"]: variant === "gradient",
@@ -31,4 +31,4 @@ function Link({ children, variant, href, className, ...props }: Props) {
   );
 }
 
-export default Link;
+// export default Link;

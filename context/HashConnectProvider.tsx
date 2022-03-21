@@ -1,19 +1,16 @@
 import {
-  ContractExecuteTransaction,
-  Hbar,
-  ContractFunctionParameters,
-  AccountInfoQuery,
-  AccountInfo,
-  TokenAssociateTransaction,
   AccountId,
-  TransactionReceipt,
-  Transaction,
-  TokenDissociateTransaction,
+  AccountInfo,
+  AccountInfoQuery,
+  ContractExecuteTransaction,
+  ContractFunctionParameters,
   ContractInfoQuery,
+  Transaction,
+  TransactionReceipt,
 } from "@hashgraph/sdk";
 import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { makeBytes, signAndMakeBytes, init } from "../services/signing.service";
+import React, { useEffect, useRef, useState } from "react";
+import { init, signAndMakeBytes } from "../services/signing.service";
 
 //Type declarations
 interface SaveData {
@@ -49,7 +46,6 @@ export interface buildTransactionParams {
 
 export interface HashConnectProviderAPI {
   connect: () => void;
-  associateToken: () => void;
   accountInfo: AccountInfo | null;
   walletData: SaveData;
   network: Networks;
@@ -57,6 +53,8 @@ export interface HashConnectProviderAPI {
   installedExtensions: HashConnectTypes.WalletMetadata | null;
   status: string;
   stake: (amount: number) => void;
+  transactionStatus: string;
+  setTransActionStatus: (status: string) => void;
   tvl: number;
 }
 
@@ -97,13 +95,14 @@ const loadLocalData = (): null | SaveData => {
 export const HashConnectAPIContext =
   React.createContext<HashConnectProviderAPI>({
     connect: () => null,
-    associateToken: () => null,
     accountInfo: {} as AccountInfo,
     walletData: INITIAL_SAVE_DATA,
     network: "testnet",
     installedExtensions: null,
     status: "INITIALIZING",
     stake: () => null,
+    transactionStatus: "",
+    setTransActionStatus: () => null,
     tvl: 0,
   });
 
@@ -115,8 +114,8 @@ export const HashConnectAPIContext =
 // - Staking contract ID: 0.0.33981604
 // - Rewards contract ID: 0.0.33981605
 
-export const tokenId = "0.0.33985079";
-export const contractId = "0.0.33985082";
+export const tokenId = "0.0.33986222";
+export const contractId = "0.0.33986225";
 
 export default function HashConnectProvider({
   children,
@@ -135,6 +134,7 @@ export default function HashConnectProvider({
   const [accountId, setAccountId] = useState<string | null>();
 
   const [status, _setStatus] = useState<string>("INITIALIZING");
+  const [transactionStatus, setTransActionStatus] = useState<string>("");
 
   const statusRef = useRef(status);
 
@@ -192,7 +192,7 @@ export default function HashConnectProvider({
     } finally {
       if (localData) {
         setSaveData({ ...saveData, ...localData });
-        await getAccounts(localData.accountIds[0]);
+        await getAccounts(localData?.accountIds[0]);
       } else {
         setSaveData({ ...saveData, ...saveData });
         // await getAccounts(saveData.accountIds[0]);
@@ -338,8 +338,8 @@ export default function HashConnectProvider({
 
   const stake = async (amount: number) => {
     console.log("staked Amount", amount);
-    const isAssociated = accountInfo.tokenRelationships._map.has(tokenId);
-    console.log("isAssociated", isAssociated);
+    setTransActionStatus("START");
+
     const accountId: AccountId = AccountId.fromString(saveData?.accountIds[0]);
 
     const transaction = new ContractExecuteTransaction()
@@ -348,9 +348,9 @@ export default function HashConnectProvider({
       .setPayableAmount(amount)
       .setFunction(
         "stake",
-        new ContractFunctionParameters()
-          .addAddress(accountId.toSolidityAddress())
-          .addBool(isAssociated)
+        new ContractFunctionParameters().addAddress(
+          accountId.toSolidityAddress()
+        )
       );
 
     const transactionBytes = await signAndMakeBytes(
@@ -365,6 +365,9 @@ export default function HashConnectProvider({
       false
     );
     console.log("response", response);
+    if (response.success) {
+      setTransActionStatus("SUCCESS");
+    }
 
     if (response.success && !response.signedTransaction)
       console.log(TransactionReceipt.fromBytes(response.receipt as Uint8Array));
@@ -372,28 +375,15 @@ export default function HashConnectProvider({
       console.log(
         Transaction.fromBytes(response.signedTransaction as Uint8Array)
       );
+    else {
+      setTransActionStatus("FAILED");
+    }
 
     console.log("saveData", saveData);
     console.log("saveDataRef", saveDataRef.current);
     getAccounts(accountId.toString());
     getTvl();
     //  hashConnect.transactionResponseEvent.on(transactionResponseHandler);
-  };
-
-  const associateToken = async () => {
-    //Associate a token to an account and freeze the unsigned transaction for signing
-    // const client = await init();
-    // const accountId = AccountId.fromString(accountInfo?.accountIds[0]);
-    console.log("associateToken");
-    const accountId = saveData?.accountIds[0];
-    const transaction = await new TokenAssociateTransaction()
-      .setAccountId(accountId)
-      .setTokenIds([tokenId]);
-
-    const transactionBytes = await makeBytes(transaction, accountId);
-    console.log("transactionBytes", transactionBytes);
-
-    await sendTransaction(transactionBytes, accountId, false);
   };
 
   const sendTransaction = async (
@@ -420,13 +410,14 @@ export default function HashConnectProvider({
     <HashConnectAPIContext.Provider
       value={{
         connect,
-        associateToken,
         accountInfo,
         walletData: saveData,
         network: network,
         installedExtensions,
         status,
         stake,
+        transactionStatus,
+        setTransActionStatus,
         tvl,
       }}
     >

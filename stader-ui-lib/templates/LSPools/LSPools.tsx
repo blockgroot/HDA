@@ -2,6 +2,7 @@ import useHashConnect from "@hooks/useHashConnect";
 import useAccount from "@hooks/useUserAccount";
 import { Grid } from "@material-ui/core";
 import { ContractConfigType } from "@types_/liquid-staking-pool";
+import Loader from "@atoms/Loader/Loader";
 import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolLiquidStaking";
 import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
 import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
@@ -14,21 +15,20 @@ const defaultConfig: ContractConfigType = {
 
 function LSPools() {
   const {
-    connect,
-    associateToken,
-    accountInfo,
     walletData: saveData,
     network: network,
     installedExtensions,
     status,
     stake,
     tvl,
+    transactionStatus,
+    setTransActionStatus,
   } = useHashConnect();
 
-  const { hbarX, isAsocciated, hbar, accountId } = useAccount();
+  const { hbarX, hbar, accountId } = useAccount();
 
-  console.log("hbar", hbar);
-  console.log("stake", stake);
+  // console.log("hbar", hbar);
+  // console.log("stake", stake);
 
   // const holdingQuery = useUserHolding();
 
@@ -63,15 +63,9 @@ function LSPools() {
   //   }
   // );
 
-  // if (
-  //   contractConfigQuery.isLoading ||
-  //   tvlLoading ||
-  //   holdingQuery.isLoading ||
-  //   wallet.status === WalletStatus.INITIALIZING
-  // ) {
-  //   return <Loader text={"Please wait while we set things up for you"} />;
-
-  // }
+  if (status === "INITIALIZING") {
+    return <Loader text={"Please wait while we set things up for you"} />;
+  }
 
   if (status !== "WALLET_CONNECTED") {
     return <WelcomeScreenPoolLiquidStaking />;
@@ -85,10 +79,12 @@ function LSPools() {
         </Grid>
         <Grid item xs={12} md={8}>
           <LSPoolsForm
-            tvlLoading={false}
+            tvlLoading={true}
             contractConfig={defaultConfig}
             holding={hbar}
             handleStake={stake}
+            transactionStatus={transactionStatus}
+            setTransactionStatus={setTransActionStatus}
           />
         </Grid>
       </Grid>

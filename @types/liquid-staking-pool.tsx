@@ -9,6 +9,8 @@ export type LSPoolProps = {
   contractConfig: ContractConfigType;
   holding: number;
   handleStake: (amount: number) => void;
+  setTransactionStatus: (status: string) => void;
+  transactionStatus: string;
 };
 
 export type ContractConfigType = {
