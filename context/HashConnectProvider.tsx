@@ -8,6 +8,7 @@ import {
   Transaction,
   TransactionReceipt,
 } from "@hashgraph/sdk";
+import { WalletStatus } from "@molecules/WalletSelector/WalletSelector";
 import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
 import React, { useEffect, useRef, useState } from "react";
 import { init, signAndMakeBytes } from "../services/signing.service";
@@ -45,7 +46,8 @@ export interface buildTransactionParams {
 }
 
 export interface HashConnectProviderAPI {
-  connect: () => void;
+  connect: (type: ConnectType) => void;
+  disconnect: () => void;
   accountInfo: AccountInfo | null;
   walletData: SaveData;
   network: Networks;
@@ -57,6 +59,8 @@ export interface HashConnectProviderAPI {
   setTransActionStatus: (status: string) => void;
   tvl: number;
 }
+
+export enum ConnectType {CHROME_EXTENSION, BLADE_WALLET};
 
 const INITIAL_SAVE_DATA: SaveData = {
   topic: "",
@@ -94,7 +98,8 @@ const loadLocalData = (): null | SaveData => {
 
 export const HashConnectAPIContext =
   React.createContext<HashConnectProviderAPI>({
-    connect: () => null,
+    connect: (type: ConnectType) => null,
+    disconnect: () => null,
     accountInfo: {} as AccountInfo,
     walletData: INITIAL_SAVE_DATA,
     network: "testnet",
@@ -133,7 +138,7 @@ export default function HashConnectProvider({
   const [tvl, setTvl] = useState<number>(0);
   const [selectedAccount, setSelectedAccount] = useState<string | null>();
 
-  const [status, _setStatus] = useState<string>("INITIALIZING");
+  const [status, _setStatus] = useState<string>(WalletStatus.INITIALIZING);
   const [transactionStatus, setTransActionStatus] = useState<string>("");
 
   const statusRef = useRef(status);
@@ -243,7 +248,7 @@ export default function HashConnectProvider({
     if (debug) console.debug("====foundExtensionEvent====", data);
     // Do a thing
     console.log("foundExtensionEventHandler", data);
-    setStatus("WALLET_NOT_CONNECTED");
+    setStatus(WalletStatus.WALLET_NOT_CONNECTED);
     setInstalledExtensions(data as HashConnectTypes.WalletMetadata);
   };
 
@@ -296,9 +301,11 @@ export default function HashConnectProvider({
     console.log("status", status);
   }, [status]);
 
-  const connect = async () => {
-    console.log("installedExtensions", installedExtensions);
-    await hashConnect.connectToLocalWallet(saveData?.pairingString);
+  const connect = async (type: ConnectType ) => {
+    console.log({type, installedExtensions } );
+    if ( type === ConnectType.CHROME_EXTENSION) {
+     await hashConnect.connectToLocalWallet(saveData?.pairingString);
+    }
     // if (installedExtensions) {
     //   if (debug) console.log("Pairing String::", saveData.pairingString);
     //   await hashConnect.connectToLocalWallet(saveData?.pairingString);
@@ -307,6 +314,14 @@ export default function HashConnectProvider({
     //   return "wallet not installed";
     // }
   };
+  
+  const disconnect = () => {
+    console.log('disconnect');
+    setSaveData(INITIAL_SAVE_DATA);
+    setStatus(WalletStatus.WALLET_NOT_CONNECTED);
+    setInstalledExtensions(null);
+    localStorage.removeItem(SAVE_KEY);
+  }
 
   const getTvl = async () => {
     //Create the query
@@ -414,6 +429,7 @@ export default function HashConnectProvider({
     <HashConnectAPIContext.Provider
       value={{
         connect,
+        disconnect,
         accountInfo,
         walletData: saveData,
         network: network,

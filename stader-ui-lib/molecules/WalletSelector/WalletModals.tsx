@@ -8,7 +8,13 @@ import styles from "./WalletSelector.module.scss";
 
 import copy_address from "../../../assets/svg/copy_address.svg";
 import CheckIcon from "@material-ui/icons/Check";
+import { ConnectType } from "context/HashConnectProvider";
 
+
+
+type WailetsConfig = {
+  availableInstallTypes: Array<ConnectType>;
+};
 interface ConnectedProps {
   disconnectWallet: () => void;
   walletBalance: string;
@@ -71,44 +77,63 @@ export const ConnectedWalletModal: FC<ConnectedProps> = (props) => {
   );
 };
 
-// interface DisconnectedProps {
-//   connectWallet: (type: Connection) => void;
-//   installWallet: (props: ConnectType) => void;
-// }
+interface DisconnectedProps {
+  installWallet: (props: ConnectType) => void;
+}
 
-// export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
-//   const { connectWallet, installWallet } = props;
-//   const wallet = useWallet();
 
-//   return (
-//     <>
-//       {wallet.availableInstallTypes.includes(ConnectType.CHROME_EXTENSION) && (
-//         <Button
-//           variant={"flat"}
-//           childClassName={"px-5"}
-//           parentClassName={"w-full"}
-//           onClick={() => installWallet(ConnectType.CHROME_EXTENSION)}
-//           size={"small"}
-//         >
-//           <Typography fontWeight={"medium"}>HashPack Wallet</Typography>
-//         </Button>
-//       )}
 
-//       <Typography
-//         fontWeight={"bold"}
-//         className={"text-white mt-5 text-center"}
-//         variant={"caption1"}
-//       >
-//         By connecting a wallet, you agree to our{" "}
-//         <a
-//           href={urls.termsOfService}
-//           target="_blank"
-//           rel="noreferrer"
-//           className={styles.term_of_service}
-//         >
-//           Terms of Service
-//         </a>
-//       </Typography>
-//     </>
-//   );
-// };
+export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
+  const { installWallet } = props;
+  const wallet = useWallet();
+
+  return (
+    <>
+      {wallet.availableInstallTypes.includes(ConnectType.CHROME_EXTENSION) && (
+        <Button
+          variant={"flat"}
+          childClassName={"px-5"}
+          parentClassName={"w-full"}
+          onClick={() => installWallet(ConnectType.CHROME_EXTENSION)}
+          size={"small"}
+        >
+          <Typography fontWeight={"medium"}>HashPack Wallet</Typography>
+        </Button>
+      )}
+      <Button
+          variant={"flat"}
+          childClassName={"px-5"}
+          parentClassName={"w-full"}
+          onClick={() => installWallet(ConnectType.BLADE_WALLET)}
+          size={"small"}
+        >
+          <Typography fontWeight={"medium"}>Blade Wallet</Typography>
+        </Button>
+
+      <Typography
+        fontWeight={"bold"}
+        className={"text-white mt-5 text-center"}
+        variant={"caption1"}
+      >
+        By connecting a wallet, you agree to our{" "}
+        <a
+          href={urls.termsOfService}
+          target="_blank"
+          rel="noreferrer"
+          className={styles.term_of_service}
+        >
+          Terms of Service
+        </a>
+      </Typography>
+    </>
+  );
+};
+
+function useWallet(): WailetsConfig {
+
+  return {
+    
+    availableInstallTypes: [ConnectType.CHROME_EXTENSION]
+  }
+}
+
