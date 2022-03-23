@@ -33,7 +33,9 @@ function LSPoolsEstimate(props: Props) {
           </div>
 
           <div className={styles.headerTitle}>
-            <div className={`${styles.headerWithInfo} flex items-center mb-3 mr-10`}>
+            <div
+              className={`${styles.headerWithInfo} flex items-center mb-3 mr-10`}
+            >
               <Typography variant={"body1"} fontWeight={"bold"}>
                 APY
               </Typography>

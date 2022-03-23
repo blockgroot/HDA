@@ -80,7 +80,12 @@ function LSPools() {
 
   return (
     <div>
-      <Grid container direction="column" spacing={3} {...!tabletDown && { alignItems: "center" }}>
+      <Grid
+        container
+        direction="column"
+        spacing={3}
+        {...(!tabletDown && { alignItems: "center" })}
+      >
         <Grid item xs={12} md={8}>
           <LSPoolsEstimate
             tvl={tvl}

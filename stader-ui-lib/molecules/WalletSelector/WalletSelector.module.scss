@@ -17,6 +17,7 @@
   margin: 10px 0;
 
   @include respond-below(sm) {
+    min-width: 250px;
     width: 100%;
   }
 
