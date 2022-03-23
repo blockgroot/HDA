@@ -109,7 +109,7 @@ function LSPoolsForm(props: LSPoolProps) {
         <div className={styles.container}>
           <div className="flex flex-col justify-center align-middle content-center">
             <div className="justify-center flex p-10 mt-10">
-              <TickSVG />
+              <img src={"/static/success.gif"}  width={200} />
             </div>
             <div className="justify-center flex p-2">
               <Typography variant={"body1"} fontWeight="bold">
