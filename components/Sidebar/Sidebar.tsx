@@ -30,7 +30,7 @@ const Sidebar: FC<Props> = ({
         ))}
       </div>
       <div className={styles.ovl} onClick={() => onToggleSidebar(!hide)} />
-      <div style={{ flex: 1 }}/>
+      <div style={{ flex: 1 }} />
       <Help className={styles.helpBtn} />
     </div>
   );

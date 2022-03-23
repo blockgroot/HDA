@@ -10,8 +10,6 @@ import copy_address from "../../../assets/svg/copy_address.svg";
 import CheckIcon from "@material-ui/icons/Check";
 import { ConnectType } from "context/HashConnectProvider";
 
-
-
 type WailetsConfig = {
   availableInstallTypes: Array<ConnectType>;
 };
@@ -81,8 +79,6 @@ interface DisconnectedProps {
   installWallet: (props: ConnectType) => void;
 }
 
-
-
 export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
   const { installWallet } = props;
   const wallet = useWallet();
@@ -101,14 +97,14 @@ export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
         </Button>
       )}
       <Button
-          variant={"flat"}
-          childClassName={"px-5"}
-          parentClassName={"w-full"}
-          onClick={() => installWallet(ConnectType.BLADE_WALLET)}
-          size={"small"}
-        >
-          <Typography fontWeight={"medium"}>Blade Wallet</Typography>
-        </Button>
+        variant={"flat"}
+        childClassName={"px-5"}
+        parentClassName={"w-full"}
+        onClick={() => installWallet(ConnectType.BLADE_WALLET)}
+        size={"small"}
+      >
+        <Typography fontWeight={"medium"}>Blade Wallet</Typography>
+      </Button>
 
       <Typography
         fontWeight={"bold"}
@@ -130,10 +126,7 @@ export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
 };
 
 function useWallet(): WailetsConfig {
-
   return {
-    
-    availableInstallTypes: [ConnectType.CHROME_EXTENSION]
-  }
+    availableInstallTypes: [ConnectType.CHROME_EXTENSION],
+  };
 }
-

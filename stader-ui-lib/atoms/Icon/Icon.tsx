@@ -6,5 +6,13 @@ export default function Icon(props: IconType) {
     ? icons[name][color]
     : icons[name]["default"] || icons[name];
 
-  return <img src={iconName} alt={name} width={width} height={height} className={className} />;
+  return (
+    <img
+      src={iconName}
+      alt={name}
+      width={width}
+      height={height}
+      className={className}
+    />
+  );
 }
