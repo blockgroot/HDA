@@ -6,6 +6,8 @@ import Loader from "@atoms/Loader/Loader";
 import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolLiquidStaking";
 import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
 import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
+import useExchangeRate from "@hooks/useExchangeRate";
+import useAPY from "@hooks/useAPy";
 
 const defaultConfig: ContractConfigType = {
   min_deposit: 0,
@@ -18,6 +20,7 @@ function LSPools() {
     walletData: saveData,
     network: network,
     installedExtensions,
+    selectedAccount,
     status,
     stake,
     tvl,
@@ -25,7 +28,9 @@ function LSPools() {
     setTransActionStatus,
   } = useHashConnect();
 
-  const { hbarX, hbar, accountId } = useAccount();
+  const { hbarX, hbar } = useAccount();
+  const { exchangeRate } = useExchangeRate();
+  const { apy } = useAPY();
 
   // console.log("hbar", hbar);
   // console.log("stake", stake);
@@ -75,7 +80,12 @@ function LSPools() {
     <div>
       <Grid container direction="column" spacing={3} alignItems="center">
         <Grid item xs={12} md={8}>
-          <LSPoolsEstimate tvl={tvl} holdings={hbarX} isLoading={false} />
+          <LSPoolsEstimate
+            tvl={tvl}
+            holdings={hbarX}
+            isLoading={false}
+            apy={apy}
+          />
         </Grid>
         <Grid item xs={12} md={8}>
           <LSPoolsForm
@@ -85,6 +95,7 @@ function LSPools() {
             handleStake={stake}
             transactionStatus={transactionStatus}
             setTransactionStatus={setTransActionStatus}
+            exchangeRate={exchangeRate}
           />
         </Grid>
       </Grid>

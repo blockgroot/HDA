@@ -56,11 +56,12 @@ const ErrSVG = () => (
 
 function LSPoolsForm(props: LSPoolProps) {
   const {
+    exchangeRate,
     handleStake,
-    tvlLoading,
     contractConfig,
     holding,
     transactionStatus,
+    tvlLoading,
     setTransactionStatus,
   } = props;
 
@@ -69,7 +70,7 @@ function LSPoolsForm(props: LSPoolProps) {
     setTab(val);
   };
 
-  console.log("transactionStatus", transactionStatus);
+  // console.log("transactionStatus", transactionStatus);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -151,7 +152,7 @@ function LSPoolsForm(props: LSPoolProps) {
           <>
             {tab === 0 && (
               <LSPoolsFormStake
-                tvlExchangeRate={1}
+                tvlExchangeRate={exchangeRate}
                 walletBalance={holding}
                 ustWalletBalance={0}
                 maximumDeposit={contractConfig.max_deposit}

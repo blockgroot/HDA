@@ -34,7 +34,7 @@ const WalletSelector = ({
 
   const {
     connect,
-    accountInfo,
+    selectedAccount,
     walletData: saveData,
     network: network,
     installedExtensions,
@@ -43,7 +43,7 @@ const WalletSelector = ({
     tvl,
   } = useHashConnect();
 
-  const { hbarX, hbar, accountId } = useAccount();
+  const { hbarX, hbar } = useAccount();
 
   const isWalletConnected: boolean = status === WalletStatus.WALLET_CONNECTED;
   const isWalletInitializing: boolean = status === WalletStatus.INITIALIZING;
@@ -64,7 +64,7 @@ const WalletSelector = ({
         fontWeight={"medium"}
         className={"inline ml-4 capitalize"}
       >
-        {accountId}
+        {selectedAccount}
       </Typography>
       <div className={styles.divider} />
       <Typography variant={"body2"} fontWeight={"bold"} className={"mr-1"}>

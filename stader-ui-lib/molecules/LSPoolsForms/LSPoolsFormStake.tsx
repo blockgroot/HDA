@@ -104,7 +104,7 @@ function LSPoolsFormStake(props: Props) {
 
                 <Typography
                   variant={"body3"}
-                >{`1 ${tokenLabel} = ${tvlExchangeRate.toFixed(
+                >{`1 ${tokenLabel} = ${tvlExchangeRate?.toFixed(
                   6
                 )} ${NATIVE_TOKEN_LABEL}`}</Typography>
               </div>
@@ -119,7 +119,7 @@ function LSPoolsFormStake(props: Props) {
                     let value = e.target.value;
                     setFieldValue(
                       "liquidNativeToken",
-                      value
+                      (Number(value) * tvlExchangeRate).toFixed(6)
                       // outputAmountLiquidNativeToken(value, tvlExchangeRate)
                     );
                     setFieldValue("nativeToken", value);
