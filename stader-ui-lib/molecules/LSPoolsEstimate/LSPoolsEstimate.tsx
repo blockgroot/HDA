@@ -2,6 +2,7 @@ import {
   LIQUID_NATIVE_TOKEN_LABEL,
   NATIVE_TOKEN_LABEL,
   NATIVE_TOKEN_MULTIPLIER,
+  precision,
 } from "@constants/constants";
 import { Box, Loader, Typography } from "../../atoms";
 import styles from "./LSPoolsEstimate.module.scss";
@@ -63,7 +64,7 @@ function LSPoolsEstimate(props: Props) {
               fontWeight={"medium"}
               className={classNames("mt-3", styles.value)}
             >
-              {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(2)}
+              {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}
             </Typography>
           </div>
 
@@ -73,7 +74,7 @@ function LSPoolsEstimate(props: Props) {
               fontWeight={"medium"}
               className={classNames("mt-3", styles.value)}
             >
-              {apy && apy.toFixed(2)}%
+              {apy && apy.toFixed(precision)}%
             </Typography>
           </div>
           <div>
@@ -83,7 +84,7 @@ function LSPoolsEstimate(props: Props) {
                 fontWeight={"medium"}
                 className={classNames("mr-2 mt-3 text-gradient", styles.value)}
               >
-                {(tvl / NATIVE_TOKEN_MULTIPLIER).toFixed(2)}
+                {(tvl / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}
               </Typography>
               <Typography
                 variant={"body2"}

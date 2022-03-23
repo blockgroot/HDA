@@ -6,6 +6,7 @@ import {
   NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
   NATIVE_TOKEN_LABEL,
   NATIVE_TOKEN_MULTIPLIER,
+  precision,
   tokenLabel,
 } from "@constants/constants";
 import { InputAdornment } from "@material-ui/core";
@@ -35,19 +36,8 @@ function LSPoolsFormStake(props: Props) {
     ustWalletBalance,
     handleStake,
   } = props;
-  console.log(tvlExchangeRate);
-  // const {
-  //   handleStake,
-  //   outputAmountLiquidNativeToken,
-  //   isLoading,
-  //   resetQuery,
-  //   data,
-  // } = useLSPoolsForm();
+  // console.log(tvlExchangeRate);
 
-  // if (isLoading) return <Loader position={"center"} />;
-  // if (data?.success) {
-  //   return <DepositSuccess reset={resetQuery} message={data?.message} />;
-  // }
   const minDep = nativeTokenFormatter(minimumDeposit);
   const maxDep = Math.min(nativeTokenFormatter(maximumDeposit), walletBalance);
 
@@ -101,15 +91,13 @@ function LSPoolsFormStake(props: Props) {
               <div className={styles.available_amount_validation}>
                 <Typography variant={"body3"} color={"secondary"}>
                   Available:{" "}
-                  {(walletBalance / NATIVE_TOKEN_MULTIPLIER).toFixed(6)}{" "}
+                  {(walletBalance / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}{" "}
                   {NATIVE_TOKEN_LABEL}
                 </Typography>
 
-                <Typography
-                  variant={"body3"}
-                >{`1 ${tokenLabel} = ${tvlExchangeRate?.toFixed(
-                  6
-                )} ${NATIVE_TOKEN_LABEL}`}</Typography>
+                <Typography variant={"body3"}>{`1 ${tokenLabel} = ${(
+                  1 / tvlExchangeRate
+                ).toFixed(precision)} ${NATIVE_TOKEN_LABEL}`}</Typography>
               </div>
 
               <div className={"mt-4 mb-8 relative"}>
@@ -122,7 +110,7 @@ function LSPoolsFormStake(props: Props) {
                     let value = e.target.value;
                     setFieldValue(
                       "liquidNativeToken",
-                      (Number(value) * tvlExchangeRate).toFixed(6)
+                      (Number(value) * tvlExchangeRate).toFixed(precision)
                       // outputAmountLiquidNativeToken(value, tvlExchangeRate)
                     );
                     setFieldValue("nativeToken", value);
@@ -172,10 +160,10 @@ function LSPoolsFormStake(props: Props) {
                     let val = walletBalance * value;
                     setFieldValue(
                       "liquidNativeToken",
-                      (Number(val) * tvlExchangeRate).toFixed(2)
+                      (Number(val) * tvlExchangeRate).toFixed(precision)
                       // outputAmountLiquidNativeToken(val, tvlExchangeRate)
                     );
-                    setFieldValue("nativeToken", val.toFixed(6));
+                    setFieldValue("nativeToken", val.toFixed(precision));
                   }}
                 />
                 <Typography variant={"body3"} color={"textSecondary"}>

@@ -3,7 +3,11 @@ import useClipboard from "react-use-clipboard";
 import Divider from "../../atoms/Divider/Divider";
 import { Button, Typography } from "../../atoms";
 import ListItem from "../../atoms/ListItem/ListItem";
-import { NATIVE_TOKEN_LABEL, urls } from "@constants/constants";
+import {
+  NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_MULTIPLIER,
+  urls,
+} from "@constants/constants";
 import styles from "./WalletSelector.module.scss";
 
 import copy_address from "../../../assets/svg/copy_address.svg";
@@ -15,7 +19,7 @@ type WailetsConfig = {
 };
 interface ConnectedProps {
   disconnectWallet: () => void;
-  walletBalance: string;
+  walletBalance: number;
   truncatedWalletAddress: string;
   walletAddress: string;
 }
@@ -57,7 +61,7 @@ export const ConnectedWalletModal: FC<ConnectedProps> = (props) => {
           {NATIVE_TOKEN_LABEL}
         </Typography>
         <Typography fontWeight={"bold"} variant={"body2"}>
-          {walletBalance}
+          {walletBalance / NATIVE_TOKEN_MULTIPLIER}
         </Typography>
       </ListItem>
       <Divider color={"light"} />

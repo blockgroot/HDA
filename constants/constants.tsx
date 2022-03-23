@@ -28,3 +28,4 @@ export const version = 1.0;
 export const apiPath = "api/v1/";
 export const NATIVE_TOKEN_MULTIPLIER = 100000000;
 export const tokenLabel = LIQUID_NATIVE_TOKEN_LABEL;
+export const precision = 4;
