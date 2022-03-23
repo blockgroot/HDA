@@ -5,6 +5,7 @@ import {
   NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
   NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
   NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_MULTIPLIER,
   tokenLabel,
 } from "@constants/constants";
 import { InputAdornment } from "@material-ui/core";
@@ -99,7 +100,9 @@ function LSPoolsFormStake(props: Props) {
             <form onSubmit={handleSubmit}>
               <div className={styles.available_amount_validation}>
                 <Typography variant={"body3"} color={"secondary"}>
-                  Available: {walletBalance.toFixed(6)} {NATIVE_TOKEN_LABEL}
+                  Available:{" "}
+                  {(walletBalance / NATIVE_TOKEN_MULTIPLIER).toFixed(6)}{" "}
+                  {NATIVE_TOKEN_LABEL}
                 </Typography>
 
                 <Typography
@@ -169,7 +172,7 @@ function LSPoolsFormStake(props: Props) {
                     let val = walletBalance * value;
                     setFieldValue(
                       "liquidNativeToken",
-                      val
+                      (Number(val) * tvlExchangeRate).toFixed(2)
                       // outputAmountLiquidNativeToken(val, tvlExchangeRate)
                     );
                     setFieldValue("nativeToken", val.toFixed(6));
