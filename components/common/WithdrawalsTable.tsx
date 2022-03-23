@@ -117,7 +117,8 @@ const WithdrawalsTable: FC<Props> = ({
                                 .unix(
                                   Number(undelegation.est_release_time) /
                                     1000000000
-                                ).add(15, "minutes")
+                                )
+                                .add(15, "minutes")
                                 .format("lll")}
                             </TableCell>
                           ) : (

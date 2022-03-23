@@ -12,6 +12,17 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  margin: 10px 0;
+
+  button{
+    -webkit-box-shadow: 2px 8px 5px -4px rgba(0, 0, 0, 0.37);
+-moz-box-shadow: 2px 8px 5px -4px rgba(0, 0, 0, 0.37);
+box-shadow: 2px 8px 5px -4px rgba(0, 0, 0, 0.37);
+    &:not(:first-child) {
+      margin-top: 15px ;
+    }
+    
+  }
 }
 
 .term_of_service {
