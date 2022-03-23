@@ -54,11 +54,11 @@ const WalletSelector = ({
     status === WalletStatus.WALLET_NOT_CONNECTED;
 
   const openModal = (e: any) => {
-    console.log("openModal");
+    
     setModal({ open: true, anchorEl: e.currentTarget });
   };
   const closeModal = () => {
-    console.log("closeModal");
+    
     setModal({ open: false, anchorEl: null });
   };
 
