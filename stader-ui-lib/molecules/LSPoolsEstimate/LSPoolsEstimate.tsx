@@ -12,10 +12,11 @@ type Props = {
   tvl: any;
   holdings: number;
   isLoading: boolean;
+  apy: number;
 };
 
 function LSPoolsEstimate(props: Props) {
-  const { tvl, holdings, isLoading } = props;
+  const { tvl, holdings, isLoading, apy } = props;
 
   if (isLoading) {
     return <Loader height={100} className={"mx-auto"} />;
@@ -72,7 +73,7 @@ function LSPoolsEstimate(props: Props) {
               fontWeight={"medium"}
               className={classNames("mt-3", styles.value)}
             >
-              500
+              {apy.toFixed(2)}%
             </Typography>
           </div>
           <div>

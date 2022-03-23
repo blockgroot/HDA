@@ -37,7 +37,8 @@ const WalletSelector = ({
   const {
     connect,
     disconnect,
-    accountInfo,
+    accountBalance,
+    selectedAccount,
     walletData: saveData,
     network: network,
     installedExtensions,
@@ -46,7 +47,7 @@ const WalletSelector = ({
     tvl,
   } = useHashConnect();
 
-  const { hbarX, hbar, accountId } = useAccount();
+  const { hbarX, hbar } = useAccount();
 
   const isWalletConnected: boolean = status === WalletStatus.WALLET_CONNECTED;
   const isWalletInitializing: boolean = status === WalletStatus.INITIALIZING;
@@ -54,11 +55,9 @@ const WalletSelector = ({
     status === WalletStatus.WALLET_NOT_CONNECTED;
 
   const openModal = (e: any) => {
-    
     setModal({ open: true, anchorEl: e.currentTarget });
   };
   const closeModal = () => {
-    
     setModal({ open: false, anchorEl: null });
   };
 
@@ -69,7 +68,7 @@ const WalletSelector = ({
         fontWeight={"medium"}
         className={"inline ml-4 capitalize"}
       >
-        {accountId}
+        {selectedAccount}
       </Typography>
       <div className={styles.divider} />
       <Typography variant={"body2"} fontWeight={"bold"} className={"mr-1"}>
@@ -88,8 +87,8 @@ const WalletSelector = ({
         closeModal();
         disconnect();
       }}
-      walletAddress={accountId}
-      truncatedWalletAddress={accountId}
+      walletAddress={selectedAccount}
+      truncatedWalletAddress={selectedAccount}
     />
   );
 

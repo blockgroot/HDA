@@ -1,4 +1,6 @@
 import {
+  AccountBalance,
+  AccountBalanceQuery,
   AccountId,
   AccountInfo,
   AccountInfoQuery,
@@ -48,7 +50,8 @@ export interface buildTransactionParams {
 export interface HashConnectProviderAPI {
   connect: (type: ConnectType) => void;
   disconnect: () => void;
-  accountInfo: AccountInfo | null;
+  accountBalance: AccountBalance | null;
+  selectedAccount: string;
   walletData: SaveData;
   network: Networks;
   metadata?: HashConnectTypes.AppMetadata;
@@ -103,7 +106,8 @@ export const HashConnectAPIContext =
   React.createContext<HashConnectProviderAPI>({
     connect: (type: ConnectType) => null,
     disconnect: () => null,
-    accountInfo: {} as AccountInfo,
+    accountBalance: null,
+    selectedAccount: "",
     walletData: INITIAL_SAVE_DATA,
     network: "testnet",
     installedExtensions: null,
@@ -137,9 +141,11 @@ export default function HashConnectProvider({
   const [saveData, _setSaveData] = useState<SaveData>(INITIAL_SAVE_DATA);
   const [installedExtensions, setInstalledExtensions] =
     useState<HashConnectTypes.WalletMetadata | null>(null);
-  const [accountInfo, setAccountInfo] = useState<AccountInfo | null>(null);
+  const [accountBalance, setAccountBalance] = useState<AccountBalance | null>(
+    null
+  );
   const [tvl, setTvl] = useState<number>(0);
-  const [selectedAccount, setSelectedAccount] = useState<string | null>();
+  const [selectedAccount, setSelectedAccount] = useState<string>("");
 
   const [status, _setStatus] = useState<string>(WalletStatus.INITIALIZING);
   const [transactionStatus, setTransActionStatus] = useState<string>("");
@@ -328,31 +334,39 @@ export default function HashConnectProvider({
 
   const getTvl = async () => {
     //Create the query
-    const query = new ContractInfoQuery().setContractId(contractId);
+    const query = new AccountBalanceQuery().setContractId(contractId);
+    // const client = await init();
+
+    // const balance =  (await provider.getBalance(accountId)).toNumber();
+
     const client = await init();
 
     //Sign the query with the client operator private key and submit to a Hedera network
-    const contractInfo = await query.execute(client);
+    const balance = await query.execute(client);
+    console.log(balance);
 
     // console.log(contractInfo);
-    setTvl(contractInfo.balance.toTinybars().toNumber());
+    setTvl(balance.hbars.toTinybars().toNumber());
   };
 
   const getAccounts = async (accountId: string) => {
     //Create the account info query
     //moved to api
-    const query = new AccountInfoQuery().setAccountId(accountId);
+    const query = new AccountBalanceQuery().setAccountId(accountId);
+
+    // const balance =  (await provider.getBalance(accountId)).toNumber();
+
     const client = await init();
 
     // Sign with client operator private key and submit the query to a Hedera network
-    const accountInfo = await query.execute(client);
+    const balance = await query.execute(client);
 
     // Print the account info to the console
-    console.log(accountInfo);
+    console.log(balance);
 
     //v2.0.0
     // setBalance(accountInfo.balance.toTinybars().toString());
-    setAccountInfo(accountInfo);
+    setAccountBalance(balance);
     setStatus("WALLET_CONNECTED");
   };
 
@@ -433,7 +447,8 @@ export default function HashConnectProvider({
       value={{
         connect,
         disconnect,
-        accountInfo,
+        accountBalance,
+        selectedAccount,
         walletData: saveData,
         network: network,
         installedExtensions,
