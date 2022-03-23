@@ -5,8 +5,9 @@ import { config } from "config/config";
 import { tokenId, apiPath } from "@constants/constants";
 
 export default function useExchangeRate() {
-  const [totalSupply, setTotalSupply] = useState<number>(0);
+  //   const [totalSupply, setTotalSupply] = useState<number>(0);
   const { tvl } = useHashConnect();
+  const [exchangeRate, setExchangeRate] = useState<number>(1);
 
   const { data } = useQuery("tokenData", () =>
     fetch(`${config.network.url}${apiPath}tokens/${tokenId}`).then((res) =>
@@ -16,10 +17,10 @@ export default function useExchangeRate() {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
-      setTotalSupply(data.total_supply);
+      console.log("data", data);
+      setExchangeRate(data.total_supply / tvl);
     }
-  }, [data]);
+  }, [data, tvl]);
 
-  return { exchangeRate: totalSupply ? totalSupply / tvl : 0 };
+  return { exchangeRate };
 }

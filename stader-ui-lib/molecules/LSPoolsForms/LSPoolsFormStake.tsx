@@ -27,14 +27,14 @@ type Props = {
 
 function LSPoolsFormStake(props: Props) {
   const {
-    tvlExchangeRate = 0,
+    tvlExchangeRate,
     walletBalance,
     minimumDeposit,
     maximumDeposit,
     ustWalletBalance,
     handleStake,
   } = props;
-
+  console.log(tvlExchangeRate);
   // const {
   //   handleStake,
   //   outputAmountLiquidNativeToken,

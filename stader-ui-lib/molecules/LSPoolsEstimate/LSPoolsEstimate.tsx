@@ -73,7 +73,7 @@ function LSPoolsEstimate(props: Props) {
               fontWeight={"medium"}
               className={classNames("mt-3", styles.value)}
             >
-              {apy.toFixed(2)}%
+              {apy && apy.toFixed(2)}%
             </Typography>
           </div>
           <div>

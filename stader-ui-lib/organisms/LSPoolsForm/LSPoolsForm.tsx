@@ -74,7 +74,6 @@ function LSPoolsForm(props: LSPoolProps) {
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    console.log("handleClick");
     setTransactionStatus("");
   };
 

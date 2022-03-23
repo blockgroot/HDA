@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import useHashConnect from "./useHashConnect";
 
 export default function useAPY() {
-  const [apy, setAPY] = useState<number>(0);
+  const [apy, setAPY] = useState<number>(100);
   const { tvl } = useHashConnect();
 
   useEffect(() => {
     if (tvl > 0) {
+      console.log(
+        (emissionRate * NATIVE_TOKEN_MULTIPLIER * 31536000) / (tvl * 100)
+      );
       setAPY((emissionRate * NATIVE_TOKEN_MULTIPLIER * 31536000) / (tvl * 100));
     }
     //

@@ -312,9 +312,9 @@ export default function HashConnectProvider({
 
   const connect = async (type: ConnectType) => {
     console.log({ type, installedExtensions });
-    if (type === ConnectType.CHROME_EXTENSION) {
-      await hashConnect.connectToLocalWallet(saveData?.pairingString);
-    }
+    // if (type === ConnectType.CHROME_EXTENSION) {
+    await hashConnect.connectToLocalWallet(saveData?.pairingString);
+    // }
     // if (installedExtensions) {
     //   if (debug) console.log("Pairing String::", saveData.pairingString);
     //   await hashConnect.connectToLocalWallet(saveData?.pairingString);
