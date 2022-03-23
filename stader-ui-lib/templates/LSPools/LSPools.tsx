@@ -7,7 +7,7 @@ import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolL
 import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
 import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
 import useExchangeRate from "@hooks/useExchangeRate";
-import useAPY from "@hooks/useAPy";
+import useAPY from "@hooks/useAPY";
 
 const defaultConfig: ContractConfigType = {
   min_deposit: 0,
