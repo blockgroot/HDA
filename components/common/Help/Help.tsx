@@ -15,10 +15,10 @@ const Help: React.FC<Props> = ({ className }: Props) => {
   const getFaqLink = (): string => {
     const pathname = router.pathname;
     if (pathname.indexOf("lt") > -1) {
-      return urls.faqLiquidStaking;
+      return urls.faq;
     }
 
-    return urls.faqPlainStaking;
+    return urls.faq;
   };
 
   return (

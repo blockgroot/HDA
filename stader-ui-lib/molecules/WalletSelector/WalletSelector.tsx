@@ -11,9 +11,6 @@ import classNames from "classnames";
 import { NATIVE_TOKEN_LABEL } from "@constants/constants";
 import useHashConnect from "@hooks/useHashConnect";
 import useAccount from "@hooks/useUserAccount";
-import { ConnectedWalletModal, DisconnectWalletModal } from "./WalletModals";
-import { ConnectType } from "context/HashConnectProvider";
-
 
 export const WalletStatus = {
   WALLET_CONNECTED: "WALLET_CONNECTED",
@@ -37,8 +34,7 @@ const WalletSelector = ({
 
   const {
     connect,
-    disconnect,
-    accountInfo,
+    selectedAccount,
     walletData: saveData,
     network: network,
     installedExtensions,
@@ -47,7 +43,7 @@ const WalletSelector = ({
     tvl,
   } = useHashConnect();
 
-  const { hbarX, hbar, accountId } = useAccount();
+  const { hbarX, hbar } = useAccount();
 
   const isWalletConnected: boolean = status === WalletStatus.WALLET_CONNECTED;
   const isWalletInitializing: boolean = status === WalletStatus.INITIALIZING;
@@ -55,14 +51,11 @@ const WalletSelector = ({
     status === WalletStatus.WALLET_NOT_CONNECTED;
 
   const openModal = (e: any) => {
-    console.log('openModal')
     setModal({ open: true, anchorEl: e.currentTarget });
   };
   const closeModal = () => {
-    console.log('closeModal')
     setModal({ open: false, anchorEl: null });
   };
-
 
   const walletButtonElements = (
     <>
@@ -71,7 +64,7 @@ const WalletSelector = ({
         fontWeight={"medium"}
         className={"inline ml-4 capitalize"}
       >
-        {accountId}
+        {selectedAccount}
       </Typography>
       <div className={styles.divider} />
       <Typography variant={"body2"} fontWeight={"bold"} className={"mr-1"}>
@@ -83,26 +76,21 @@ const WalletSelector = ({
     </>
   );
 
-  const connectedWalletModal = (
-    <ConnectedWalletModal
-      walletBalance={hbar.toString()}
-      disconnectWallet={()=>{
-        closeModal();
-        disconnect();
-      }}
-      walletAddress={accountId}
-      truncatedWalletAddress={accountId}
-    />
-  );
+  // const connectedWalletModal = (
+  //   <ConnectedWalletModal
+  //     walletBalance={walletBalance}
+  //     disconnectWallet={disconnectWallet}
+  //     walletAddress={walletAddress}
+  //     truncatedWalletAddress={truncatedWalletAddress}
+  //   />
+  // );
 
-  const disconnectWalletModal = (
-    <DisconnectWalletModal
-      installWallet={(type: ConnectType) => {
-        closeModal();
-        connect(type);
-      }}
-    />
-  );
+  // const disconnectWalletModal = (
+  //   <DisconnectWalletModal
+  //     connectWallet={connectWallet}
+  //     installWallet={installWallet}
+  //   />
+  // );
 
   const WalletButton: FC = (props) => {
     return (
@@ -121,10 +109,10 @@ const WalletSelector = ({
           </div>
         }
         className={"px-4 items-center flex"}
-         onClick={openModal}
-        // onClick={() => {
-        //   if (!isWalletConnected) connect();
-        // }}
+        // onClick={openModal}
+        onClick={() => {
+          if (!isWalletConnected) connect();
+        }}
         size={size || "small"}
         id="wallet-button"
       >
@@ -135,10 +123,10 @@ const WalletSelector = ({
 
   const renderWalletButton = useCallback(() => {
     if (isWalletInitializing) {
-      return <WalletButton> Initializing Wallet...</WalletButton>;
+      return <WalletButton>Initializing Wallet...</WalletButton>;
     }
     if (isWalletDisconnected) {
-      return <WalletButton > Connect Wallet</WalletButton>;
+      return <WalletButton>Connect Wallet</WalletButton>;
     }
     return <WalletButton>{walletButtonElements}</WalletButton>;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -179,8 +167,8 @@ const WalletSelector = ({
         <ClickAwayListener onClickAway={closeModal}>
           <div className={styles.wallet_dropdown_container}>
             <WalletDropDown>
-               {isWalletConnected && connectedWalletModal}
-              {isWalletDisconnected && disconnectWalletModal}
+              {/* {isWalletConnected && connectedWalletModal}
+              {isWalletDisconnected && disconnectWalletModal} */}
             </WalletDropDown>
           </div>
         </ClickAwayListener>

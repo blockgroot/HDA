@@ -16,7 +16,7 @@ import { builtinModules } from "module";
 
 export async function init() {
     const client = Client.forTestnet();
-    client.setOperator("0.0.29670565", "302e020100300506032b657004220420071f6190c647388e0b8ffac5ec13fc17d81b267ce36d10c1f9b4cf0ed9921ad3");
+    // client.setOperator("0.0.29670565", "302e020100300506032b657004220420071f6190c647388e0b8ffac5ec13fc17d81b267ce36d10c1f9b4cf0ed9921ad3");
     return client
 }
 

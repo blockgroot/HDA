@@ -5,6 +5,7 @@ export type TvlType = {
 };
 
 export type LSPoolProps = {
+  exchangeRate: number;
   tvlLoading?: boolean;
   contractConfig: ContractConfigType;
   holding: number;

@@ -13,7 +13,7 @@ function HelpBtn() {
   return (
     <div className={c(styles.helpButtonContainer)}>
       <a
-        href={isLiquidStaking ? urls.faqLiquidStaking : urls.faqPlainStaking}
+        href={isLiquidStaking ? urls.faq : urls.faq}
         target="_blank"
         rel="noreferrer"
         className={styles.helpButton}
