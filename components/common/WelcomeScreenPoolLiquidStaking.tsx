@@ -3,7 +3,7 @@ import { useMediaQuery } from "@material-ui/core";
 import React from "react";
 import welcome_wave from "../../assets/svg/welcome_wave.svg";
 import WalletSelector from "../../stader-ui-lib/molecules/WalletSelector/WalletSelector";
-import InfoPageMobile from './InfoPageMobile';
+import InfoPageMobile from "./InfoPageMobile";
 // TODO: move the styling to a style page
 interface Props {
   toggleConnectWallet?: any;
@@ -11,7 +11,7 @@ interface Props {
 
 function WelcomeScreenPoolLiquidStaking({ toggleConnectWallet }: Props) {
   const tabletDown = useMediaQuery(`(max-width:${MQ_FOR_TABLET_LANDSCAPE}px)`);
-  
+
   if (tabletDown) {
     return <InfoPageMobile />;
   }
