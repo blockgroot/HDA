@@ -10,6 +10,7 @@ export const tooltips = {};
 
 export const urls = {
   faq: "https://hedera.staderlabs.io/faq",
+  termsOfService: "https://hedera.staderlabs.io/terms-of-service",
 };
 
 export const transactionsTypeMap = {};
