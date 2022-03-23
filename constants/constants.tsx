@@ -8,7 +8,9 @@ export const tvlCap = {};
 // How do I provide dynamic tooltips
 export const tooltips = {};
 
-export const urls = {};
+export const urls = {
+  faq: "https://hedera.staderlabs.io/faq",
+};
 
 export const transactionsTypeMap = {};
 

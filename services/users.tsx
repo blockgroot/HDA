@@ -4,7 +4,7 @@ import {
   onAuthStateChanged,
   onIdTokenChanged,
 } from "firebase/auth";
-import { UPDATE_USER_DATA_URL } from "../constants/constants";
+
 import request from "./client";
 
 export const authenticateUser = () => {
@@ -33,7 +33,7 @@ export const authenticateUser = () => {
 
 export const updateUser = async (userAddress: string) => {
   let authParams = {
-    url: UPDATE_USER_DATA_URL,
+    url: "",
     data: {
       userAddress,
     },
