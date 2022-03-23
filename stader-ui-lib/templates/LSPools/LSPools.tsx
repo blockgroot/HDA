@@ -1,6 +1,6 @@
 import useHashConnect from "@hooks/useHashConnect";
 import useAccount from "@hooks/useUserAccount";
-import { Grid } from "@material-ui/core";
+import { Grid, useMediaQuery } from "@material-ui/core";
 import { ContractConfigType } from "@types_/liquid-staking-pool";
 import Loader from "@atoms/Loader/Loader";
 import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolLiquidStaking";
@@ -8,6 +8,7 @@ import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
 import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
 import useExchangeRate from "@hooks/useExchangeRate";
 import useAPY from "@hooks/useAPY";
+import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
 
 const defaultConfig: ContractConfigType = {
   min_deposit: 0,
@@ -31,6 +32,7 @@ function LSPools() {
   const { hbarX, hbar } = useAccount();
   const { exchangeRate } = useExchangeRate();
   const { apy } = useAPY();
+  const tabletDown = useMediaQuery(`(max-width:${MQ_FOR_TABLET_LANDSCAPE}px)`);
 
   // console.log("hbar", hbar);
   // console.log("stake", stake);
@@ -78,7 +80,7 @@ function LSPools() {
 
   return (
     <div>
-      <Grid container direction="column" spacing={3} alignItems="center">
+      <Grid container direction="column" spacing={3} {...!tabletDown && { alignItems: "center" }}>
         <Grid item xs={12} md={8}>
           <LSPoolsEstimate
             tvl={tvl}

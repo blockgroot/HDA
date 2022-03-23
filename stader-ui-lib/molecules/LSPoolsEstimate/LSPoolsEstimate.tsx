@@ -25,15 +25,15 @@ function LSPoolsEstimate(props: Props) {
   return (
     <div className={styles.root}>
       <div className={styles.container}>
-        <div className="flex flex-row justify-between w-full  align-middle pl-5 pr-10">
-          <div>
+        <div className="flex flex-row justify-between w-full align-middle pl-5 pr-10">
+          <div className={styles.headerTitle}>
             <Typography variant={"body1"} fontWeight={"bold"}>
               My {LIQUID_NATIVE_TOKEN_LABEL}
             </Typography>
           </div>
 
-          <div>
-            <div className={"flex items-center mb-3 mr-10"}>
+          <div className={styles.headerTitle}>
+            <div className={`${styles.headerWithInfo} flex items-center mb-3 mr-10`}>
               <Typography variant={"body1"} fontWeight={"bold"}>
                 APY
               </Typography>
@@ -46,7 +46,7 @@ function LSPoolsEstimate(props: Props) {
               />
             </div>
           </div>
-          <div>
+          <div className={styles.headerTitle}>
             <Typography variant={"body1"} fontWeight={"bold"}>
               TVL
             </Typography>
