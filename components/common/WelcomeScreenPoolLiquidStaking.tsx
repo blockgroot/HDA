@@ -80,7 +80,8 @@ function WelcomeScreenPoolLiquidStaking({ toggleConnectWallet }: Props) {
           wallet extension not found, Click&nbsp;
           <a href={config.extension_url} target="_blank" rel="noreferrer">
             here
-          </a>&nbsp;to install the official Hashpack extension
+          </a>
+          &nbsp;to install the official Hashpack extension
         </Alert>
       </Snackbar>
     </div>
