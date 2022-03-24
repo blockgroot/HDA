@@ -19,12 +19,13 @@ export const transactionsStatusMap = {};
 
 export const tokenId = "0.0.33986222";
 export const contractId = "0.0.33986225";
-
-export const minDeposit = 0;
-export const maxDeposit = 100000000;
+export const NATIVE_TOKEN_MULTIPLIER = 100000000;
+export const minDeposit = 0 * NATIVE_TOKEN_MULTIPLIER;
+export const maxDeposit = 100 * NATIVE_TOKEN_MULTIPLIER;
 export const emissionRate = 20;
 export const stakeTransactionFee = 0.1;
 export const version = 1.0;
 export const apiPath = "api/v1/";
-export const NATIVE_TOKEN_MULTIPLIER = 100000000;
 export const tokenLabel = LIQUID_NATIVE_TOKEN_LABEL;
+export const precision = 4; //0.0001
+export const transactionFees = 1; //1 hbar

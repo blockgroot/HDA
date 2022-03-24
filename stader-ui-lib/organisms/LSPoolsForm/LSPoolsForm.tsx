@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { LSPoolProps } from "@types_/liquid-staking-pool";
 import styles from "./LSPoolsForm.module.scss";
 import { ButtonOutlined } from "@atoms/Button/Button";
+import { transactionFees } from "@constants/constants";
 
 const TickSVG = () => (
   <svg
@@ -153,7 +154,7 @@ function LSPoolsForm(props: LSPoolProps) {
               <LSPoolsFormStake
                 tvlExchangeRate={exchangeRate}
                 walletBalance={holding}
-                ustWalletBalance={0}
+                transactionFees={transactionFees}
                 maximumDeposit={contractConfig.max_deposit}
                 minimumDeposit={contractConfig.min_deposit}
                 handleStake={handleStake}

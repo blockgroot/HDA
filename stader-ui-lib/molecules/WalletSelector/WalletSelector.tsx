@@ -8,7 +8,11 @@ import Icon from "../../atoms/Icon/Icon";
 import greenTick from "../../assets/svg/check_success.svg";
 import { CheckCircle, Info } from "@material-ui/icons";
 import classNames from "classnames";
-import { NATIVE_TOKEN_LABEL } from "@constants/constants";
+import {
+  NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_MULTIPLIER,
+  precision,
+} from "@constants/constants";
 import useHashConnect from "@hooks/useHashConnect";
 import useAccount from "@hooks/useUserAccount";
 import { ConnectedWalletModal, DisconnectWalletModal } from "./WalletModals";
@@ -72,7 +76,7 @@ const WalletSelector = ({
       </Typography>
       <div className={styles.divider} />
       <Typography variant={"body2"} fontWeight={"bold"} className={"mr-1"}>
-        {hbar}
+        {(hbar / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}
       </Typography>
       <Typography variant={"body3"} fontWeight={"bold"} className={"inline"}>
         {NATIVE_TOKEN_LABEL}
@@ -82,7 +86,7 @@ const WalletSelector = ({
 
   const connectedWalletModal = (
     <ConnectedWalletModal
-      walletBalance={hbar.toString()}
+      walletBalance={hbar}
       disconnectWallet={() => {
         closeModal();
         disconnect();

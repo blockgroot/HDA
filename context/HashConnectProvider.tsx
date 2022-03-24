@@ -326,9 +326,9 @@ export default function HashConnectProvider({
 
   const disconnect = () => {
     console.log("disconnect");
-    setSaveData(INITIAL_SAVE_DATA);
+    // setSaveData(INITIAL_SAVE_DATA);
     setStatus(WalletStatus.WALLET_NOT_CONNECTED);
-    setInstalledExtensions(null);
+    // setInstalledExtensions(null);
     localStorage.removeItem(SAVE_KEY);
   };
 
