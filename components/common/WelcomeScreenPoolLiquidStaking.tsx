@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import welcome_wave from "../../assets/svg/welcome_wave.svg";
 import { config } from "config/config";
 import WalletSelector from "../../stader-ui-lib/molecules/WalletSelector/WalletSelector";
-
 // TODO: move the styling to a style page
 interface Props {
   toggleConnectWallet?: any;
@@ -78,11 +77,10 @@ function WelcomeScreenPoolLiquidStaking({ toggleConnectWallet }: Props) {
         action={action}
       >
         <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          wallet extension not found, Click
+          wallet extension not found, Click&nbsp;
           <a href={config.extension_url} target="_blank" rel="noreferrer">
             here
-          </a>
-          to install the official Hashpack extension
+          </a>&nbsp;to install the official Hashpack extension
         </Alert>
       </Snackbar>
     </div>

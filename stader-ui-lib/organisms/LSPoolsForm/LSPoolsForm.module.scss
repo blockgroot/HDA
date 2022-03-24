@@ -12,6 +12,10 @@
     width: 100%;
     min-height: 400px;
 
+    @include for-tablet-landscape-down {
+      min-width: auto;
+    }
+
     .form_wrapper {
       @include for-tablet-landscape-down {
         padding: 1rem;

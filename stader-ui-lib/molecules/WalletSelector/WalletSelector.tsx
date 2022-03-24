@@ -113,18 +113,20 @@ const WalletSelector = ({
       <Button
         variant={variant || "outlined"}
         icon={
-          <div className={styles.wallet_icon}>
-            <img
-              alt=""
-              src={greenTick}
-              width="10"
-              className={styles.wallet_connected_badge}
-            />
+          variant !== "solid" ? (
+            <div className={styles.wallet_icon}>
+              <img
+                alt=""
+                src={greenTick}
+                width="10"
+                className={styles.wallet_connected_badge}
+              />
 
-            <Icon name={"wallet"} height={20} width={20} />
-          </div>
+              <Icon name={"wallet"} height={20} width={20} />
+            </div>
+          ) : undefined
         }
-        className={"px-4 items-center flex"}
+        className={"px-4 items-center flex nowrap align-right"}
         onClick={openModal}
         // onClick={() => {
         //   if (!isWalletConnected) connect();

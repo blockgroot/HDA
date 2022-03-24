@@ -2,19 +2,18 @@ import {
   AccountBalance,
   AccountBalanceQuery,
   AccountId,
-  AccountInfo,
-  AccountInfoQuery,
+  Client,
   ContractExecuteTransaction,
   ContractFunctionParameters,
-  ContractInfoQuery,
   Transaction,
+  TransactionId,
   TransactionReceipt,
 } from "@hashgraph/sdk";
 import { WalletStatus } from "@molecules/WalletSelector/WalletSelector";
-import { config } from "config/config";
+import axios from "axios";
 import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
+import { config } from "config/config";
 import React, { useEffect, useRef, useState } from "react";
-import { init, signAndMakeBytes } from "../services/signing.service";
 
 //Type declarations
 interface SaveData {
@@ -381,7 +380,7 @@ export default function HashConnectProvider({
 
     // const balance =  (await provider.getBalance(accountId)).toNumber();
 
-    const client = await init();
+    const client = Client.forTestnet();
 
     //Sign the query with the client operator private key and submit to a Hedera network
     const balance = await query.execute(client);
@@ -398,7 +397,7 @@ export default function HashConnectProvider({
 
     // const balance =  (await provider.getBalance(accountId)).toNumber();
 
-    const client = await init();
+    const client = Client.forTestnet();
 
     // Sign with client operator private key and submit the query to a Hedera network
     const balance = await query.execute(client);
@@ -412,6 +411,29 @@ export default function HashConnectProvider({
     setStatus("WALLET_CONNECTED");
   };
 
+  //TODO: move this code
+  const sendPostRequest = async (bytes: Uint8Array) => {
+    try {
+      //TODO: Move this to url
+      const resp: any = await axios.post(config.stakeApi, {
+        transactionBytes: bytes,
+        timeout: 1000 * 5,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          // "Content-Type": "application/json",
+        },
+      });
+      // console.log(resp.data.result.data);
+      if (!resp.data.result) {
+        return resp.data.result.data as Uint8Array;
+      }
+    } catch (err) {
+      // Handle Error Here
+
+      console.error("error", err);
+    }
+  };
+
   const stake = async (amount: number) => {
     console.log("staked Amount", amount);
     setTransActionStatus("START");
@@ -419,6 +441,11 @@ export default function HashConnectProvider({
     const accountId: AccountId = AccountId.fromString(
       selectedAccount as string
     );
+
+    let transId = TransactionId.generate(accountId);
+
+    // let nodeId = [new AccountId(3)];
+    // let transId = TransactionId.generate(signingAcctId);
 
     const transaction = new ContractExecuteTransaction()
       .setContractId(contractId)
@@ -429,12 +456,24 @@ export default function HashConnectProvider({
         new ContractFunctionParameters().addAddress(
           accountId.toSolidityAddress()
         )
-      );
+      )
+      .setNodeAccountIds([new AccountId(3)])
+      .setTransactionId(transId)
+      .freeze();
 
-    const transactionBytes = await signAndMakeBytes(
-      transaction,
-      accountId.toString()
-    );
+    const transBytes = transaction.toBytes();
+
+    // const transactionBytes = await signAndMakeBytes2(transBytes);
+    const sendTx = await sendPostRequest(transBytes);
+
+    console.log("sendTx", sendTx);
+    if (!sendTx) {
+      setTransActionStatus("FAILED");
+      return;
+    }
+
+    const transactionBytes = new Uint8Array(sendTx as Uint8Array);
+
     console.log("transactionBytes", transactionBytes);
 
     const response: MessageTypes.TransactionResponse = await sendTransaction(

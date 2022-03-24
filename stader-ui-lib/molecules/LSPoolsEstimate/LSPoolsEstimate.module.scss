@@ -19,11 +19,29 @@
   .container {
     min-width: 680px;
     width: 100%;
+    @include for-tablet-landscape-down {
+      min-width: auto;
+    }
+  }
+
+  .headerTitle {
+    @include for-tablet-landscape-down {
+      display: flex;
+      align-items: center;
+      margin: 0 0 .75rem 0;
+    }
+  }
+
+  .headerWithInfo {
+    @include for-tablet-landscape-down {
+      margin: 0 !important;
+    }
   }
 
   .value {
     @include for-tablet-landscape-down {
       font-size: 14px !important;
+      margin-top: 0.9rem !important;
     }
   }
   .nativeToken {
