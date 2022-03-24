@@ -47,6 +47,15 @@
       text-transform: capitalize;
     }
   }
+
+  .nowrap{
+    white-space: nowrap !important;
+  }
+
+  .align-right{
+    margin-right: 0;
+    margin-left: auto;
+  }
 }
 
 .welcome-container-liquid-staking {
