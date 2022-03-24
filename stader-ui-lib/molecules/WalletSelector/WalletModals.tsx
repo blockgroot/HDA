@@ -13,6 +13,9 @@ import styles from "./WalletSelector.module.scss";
 import copy_address from "../../../assets/svg/copy_address.svg";
 import CheckIcon from "@material-ui/icons/Check";
 import { ConnectType } from "context/HashConnectProvider";
+import useHashConnect from "@hooks/useHashConnect";
+import { WalletStatus } from "./WalletSelector";
+import { HashConnectTypes } from "hashconnect";
 
 type WailetsConfig = {
   availableInstallTypes: Array<ConnectType>;
@@ -29,6 +32,7 @@ export const ConnectedWalletModal: FC<ConnectedProps> = (props) => {
     walletAddress,
     walletBalance,
     truncatedWalletAddress,
+    
     disconnectWallet,
   } = props;
 
@@ -80,12 +84,20 @@ export const ConnectedWalletModal: FC<ConnectedProps> = (props) => {
 };
 
 interface DisconnectedProps {
+  isWalletDisconnected: boolean;
+  installedExtensions: HashConnectTypes.WalletMetadata | null;
+  isWalletInitializing: boolean;
   installWallet: (props: ConnectType) => void;
 }
 
 export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
   const { installWallet } = props;
   const wallet = useWallet();
+  const {
+    isWalletDisconnected,
+    installedExtensions,
+    isWalletInitializing
+  } = props;
 
   return (
     <>
@@ -94,10 +106,10 @@ export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
           variant={"flat"}
           childClassName={"px-5"}
           parentClassName={"w-full"}
-          onClick={() => installWallet(ConnectType.CHROME_EXTENSION)}
+          onClick={() => installWallet(isWalletDisconnected  && installedExtensions !== null ? ConnectType.CHROME_EXTENSION: ConnectType.INSTALL_EXTENSION)}
           size={"small"}
         >
-          <Typography fontWeight={"medium"}>HashPack Wallet</Typography>
+          <Typography fontWeight={"medium"}>{isWalletDisconnected  && installedExtensions !== null ? 'HashPack Wallet' : isWalletInitializing ? 'Initializing Wallet...' : 'Install Extension'}</Typography>
         </Button>
       )}
       <Button
