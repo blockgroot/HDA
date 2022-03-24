@@ -12,6 +12,7 @@ import {
 import { WalletStatus } from "@molecules/WalletSelector/WalletSelector";
 import axios from "axios";
 import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
+import { config } from "config/config";
 import React, { useEffect, useRef, useState } from "react";
 
 //Type declarations
@@ -373,14 +374,22 @@ export default function HashConnectProvider({
   const sendPostRequest = async (bytes: Uint8Array) => {
     try {
       //TODO: Move this to url
-      const resp: any = await axios.post("/api/sign", {
+      const resp: any = await axios.post(config.stakeApi, {
         transactionBytes: bytes,
+        timeout: 1000 * 5,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          // "Content-Type": "application/json",
+        },
       });
       // console.log(resp.data.result.data);
-      return resp.data.result.data as Uint8Array;
+      if (!resp.data.result) {
+        return resp.data.result.data as Uint8Array;
+      }
     } catch (err) {
       // Handle Error Here
-      console.error(err);
+
+      console.error("error", err);
     }
   };
 
@@ -415,6 +424,12 @@ export default function HashConnectProvider({
 
     // const transactionBytes = await signAndMakeBytes2(transBytes);
     const sendTx = await sendPostRequest(transBytes);
+
+    console.log("sendTx", sendTx);
+    if (!sendTx) {
+      setTransActionStatus("FAILED");
+      return;
+    }
 
     const transactionBytes = new Uint8Array(sendTx as Uint8Array);
 
