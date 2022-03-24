@@ -9,6 +9,7 @@ import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
 import useExchangeRate from "@hooks/useExchangeRate";
 import useAPY from "@hooks/useAPY";
 import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
+import InfoPageMobile from "components/common/InfoPageMobile";
 
 const defaultConfig: ContractConfigType = {
   min_deposit: 0,
@@ -34,41 +35,9 @@ function LSPools() {
   const { apy } = useAPY();
   const tabletDown = useMediaQuery(`(max-width:${MQ_FOR_TABLET_LANDSCAPE}px)`);
 
-  // console.log("hbar", hbar);
-  // console.log("stake", stake);
-
-  // const holdingQuery = useUserHolding();
-
-  // const [config, setConfig] = useState<ContractConfigType>(defaultConfig);
-
-  // const handleInitialization = async () => {
-  //   try {
-  //     const contractConfig = await terra.wasm.contractQuery(contractAddress, {
-  //       config: {},
-  //     });
-
-  //     const min_deposit = Number(contractConfig?.config?.min_deposit ?? 0);
-  //     const max_deposit = Number(contractConfig?.config?.max_deposit ?? 0);
-  //     const protocol_withdraw_fee = Number(
-  //       contractConfig?.config?.protocol_withdraw_fee ?? 0
-  //     );
-
-  //     return { min_deposit, max_deposit, protocol_withdraw_fee };
-  //   } catch (e) {
-  //     return { success: false, message: "Error!" + e };
-  //   }
-  // };
-
-  // const contractConfigQuery = useQuery(
-  //   LS_CONTRACT_CONFIG,
-  //   handleInitialization,
-  //   {
-  //     onSuccess: (res: ContractConfigType) => {
-  //       setConfig(res);
-  //     },
-  //     refetchOnWindowFocus: false,
-  //   }
-  // );
+  if (tabletDown) {
+    return <InfoPageMobile />;
+  }
 
   if (status === "INITIALIZING") {
     return <Loader text={"Please wait while we set things up for you"} />;
