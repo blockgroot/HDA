@@ -106,7 +106,7 @@ export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
           variant={"flat"}
           childClassName={"px-5"}
           parentClassName={"w-full"}
-          onClick={() => installWallet(isWalletDisconnected  && installedExtensions !== null ? ConnectType.CHROME_EXTENSION: ConnectType.INSTALL_EXTENSION)}
+          onClick={() => !isWalletInitializing && installWallet(isWalletDisconnected  && installedExtensions !== null ? ConnectType.CHROME_EXTENSION: ConnectType.INSTALL_EXTENSION)}
           size={"small"}
         >
           <Typography fontWeight={"medium"}>{isWalletDisconnected  && installedExtensions !== null ? 'HashPack Wallet' : isWalletInitializing ? 'Initializing Wallet...' : 'Install Extension'}</Typography>
