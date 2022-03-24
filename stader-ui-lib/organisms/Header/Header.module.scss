@@ -39,6 +39,10 @@
     .wallet_menu {
       display: flex;
       align-items: center;
+
+      @include for-tablet-landscape-down {
+        display: none;
+      }
     }
 
     .wallet_button {

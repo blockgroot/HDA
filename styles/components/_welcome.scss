@@ -71,6 +71,10 @@
     flex-direction: row;
     // justify-content: center;
     align-items: center;
+
+    @include respond-below(sm) {
+      flex-direction: column;
+    }
   }
 
   .welcome-page-button {

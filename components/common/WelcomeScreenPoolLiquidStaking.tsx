@@ -1,7 +1,6 @@
 import React from "react";
 import welcome_wave from "../../assets/svg/welcome_wave.svg";
 import WalletSelector from "../../stader-ui-lib/molecules/WalletSelector/WalletSelector";
-
 // TODO: move the styling to a style page
 interface Props {
   toggleConnectWallet?: any;

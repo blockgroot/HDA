@@ -24,10 +24,18 @@
   &::after {
     border-radius: 12px;
   }
+
+  @include for-tablet-landscape-down { 
+    flex-direction: column;
+  }
 }
 
 .tab_inactive {
   color: #8c8c8c;
+
+  @include for-tablet-landscape-down { 
+    flex-direction: column;
+  }
 }
 
 .tabs {
