@@ -3,5 +3,6 @@ export const testnetConfig = {
     name: "testnet",
     url: "https://testnet.mirrornode.hedera.com/",
   },
-  extension_url: "https://chrome.google.com/webstore/detail/hashpack/gjagmgiddbbciopjhllkdnddhcglnemk"
+  extension_url:
+    "https://chrome.google.com/webstore/detail/hashpack/gjagmgiddbbciopjhllkdnddhcglnemk",
 };

@@ -21,8 +21,7 @@ import { ConnectType } from "context/HashConnectProvider";
 export const WalletStatus = {
   WALLET_CONNECTED: "WALLET_CONNECTED",
   INITIALIZING: "INITIALIZING",
-  WALLET_NOT_CONNECTED: "WALLET_NOT_CONNECTED"
-  
+  WALLET_NOT_CONNECTED: "WALLET_NOT_CONNECTED",
 };
 
 const WalletSelector = ({

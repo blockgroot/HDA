@@ -32,7 +32,7 @@ export const ConnectedWalletModal: FC<ConnectedProps> = (props) => {
     walletAddress,
     walletBalance,
     truncatedWalletAddress,
-    
+
     disconnectWallet,
   } = props;
 
@@ -93,11 +93,8 @@ interface DisconnectedProps {
 export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
   const { installWallet } = props;
   const wallet = useWallet();
-  const {
-    isWalletDisconnected,
-    installedExtensions,
-    isWalletInitializing
-  } = props;
+  const { isWalletDisconnected, installedExtensions, isWalletInitializing } =
+    props;
 
   return (
     <>
@@ -106,10 +103,23 @@ export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
           variant={"flat"}
           childClassName={"px-5"}
           parentClassName={"w-full"}
-          onClick={() => !isWalletInitializing && installWallet(isWalletDisconnected  && installedExtensions !== null ? ConnectType.CHROME_EXTENSION: ConnectType.INSTALL_EXTENSION)}
+          onClick={() =>
+            !isWalletInitializing &&
+            installWallet(
+              isWalletDisconnected && installedExtensions !== null
+                ? ConnectType.CHROME_EXTENSION
+                : ConnectType.INSTALL_EXTENSION
+            )
+          }
           size={"small"}
         >
-          <Typography fontWeight={"medium"}>{isWalletDisconnected  && installedExtensions !== null ? 'HashPack Wallet' : isWalletInitializing ? 'Initializing Wallet...' : 'Install Extension'}</Typography>
+          <Typography fontWeight={"medium"}>
+            {isWalletDisconnected && installedExtensions !== null
+              ? "HashPack Wallet"
+              : isWalletInitializing
+              ? "Initializing Wallet..."
+              : "Install Extension"}
+          </Typography>
         </Button>
       )}
       <Button

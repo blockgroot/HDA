@@ -67,11 +67,10 @@ export interface HashConnectProviderAPI {
   tvl: number;
 }
 
-
 export enum ConnectType {
   CHROME_EXTENSION,
   BLADE_WALLET,
-  INSTALL_EXTENSION
+  INSTALL_EXTENSION,
 }
 
 const INITIAL_SAVE_DATA: SaveData = {
@@ -172,8 +171,6 @@ export default function HashConnectProvider({
     saveDataRef.current = saveData;
     _setSaveData(saveData);
   };
-
- 
 
   //? Initialize the package in mount
   const initializeHashConnect = async () => {
@@ -298,23 +295,23 @@ export default function HashConnectProvider({
     console.log("received data", data);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const listener = (event: MessageEvent) => {
-       if (event.data.type === 'hashconnect-query-extension-response'){
-         setExtensionInstalled(true);
-       }
-     }   
-     window.addEventListener("message", listener);
-     window.postMessage({ type: "hashconnect-query-extension" }, "*");
-     setTimeout(()=>{
-      window.removeEventListener("message", listener);
-      if(!isExtensionInstalled){
-        setStatus(WalletStatus.WALLET_NOT_CONNECTED)
+      if (event.data.type === "hashconnect-query-extension-response") {
+        setExtensionInstalled(true);
       }
-     },5000);
-    return () => {     
-        window.removeEventListener("message", listener);
-   }
+    };
+    window.addEventListener("message", listener);
+    window.postMessage({ type: "hashconnect-query-extension" }, "*");
+    setTimeout(() => {
+      window.removeEventListener("message", listener);
+      if (!isExtensionInstalled) {
+        setStatus(WalletStatus.WALLET_NOT_CONNECTED);
+      }
+    }, 5000);
+    return () => {
+      window.removeEventListener("message", listener);
+    };
   });
 
   useEffect(() => {
@@ -351,15 +348,14 @@ export default function HashConnectProvider({
 
   const connect = async (type: ConnectType) => {
     console.log({ type, installedExtensions });
-     switch(type) {
-      case ConnectType.CHROME_EXTENSION: 
+    switch (type) {
+      case ConnectType.CHROME_EXTENSION:
         await hashConnect.connectToLocalWallet(saveData?.pairingString);
-      break;
+        break;
       case ConnectType.INSTALL_EXTENSION:
-        window.open(config.extension_url,'_blank');
-       break;
-     }
-
+        window.open(config.extension_url, "_blank");
+        break;
+    }
 
     // if (installedExtensions) {
     //   if (debug) console.log("Pairing String::", saveData.pairingString);
