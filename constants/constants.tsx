@@ -17,8 +17,8 @@ export const transactionsTypeMap = {};
 
 export const transactionsStatusMap = {};
 
-export const tokenId = "0.0.33986222";
-export const contractId = "0.0.33986225";
+export const tokenId = "0.0.34020399";
+export const contractId = "0.0.34020402";
 export const NATIVE_TOKEN_MULTIPLIER = 100000000;
 export const minDeposit = 0 * NATIVE_TOKEN_MULTIPLIER;
 export const maxDeposit = 100 * NATIVE_TOKEN_MULTIPLIER;
