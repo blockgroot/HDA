@@ -1,4 +1,4 @@
-import { tokenId } from "context/HashConnectProvider";
+import { tokenId } from "@constants/constants";
 import { useEffect, useState } from "react";
 import useHashConnect from "./useHashConnect";
 
