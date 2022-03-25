@@ -14,6 +14,7 @@ import axios from "axios";
 import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
 import { config } from "config/config";
 import React, { useEffect, useRef, useState } from "react";
+import { contractId, tokenId } from "@constants/constants";
 
 //Type declarations
 interface SaveData {
@@ -126,8 +127,8 @@ export const HashConnectAPIContext =
 // - Staking contract ID: 0.0.33981604
 // - Rewards contract ID: 0.0.33981605
 
-export const tokenId = "0.0.33986222";
-export const contractId = "0.0.33986225";
+// export const tokenId = "0.0.33986222";
+// export const contractId = "0.0.33986225";
 
 export default function HashConnectProvider({
   children,
@@ -291,6 +292,7 @@ export default function HashConnectProvider({
     hashConnect.foundExtensionEvent.once(foundExtensionEventHandler);
     hashConnect.pairingEvent.on(pairingEventHandler);
     hashConnect.transactionEvent.on(transactionHandler);
+    hashConnect.transactionResolver = () => {};
     //
     //Intialize the setup
     initializeHashConnect();
@@ -376,14 +378,9 @@ export default function HashConnectProvider({
       //TODO: Move this to url
       const resp: any = await axios.post(config.stakeApi, {
         transactionBytes: bytes,
-        timeout: 1000 * 5,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          // "Content-Type": "application/json",
-        },
       });
-      // console.log(resp.data.result.data);
-      if (!resp.data.result) {
+      console.log("responseee", resp.data.result.data);
+      if (resp.data.result) {
         return resp.data.result.data as Uint8Array;
       }
     } catch (err) {
