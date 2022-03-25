@@ -1,4 +1,4 @@
-import { tokenId } from "@constants/constants";
+import { config } from "config/config";
 import { useEffect, useState } from "react";
 import useHashConnect from "./useHashConnect";
 
@@ -11,9 +11,9 @@ export default function useAccount() {
     if (accountBalance) {
       // console.log(accountBalance);
       setHbar(accountBalance.hbars.toTinybars().toNumber());
-      const _isAssociated = accountBalance.tokens?._map.has(tokenId);
+      const _isAssociated = accountBalance.tokens?._map.has(config.ids.tokenId);
       if (_isAssociated) {
-        const token = accountBalance.tokens?._map.get(tokenId);
+        const token = accountBalance.tokens?._map.get(config.ids.tokenId);
         setHbarX(token?.toNumber() || 0);
       }
     }

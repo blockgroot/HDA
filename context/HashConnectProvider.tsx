@@ -14,7 +14,6 @@ import axios from "axios";
 import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
 import { config } from "config/config";
 import React, { useEffect, useRef, useState } from "react";
-import { contractId, tokenId } from "@constants/constants";
 
 //Type declarations
 interface SaveData {
@@ -336,7 +335,9 @@ export default function HashConnectProvider({
 
   const getTvl = async () => {
     //Create the query
-    const query = new AccountBalanceQuery().setContractId(contractId);
+    const query = new AccountBalanceQuery().setContractId(
+      config.ids.syakingContractId
+    );
     // const client = await init();
 
     // const balance =  (await provider.getBalance(accountId)).toNumber();
@@ -404,7 +405,7 @@ export default function HashConnectProvider({
     // let transId = TransactionId.generate(signingAcctId);
 
     const transaction = new ContractExecuteTransaction()
-      .setContractId(contractId)
+      .setContractId(config.ids.syakingContractId)
       .setGas(2_000_000)
       .setPayableAmount(amount)
       .setFunction(
