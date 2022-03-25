@@ -50,11 +50,11 @@ function LSPoolsFormStake(props: Props) {
         `Deposit amount should be less than ${maximumDeposit} ${NATIVE_TOKEN_LABEL}`
       )
       .min(
-        minimumDeposit,
-        `Deposit amount should be more than ${minimumDeposit} ${NATIVE_TOKEN_LABEL}`
+        minimumDeposit + transactionFees,
+        `Deposit amount should be more than ${minimumDeposit + transactionFees} ${NATIVE_TOKEN_LABEL}`
       )
       .required(
-        `Deposit amount should be more than ${maximumDeposit} ${NATIVE_TOKEN_LABEL}`
+        `Deposit amount should be more than ${minimumDeposit + transactionFees} ${NATIVE_TOKEN_LABEL}`
       ),
     fees: Yup.number().moreThan(
       0.9,
@@ -160,7 +160,7 @@ function LSPoolsFormStake(props: Props) {
                   total={walletBalance}
                   activeValue={nativeTokenProps.value}
                   onClick={(value) => {
-                    let val = (walletBalance * value) / NATIVE_TOKEN_MULTIPLIER;
+                    let val = (walletBalance * value) / NATIVE_TOKEN_MULTIPLIER - transactionFees;
                     setFieldValue(
                       "liquidNativeToken",
                       (Number(val) * tvlExchangeRate).toFixed(precision)
@@ -186,7 +186,7 @@ function LSPoolsFormStake(props: Props) {
               <div className="mt-4 lg:mt-8 flex justify-center">
                 <ButtonOutlined
                   className="w-[200px] h-[48px]"
-                  disabled={!!Object.keys(errors).length || !values.nativeToken}
+                  disabled={!!Object.keys(errors).length}
                   type="submit"
                 >
                   Stake
