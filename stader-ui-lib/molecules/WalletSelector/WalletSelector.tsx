@@ -41,17 +41,14 @@ const WalletSelector = ({
   const {
     connect,
     disconnect,
-    accountBalance,
     selectedAccount,
     walletData: saveData,
     network: network,
-    installedExtensions,
     status,
     stake,
-    tvl,
   } = useHashConnect();
 
-  const { hbarX, hbar } = useAccount();
+  const { hbar } = useAccount();
 
   const isWalletConnected: boolean = status === WalletStatus.WALLET_CONNECTED;
   const isWalletInitializing: boolean = status === WalletStatus.INITIALIZING;

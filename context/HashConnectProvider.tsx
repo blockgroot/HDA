@@ -11,8 +11,8 @@ import {
 } from "@hashgraph/sdk";
 import { WalletStatus } from "@molecules/WalletSelector/WalletSelector";
 import axios from "axios";
-import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
 import { config } from "config/config";
+import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
 import React, { useEffect, useRef, useState } from "react";
 
 //Type declarations
@@ -404,6 +404,10 @@ export default function HashConnectProvider({
     // let nodeId = [new AccountId(3)];
     // let transId = TransactionId.generate(signingAcctId);
 
+    //7374616b65286164647265737329 = stake(address)
+    //7374616b6532286164647265737329
+    // "0x26476204ccb39e482a3042305924b701524aca6e6f9b71ab5e390b1102e207c5";
+
     const transaction = new ContractExecuteTransaction()
       .setContractId(config.ids.syakingContractId)
       .setGas(2_000_000)
@@ -419,8 +423,6 @@ export default function HashConnectProvider({
       .freeze();
 
     const transBytes = transaction.toBytes();
-
-    // const transactionBytes = await signAndMakeBytes2(transBytes);
     const sendTx = await sendPostRequest(transBytes);
 
     console.log("sendTx", sendTx);
