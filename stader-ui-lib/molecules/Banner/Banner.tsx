@@ -23,8 +23,8 @@ function Banner({ activePage, onClose = () => {} }: Props) {
       <div className="flex justify-center items-center">
         <InfoOutlined className={`${styles.infoIcon} mx-2`} />
         <p className={`mb-0 ${styles.bannerContentText}`}>
-          {`3 Million SD tokens have been farmed. Maximize your $
-          {NATIVE_TOKEN_LABEL} with auto-compounding on Stader.`}
+          3 Million SD tokens have been farmed. Maximize your{" "}
+          {NATIVE_TOKEN_LABEL} with auto-compounding on Stader.
         </p>
       </div>
       <button className={styles.closeBtn} onClick={onClose}>
