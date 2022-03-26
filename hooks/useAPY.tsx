@@ -8,9 +8,6 @@ export default function useAPY() {
 
   useEffect(() => {
     if (tvl > 0) {
-      console.log(
-        (emissionRate * NATIVE_TOKEN_MULTIPLIER * 31536000) / (tvl * 100)
-      );
       setAPY((emissionRate * NATIVE_TOKEN_MULTIPLIER * 31536000) / (tvl * 100));
     }
     //

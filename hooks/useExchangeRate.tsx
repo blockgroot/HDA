@@ -17,7 +17,6 @@ export default function useExchangeRate() {
 
   useEffect(() => {
     if (data) {
-      console.log("data", data);
       if (tvl != 0 && data.total_supply != 0) {
         setExchangeRate(data.total_supply / tvl);
       } else {
