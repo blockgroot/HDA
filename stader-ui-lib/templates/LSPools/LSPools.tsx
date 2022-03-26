@@ -1,116 +1,79 @@
-import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
-import useLSPoolsEstimate from "../../../hooks/useLSPoolsEstimate";
-import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
-import LPMyHolding from "../../molecules/LPMyHolding/LPMyHolding";
-import useLPBatchHoldingLuquidNativeToken from "@hooks/useLPBatchHoldingLuquidNativeToken";
-import LPPoolsWithdraw from "../../organisms/LPPoolsWithdraw/LPPoolsWithdraw";
-import { Typography } from "../../atoms";
-import Loader from "@atoms/Loader/Loader";
-import { useQuery } from "react-query";
-import { LS_CONTRACT_CONFIG } from "@constants/queriesKey";
-import { config } from "../../../config/config";
-import { useAppContext } from "@libs/appContext";
-import { useState } from "react";
+import useHashConnect from "@hooks/useHashConnect";
+import useAccount from "@hooks/useUserAccount";
+import { Grid, useMediaQuery } from "@material-ui/core";
 import { ContractConfigType } from "@types_/liquid-staking-pool";
-import useUserHolding from "@hooks/useUserHolding";
-import { useWallet, WalletStatus } from "@terra-money/wallet-provider";
-import { Grid } from "@material-ui/core";
-
-const { liquidStaking: contractAddress } = config.contractAddresses;
+import Loader from "@atoms/Loader/Loader";
+import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolLiquidStaking";
+import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
+import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
+import useExchangeRate from "@hooks/useExchangeRate";
+import useAPY from "@hooks/useAPY";
+import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
+import InfoPageMobile from "components/common/InfoPageMobile";
 
 const defaultConfig: ContractConfigType = {
   min_deposit: 0,
-  max_deposit: 0,
+  max_deposit: 10000,
   protocol_withdraw_fee: 0,
 };
 
 function LSPools() {
-  const { terra } = useAppContext();
-  const wallet = useWallet();
-  const { tvl, tvlLoading } = useLSPoolsEstimate();
-  const { data, isLoading, undelegationQuery } = useLPBatchHoldingLuquidNativeToken();
+  const {
+    walletData: saveData,
+    network: network,
+    installedExtensions,
+    selectedAccount,
+    status,
+    stake,
+    tvl,
+    transactionStatus,
+    setTransActionStatus,
+  } = useHashConnect();
 
-  const holdingQuery = useUserHolding();
+  const { hbarX, hbar } = useAccount();
+  const { exchangeRate } = useExchangeRate();
+  const { apy } = useAPY();
+  const tabletDown = useMediaQuery(`(max-width:${MQ_FOR_TABLET_LANDSCAPE}px)`);
 
-  const [config, setConfig] = useState<ContractConfigType>(defaultConfig);
+  if (tabletDown) {
+    return <InfoPageMobile />;
+  }
 
-  const handleInitialization = async () => {
-    try {
-      const contractConfig = await terra.wasm.contractQuery(contractAddress, {
-        config: {},
-      });
+  // console.log(apy, exchangeRate);
 
-      const min_deposit = Number(contractConfig?.config?.min_deposit ?? 0);
-      const max_deposit = Number(contractConfig?.config?.max_deposit ?? 0);
-      const protocol_withdraw_fee = Number(
-        contractConfig?.config?.protocol_withdraw_fee ?? 0
-      );
-
-      return { min_deposit, max_deposit, protocol_withdraw_fee };
-    } catch (e) {
-      return { success: false, message: "Error!" + e };
-    }
-  };
-
-  const contractConfigQuery = useQuery(
-    LS_CONTRACT_CONFIG,
-    handleInitialization,
-    {
-      onSuccess: (res: ContractConfigType) => {
-        setConfig(res);
-      },
-      refetchOnWindowFocus: false,
-    }
-  );
-
-  if (
-    contractConfigQuery.isLoading ||
-    tvlLoading ||
-    holdingQuery.isLoading ||
-    wallet.status === WalletStatus.INITIALIZING
-  ) {
+  if (status === "INITIALIZING") {
     return <Loader text={"Please wait while we set things up for you"} />;
+  }
+
+  if (status !== "WALLET_CONNECTED") {
+    return <WelcomeScreenPoolLiquidStaking />;
   }
 
   return (
     <div>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
+      <Grid
+        container
+        direction="column"
+        spacing={3}
+        {...(!tabletDown && { alignItems: "center" })}
+      >
+        <Grid item xs={12} md={8}>
           <LSPoolsEstimate
             tvl={tvl}
-            holdings={holdingQuery.holding}
-            isLoading={holdingQuery.isLoading || tvlLoading}
+            holdings={hbarX}
+            isLoading={false}
+            apy={apy}
           />
         </Grid>
         <Grid item xs={12} md={8}>
           <LSPoolsForm
-            tvl={tvl}
-            tvlLoading={tvlLoading}
-            contractConfig={config}
-            holding={holdingQuery.holding}
-          />
-        </Grid>
-      </Grid>
-      <Grid container spacing={3} className={"mt-12 mb-16"}>
-        <Grid item xs={12} md={4}>
-          <LPMyHolding
-            isLoading={isLoading}
-            nativeTokenTokens={data?.nativeToken || 0}
-            liquidNativeTokenTokens={data?.liquidNativeToken || 0}
-          />
-        </Grid>
-        <Grid item xs={12} md={8}>
-          <Typography
-            variant={"h3"}
-            fontWeight={"bold"}
-            className={"mb-4 md:mb-14"}
-          >
-            Withdrawals
-          </Typography>
-          <LPPoolsWithdraw
-            isLoading={undelegationQuery.isLoading}
-            undelegations={undelegationQuery.data}
-            refetchQuery={undelegationQuery.refetch}
+            tvlLoading={true}
+            contractConfig={defaultConfig}
+            holding={hbar}
+            handleStake={stake}
+            transactionStatus={transactionStatus}
+            setTransactionStatus={setTransActionStatus}
+            exchangeRate={exchangeRate}
           />
         </Grid>
       </Grid>

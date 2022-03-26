@@ -3,19 +3,23 @@ import useClipboard from "react-use-clipboard";
 import Divider from "../../atoms/Divider/Divider";
 import { Button, Typography } from "../../atoms";
 import ListItem from "../../atoms/ListItem/ListItem";
-import { NATIVE_TOKEN_LABEL, urls } from "@constants/constants";
-import styles from "./WalletSelector.module.scss";
 import {
-  Connection,
-  ConnectType,
-  useWallet,
-} from "@terra-money/wallet-provider";
+  NATIVE_TOKEN_LABEL,
+  NATIVE_TOKEN_MULTIPLIER,
+  urls,
+} from "@constants/constants";
+import styles from "./WalletSelector.module.scss";
+
 import copy_address from "../../../assets/svg/copy_address.svg";
 import CheckIcon from "@material-ui/icons/Check";
+import { ConnectType } from "context/HashConnectProvider";
 
+type WailetsConfig = {
+  availableInstallTypes: Array<ConnectType>;
+};
 interface ConnectedProps {
   disconnectWallet: () => void;
-  walletBalance: string;
+  walletBalance: number;
   truncatedWalletAddress: string;
   walletAddress: string;
 }
@@ -57,7 +61,7 @@ export const ConnectedWalletModal: FC<ConnectedProps> = (props) => {
           {NATIVE_TOKEN_LABEL}
         </Typography>
         <Typography fontWeight={"bold"} variant={"body2"}>
-          {walletBalance}
+          {walletBalance / NATIVE_TOKEN_MULTIPLIER}
         </Typography>
       </ListItem>
       <Divider color={"light"} />
@@ -76,12 +80,11 @@ export const ConnectedWalletModal: FC<ConnectedProps> = (props) => {
 };
 
 interface DisconnectedProps {
-  connectWallet: (type: Connection) => void;
   installWallet: (props: ConnectType) => void;
 }
 
 export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
-  const { connectWallet, installWallet } = props;
+  const { installWallet } = props;
   const wallet = useWallet();
 
   return (
@@ -97,6 +100,15 @@ export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
           <Typography fontWeight={"medium"}>HashPack Wallet</Typography>
         </Button>
       )}
+      <Button
+        variant={"flat"}
+        childClassName={"px-5"}
+        parentClassName={"w-full"}
+        onClick={() => installWallet(ConnectType.BLADE_WALLET)}
+        size={"small"}
+      >
+        <Typography fontWeight={"medium"}>Blade Wallet</Typography>
+      </Button>
 
       <Typography
         fontWeight={"bold"}
@@ -116,3 +128,9 @@ export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
     </>
   );
 };
+
+function useWallet(): WailetsConfig {
+  return {
+    availableInstallTypes: [ConnectType.CHROME_EXTENSION],
+  };
+}

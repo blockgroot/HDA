@@ -1,5 +1,5 @@
 import { Box, Button, Icon } from "@atoms/index";
-import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+import ReportProblemOutlinedIcon from "@material-ui/icons/ReportProblemOutlined";
 import styles from "./WithdrawFundsTable.module.scss";
 
 export interface Props {
@@ -12,22 +12,22 @@ export const WithdrawFundTable = (props: Props) => {
     <Box noPadding={true} className="p-5 flex-1 md:relative">
       {props.isWithdrawFundsDialog && (
         <div className={styles.table_text}>
-          <ReportProblemOutlinedIcon/>
+          <ReportProblemOutlinedIcon />
           <span className={styles.table_item_alignment}>
             50% of Unvested SD tokens
           </span>
         </div>
       )}
       <div className={styles.table_text}>
-        <ReportProblemOutlinedIcon/>
+        <ReportProblemOutlinedIcon />
         <span className={styles.table_item_alignment}>No Staking rewards</span>
       </div>
       <div className={styles.table_text}>
-        <ReportProblemOutlinedIcon/>
+        <ReportProblemOutlinedIcon />
         <span className={styles.table_item_alignment}>No Airdrops</span>
       </div>
       <div className={styles.table_text}>
-        <ReportProblemOutlinedIcon/>
+        <ReportProblemOutlinedIcon />
         <span className={styles.table_item_alignment}>No LP benefit</span>
       </div>
       <div className="md:absolute md:bottom-5">

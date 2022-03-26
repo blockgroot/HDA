@@ -11,6 +11,7 @@ import { SuccessAnimation } from "./Feedbacks/Feedbacks";
 import Loader from "./Loader/Loader";
 import Divider from "./Divider/Divider";
 import Breadcrumbs from "./Breadcrumbs/Breadcrumbs";
+import { Link } from "./Link/Link";
 
 export {
   Airdrop,
@@ -21,6 +22,7 @@ export {
   Divider,
   Icon,
   Loader,
+  Link,
   SuccessAnimation,
   Tab,
   Tabs,
