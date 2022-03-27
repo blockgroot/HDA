@@ -149,6 +149,7 @@ export default function HashConnectProvider({
 
   const [status, _setStatus] = useState<string>(WalletStatus.INITIALIZING);
   const [transactionStatus, setTransActionStatus] = useState<string>("");
+  const [networkError, setNetworkError] = useState<boolean>(false);
 
   const statusRef = useRef(status);
 
@@ -202,6 +203,7 @@ export default function HashConnectProvider({
         );
       }
     } catch (error) {
+      setNetworkError(true);
       console.log("error found", error);
     } finally {
       if (localData) {
@@ -334,34 +336,44 @@ export default function HashConnectProvider({
   };
 
   const getTvl = async () => {
-    //Create the query
-    const query = new AccountBalanceQuery().setContractId(
-      config.ids.syakingContractId
-    );
+    try {
+      //Create the query
+      const query = new AccountBalanceQuery().setContractId(
+        config.ids.stakingContractId
+      );
 
-    const client = Client.forName(config.network.name);
+      const client = Client.forName(config.network.name);
 
-    //Sign the query with the client operator private key and submit to a Hedera network
-    const balance = await query.execute(client);
-    // console.log(balance);
+      //Sign the query with the client operator private key and submit to a Hedera network
+      const balance = await query.execute(client);
+      // console.log(balance);
 
-    // console.log(contractInfo);
-    setTvl(balance.hbars.toTinybars().toNumber());
+      // console.log(contractInfo);
+      setTvl(balance.hbars.toTinybars().toNumber());
+    } catch (error: any) {
+      setNetworkError(true);
+      console.log(error.message);
+    }
   };
 
   const getAccounts = async (accountId: string) => {
     //Create the account info query
     //moved to api
-    const query = new AccountBalanceQuery().setAccountId(accountId);
+    try {
+      const query = new AccountBalanceQuery().setAccountId(accountId);
 
-    // const balance =  (await provider.getBalance(accountId)).toNumber();
+      // const balance =  (await provider.getBalance(accountId)).toNumber();
 
-    const client = Client.forName(config.network.name);
-    // Sign with client operator private key and submit the query to a Hedera network
-    const balance = await query.execute(client);
+      const client = Client.forName(config.network.name);
+      // Sign with client operator private key and submit the query to a Hedera network
+      const balance = await query.execute(client);
 
-    setAccountBalance(balance);
-    setStatus("WALLET_CONNECTED");
+      setAccountBalance(balance);
+      setStatus("WALLET_CONNECTED");
+    } catch (error: any) {
+      setNetworkError(true);
+      console.log(error.message);
+    }
   };
 
   //TODO: move this code
@@ -377,7 +389,7 @@ export default function HashConnectProvider({
       }
     } catch (err) {
       // Handle Error Here
-
+      setNetworkError(true);
       console.error("error", err);
     }
   };
@@ -393,7 +405,7 @@ export default function HashConnectProvider({
     let transId = TransactionId.generate(accountId);
 
     const transaction = new ContractExecuteTransaction()
-      .setContractId(config.ids.syakingContractId)
+      .setContractId(config.ids.stakingContractId)
       .setGas(2_000_000)
       .setPayableAmount(amount)
       .setFunction(

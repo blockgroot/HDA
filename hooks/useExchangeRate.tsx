@@ -9,7 +9,7 @@ export default function useExchangeRate() {
   const { tvl } = useHashConnect();
   const [exchangeRate, setExchangeRate] = useState<number>(1);
 
-  const { data } = useQuery("tokenData", () =>
+  const { data, error } = useQuery("tokenData", () =>
     fetch(`${config.network.url}${apiPath}tokens/${config.ids.tokenId}`).then(
       (res) => res.json()
     )
@@ -25,5 +25,5 @@ export default function useExchangeRate() {
     }
   }, [data, tvl]);
 
-  return { exchangeRate };
+  return { exchangeRate, error };
 }

@@ -31,7 +31,7 @@ function LSPools() {
   } = useHashConnect();
 
   const { hbarX, hbar } = useAccount();
-  const { exchangeRate } = useExchangeRate();
+  const { exchangeRate, error } = useExchangeRate();
   const { apy } = useAPY();
   const tabletDown = useMediaQuery(`(max-width:${MQ_FOR_TABLET_LANDSCAPE}px)`);
 
