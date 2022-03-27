@@ -109,7 +109,7 @@ export const HashConnectAPIContext =
     accountBalance: null,
     selectedAccount: "",
     walletData: INITIAL_SAVE_DATA,
-    network: "testnet",
+    network: config.network.name as Networks,
     installedExtensions: null,
     status: "INITIALIZING",
     stake: () => null,
@@ -491,7 +491,7 @@ const defaultProps: Partial<PropsType> = {
     description: "Stake Hbars",
     icon: "https://www.hashpack.app/img/logo.svg",
   },
-  network: "testnet",
+  network: config.network.name as Networks,
   debug: false,
 };
 
