@@ -338,11 +338,8 @@ export default function HashConnectProvider({
     const query = new AccountBalanceQuery().setContractId(
       config.ids.syakingContractId
     );
-    // const client = await init();
 
-    // const balance =  (await provider.getBalance(accountId)).toNumber();
-
-    const client = Client.forTestnet();
+    const client = Client.forName(config.network.name);
 
     //Sign the query with the client operator private key and submit to a Hedera network
     const balance = await query.execute(client);
@@ -359,16 +356,10 @@ export default function HashConnectProvider({
 
     // const balance =  (await provider.getBalance(accountId)).toNumber();
 
-    const client = Client.forTestnet();
-
+    const client = Client.forName(config.network.name);
     // Sign with client operator private key and submit the query to a Hedera network
     const balance = await query.execute(client);
 
-    // Print the account info to the console
-    // console.log(balance);
-
-    //v2.0.0
-    // setBalance(accountInfo.balance.toTinybars().toString());
     setAccountBalance(balance);
     setStatus("WALLET_CONNECTED");
   };
@@ -400,13 +391,6 @@ export default function HashConnectProvider({
     );
 
     let transId = TransactionId.generate(accountId);
-
-    // let nodeId = [new AccountId(3)];
-    // let transId = TransactionId.generate(signingAcctId);
-
-    //7374616b65286164647265737329 = stake(address)
-    //7374616b6532286164647265737329
-    // "0x26476204ccb39e482a3042305924b701524aca6e6f9b71ab5e390b1102e207c5";
 
     const transaction = new ContractExecuteTransaction()
       .setContractId(config.ids.syakingContractId)
