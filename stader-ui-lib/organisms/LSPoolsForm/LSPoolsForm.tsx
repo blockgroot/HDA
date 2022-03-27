@@ -27,10 +27,8 @@ function LSPoolsForm(props: LSPoolProps) {
   const {
     exchangeRate,
     handleStake,
-    contractConfig,
     holding,
     transactionStatus,
-    tvlLoading,
     setTransactionStatus,
   } = props;
 
@@ -122,9 +120,6 @@ function LSPoolsForm(props: LSPoolProps) {
               <LSPoolsFormStake
                 tvlExchangeRate={exchangeRate}
                 walletBalance={holding}
-                transactionFees={transactionFees}
-                maximumDeposit={contractConfig.max_deposit}
-                minimumDeposit={contractConfig.min_deposit}
                 handleStake={handleStake}
               />
             )}

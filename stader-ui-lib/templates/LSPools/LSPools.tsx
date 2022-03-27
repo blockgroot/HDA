@@ -11,24 +11,9 @@ import useAPY from "@hooks/useAPY";
 import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
 import InfoPageMobile from "components/common/InfoPageMobile";
 
-const defaultConfig: ContractConfigType = {
-  min_deposit: 0,
-  max_deposit: 10000,
-  protocol_withdraw_fee: 0,
-};
-
 function LSPools() {
-  const {
-    walletData: saveData,
-    network: network,
-    installedExtensions,
-    selectedAccount,
-    status,
-    stake,
-    tvl,
-    transactionStatus,
-    setTransActionStatus,
-  } = useHashConnect();
+  const { status, stake, tvl, transactionStatus, setTransActionStatus } =
+    useHashConnect();
 
   const { hbarX, hbar } = useAccount();
   const { exchangeRate, error } = useExchangeRate();
@@ -68,7 +53,6 @@ function LSPools() {
         <Grid item xs={12} md={8}>
           <LSPoolsForm
             tvlLoading={true}
-            contractConfig={defaultConfig}
             holding={hbar}
             handleStake={stake}
             transactionStatus={transactionStatus}

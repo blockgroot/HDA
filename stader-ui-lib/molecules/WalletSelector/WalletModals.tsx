@@ -100,7 +100,7 @@ export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
           <Typography fontWeight={"medium"}>HashPack Wallet</Typography>
         </Button>
       )}
-      <Button
+      {/* <Button
         variant={"flat"}
         childClassName={"px-5"}
         parentClassName={"w-full"}
@@ -108,7 +108,7 @@ export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
         size={"small"}
       >
         <Typography fontWeight={"medium"}>Blade Wallet</Typography>
-      </Button>
+      </Button> */}
 
       <Typography
         fontWeight={"bold"}

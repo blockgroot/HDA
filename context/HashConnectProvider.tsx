@@ -270,21 +270,6 @@ export default function HashConnectProvider({
     saveDataInLocalStorage(data);
   };
 
-  // const transactionResponseHandler = async (
-  //   data: MessageTypes.TransactionResponse
-  // ) => {
-  //   console.log("received data", data);
-  //   if (data.success && !data.signedTransaction)
-  //     console.log(TransactionReceipt.fromBytes(data.receipt as Uint8Array));
-  //   else if (data.success && data.signedTransaction)
-  //     console.log(Transaction.fromBytes(data.signedTransaction as Uint8Array));
-
-  //   console.log("saveData", saveData);
-  //   console.log("saveDataRef", saveDataRef.current);
-  //   // getAccounts(saveDataRef.current.accountIds[0]);
-  //   // getTvl();
-  // };
-
   const transactionHandler = (data: MessageTypes.Transaction) => {
     // console.log("received data", data);
   };
@@ -316,7 +301,7 @@ export default function HashConnectProvider({
   const connect = async (type: ConnectType) => {
     console.log({ type, installedExtensions });
     // if (type === ConnectType.CHROME_EXTENSION) {
-    await hashConnect.connectToLocalWallet(saveData?.pairingString);
+    hashConnect.connectToLocalWallet(saveData?.pairingString);
     // }
     // if (installedExtensions) {
     //   if (debug) console.log("Pairing String::", saveData.pairingString);

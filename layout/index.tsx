@@ -1,3 +1,4 @@
+import { bannerText } from "@constants/constants";
 import Banner from "@molecules/Banner";
 import c from "classnames";
 import Head from "next/head";
@@ -34,8 +35,7 @@ function MainLayout(props: any) {
         <Banner
           activePage={router.pathname}
           onClose={handleHideBanner}
-          message={`  3 Million SD tokens have been farmed. Maximize your{" "}
-          {NATIVE_TOKEN_LABEL} with auto-compounding on Stader.`}
+          message={`${bannerText}`}
         ></Banner>
       )}
       <Header />

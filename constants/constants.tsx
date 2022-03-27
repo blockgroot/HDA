@@ -18,12 +18,15 @@ export const transactionsTypeMap = {};
 export const transactionsStatusMap = {};
 
 export const NATIVE_TOKEN_MULTIPLIER = 100000000;
-export const minDeposit = 0 * NATIVE_TOKEN_MULTIPLIER;
-export const maxDeposit = 100 * NATIVE_TOKEN_MULTIPLIER;
+export const minDeposit = 0.01 * NATIVE_TOKEN_MULTIPLIER;
+export const maxDeposit = 4 * NATIVE_TOKEN_MULTIPLIER;
 export const emissionRate = 20;
-export const stakeTransactionFee = 0.1;
+export const stakeTransactionFee = 1 * NATIVE_TOKEN_MULTIPLIER;
 export const version = 1.0;
 export const apiPath = "api/v1/";
 export const tokenLabel = LIQUID_NATIVE_TOKEN_LABEL;
 export const precision = 4; //0.0001
 export const transactionFees = 1; //1 hbar
+
+export const bannerText =
+  "We are in Beta mode right now, and transactions are capped at 4 Hbar. Any Hbar staked will be lost.";
