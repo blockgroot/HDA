@@ -37,7 +37,7 @@ function LSPoolsFormStake(props: Props) {
   const stakingFee = nativeTokenFormatter(stakeTransactionFee);
   const userBalance = nativeTokenFormatter(walletBalance);
 
-  console.log(minDep, maxDep, stakingFee);
+  // console.log(minDep, maxDep, stakingFee);
 
   const validation = Yup.object().shape({
     nativeToken: Yup.number()

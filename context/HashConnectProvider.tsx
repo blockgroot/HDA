@@ -88,7 +88,7 @@ let APP_CONFIG: HashConnectTypes.AppMetadata = {
   icon: "https://www.hashpack.app/img/logo.svg",
 };
 
-const SAVE_KEY = "hashConnectData";
+const SAVE_KEY = `hashConnectData/${config.network.name}`;
 
 const loadLocalData = (): null | SaveData => {
   // console.log("loadLocalData", localStorage.getItem(SAVE_KEY));
