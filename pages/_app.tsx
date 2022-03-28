@@ -44,17 +44,4 @@ export default function App({ Component, pageProps }: AppProps) {
       </QueryClientProvider>
     </main>
   );
-
-  // return typeof window !== "undefined" ? (
-  //   <WalletProvider
-  //     defaultNetwork={config.network}
-  //     walletConnectChainIds={walletConnectChainIds}
-  //   >
-  //     {main}
-  //   </WalletProvider>
-  // ) : (
-  //   <StaticWalletProvider defaultNetwork={config.network}>
-  //     {main}
-  //   </StaticWalletProvider>
-  // );
 }

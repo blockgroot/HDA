@@ -11,10 +11,9 @@ import {
 } from "@hashgraph/sdk";
 import { WalletStatus } from "@molecules/WalletSelector/WalletSelector";
 import axios from "axios";
-import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
 import { config } from "config/config";
+import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
 import React, { useEffect, useRef, useState } from "react";
-import { contractId, tokenId } from "@constants/constants";
 
 //Type declarations
 interface SaveData {
@@ -93,12 +92,12 @@ let APP_CONFIG: HashConnectTypes.AppMetadata = {
   icon: "https://www.hashpack.app/img/logo.svg",
 };
 
-const SAVE_KEY = "hashConnectData";
+const SAVE_KEY = `hashConnectData/${config.network.name}`;
 
 const loadLocalData = (): null | SaveData => {
-  console.log("loadLocalData", localStorage.getItem(SAVE_KEY));
+  // console.log("loadLocalData", localStorage.getItem(SAVE_KEY));
   let foundData = localStorage.getItem(SAVE_KEY);
-  console.log("foundData", foundData);
+  // console.log("foundData", foundData);
 
   if (foundData) {
     const saveData: SaveData = JSON.parse(foundData);
@@ -115,7 +114,7 @@ export const HashConnectAPIContext =
     selectedAccount: "",
     isExtensionInstalled: false,
     walletData: INITIAL_SAVE_DATA,
-    network: "testnet",
+    network: config.network.name as Networks,
     installedExtensions: null,
     status: "INITIALIZING",
     stake: () => null,
@@ -157,6 +156,7 @@ export default function HashConnectProvider({
 
   const [status, _setStatus] = useState<string>(WalletStatus.INITIALIZING);
   const [transactionStatus, setTransActionStatus] = useState<string>("");
+  const [networkError, setNetworkError] = useState<boolean>(false);
 
   const statusRef = useRef(status);
 
@@ -177,7 +177,7 @@ export default function HashConnectProvider({
     const saveData = INITIAL_SAVE_DATA;
     const localData = loadLocalData();
 
-    console.log("localData", localData);
+    // console.log("localData", localData);
     try {
       if (!localData) {
         if (debug) console.log("===Local data not found.=====");
@@ -200,7 +200,7 @@ export default function HashConnectProvider({
         //find any supported local wallets
         hashConnect.findLocalWallets();
       } else {
-        if (debug) console.log("====Local data found====", localData);
+        // if (debug) console.log("====Local data found====", localData);
         //use loaded data for initialization + connection
         await hashConnect.init(metadata ?? APP_CONFIG, localData?.privateKey);
         setInstalledExtensions(localData?.pairedWalletData);
@@ -210,6 +210,7 @@ export default function HashConnectProvider({
         );
       }
     } catch (error) {
+      setNetworkError(true);
       console.log("error found", error);
     } finally {
       if (localData) {
@@ -276,23 +277,8 @@ export default function HashConnectProvider({
     saveDataInLocalStorage(data);
   };
 
-  // const transactionResponseHandler = async (
-  //   data: MessageTypes.TransactionResponse
-  // ) => {
-  //   console.log("received data", data);
-  //   if (data.success && !data.signedTransaction)
-  //     console.log(TransactionReceipt.fromBytes(data.receipt as Uint8Array));
-  //   else if (data.success && data.signedTransaction)
-  //     console.log(Transaction.fromBytes(data.signedTransaction as Uint8Array));
-
-  //   console.log("saveData", saveData);
-  //   console.log("saveDataRef", saveDataRef.current);
-  //   // getAccounts(saveDataRef.current.accountIds[0]);
-  //   // getTvl();
-  // };
-
   const transactionHandler = (data: MessageTypes.Transaction) => {
-    console.log("received data", data);
+    // console.log("received data", data);
   };
 
   useEffect(() => {
@@ -334,9 +320,9 @@ export default function HashConnectProvider({
     };
   }, []);
 
-  useEffect(() => {
-    console.log("status", status);
-  }, [status]);
+  // useEffect(() => {
+  //   console.log("status", status);
+  // }, [status]);
 
   const connect = async (type: ConnectType) => {
     console.log({ type, installedExtensions });
@@ -367,41 +353,44 @@ export default function HashConnectProvider({
   };
 
   const getTvl = async () => {
-    //Create the query
-    const query = new AccountBalanceQuery().setContractId(contractId);
-    // const client = await init();
+    try {
+      //Create the query
+      const query = new AccountBalanceQuery().setContractId(
+        config.ids.stakingContractId
+      );
 
-    // const balance =  (await provider.getBalance(accountId)).toNumber();
+      const client = Client.forName(config.network.name);
 
-    const client = Client.forTestnet();
+      //Sign the query with the client operator private key and submit to a Hedera network
+      const balance = await query.execute(client);
+      // console.log(balance);
 
-    //Sign the query with the client operator private key and submit to a Hedera network
-    const balance = await query.execute(client);
-    console.log(balance);
-
-    // console.log(contractInfo);
-    setTvl(balance.hbars.toTinybars().toNumber());
+      // console.log(contractInfo);
+      setTvl(balance.hbars.toTinybars().toNumber());
+    } catch (error: any) {
+      setNetworkError(true);
+      console.log(error.message);
+    }
   };
 
   const getAccounts = async (accountId: string) => {
     //Create the account info query
     //moved to api
-    const query = new AccountBalanceQuery().setAccountId(accountId);
+    try {
+      const query = new AccountBalanceQuery().setAccountId(accountId);
 
-    // const balance =  (await provider.getBalance(accountId)).toNumber();
+      // const balance =  (await provider.getBalance(accountId)).toNumber();
 
-    const client = Client.forTestnet();
+      const client = Client.forName(config.network.name);
+      // Sign with client operator private key and submit the query to a Hedera network
+      const balance = await query.execute(client);
 
-    // Sign with client operator private key and submit the query to a Hedera network
-    const balance = await query.execute(client);
-
-    // Print the account info to the console
-    console.log(balance);
-
-    //v2.0.0
-    // setBalance(accountInfo.balance.toTinybars().toString());
-    setAccountBalance(balance);
-    setStatus("WALLET_CONNECTED");
+      setAccountBalance(balance);
+      setStatus("WALLET_CONNECTED");
+    } catch (error: any) {
+      setNetworkError(true);
+      console.log(error.message);
+    }
   };
 
   //TODO: move this code
@@ -411,13 +400,13 @@ export default function HashConnectProvider({
       const resp: any = await axios.post(config.stakeApi, {
         transactionBytes: bytes,
       });
-      console.log("responseee", resp.data.result.data);
+      // console.log("responseee", resp.data.result.data);
       if (resp.data.result) {
         return resp.data.result.data as Uint8Array;
       }
     } catch (err) {
       // Handle Error Here
-
+      setNetworkError(true);
       console.error("error", err);
     }
   };
@@ -432,11 +421,8 @@ export default function HashConnectProvider({
 
     let transId = TransactionId.generate(accountId);
 
-    // let nodeId = [new AccountId(3)];
-    // let transId = TransactionId.generate(signingAcctId);
-
     const transaction = new ContractExecuteTransaction()
-      .setContractId(contractId)
+      .setContractId(config.ids.stakingContractId)
       .setGas(2_000_000)
       .setPayableAmount(amount)
       .setFunction(
@@ -450,11 +436,8 @@ export default function HashConnectProvider({
       .freeze();
 
     const transBytes = transaction.toBytes();
-
-    // const transactionBytes = await signAndMakeBytes2(transBytes);
     const sendTx = await sendPostRequest(transBytes);
 
-    console.log("sendTx", sendTx);
     if (!sendTx) {
       setTransActionStatus("FAILED");
       return;
@@ -462,14 +445,12 @@ export default function HashConnectProvider({
 
     const transactionBytes = new Uint8Array(sendTx as Uint8Array);
 
-    console.log("transactionBytes", transactionBytes);
-
     const response: MessageTypes.TransactionResponse = await sendTransaction(
       transactionBytes,
       accountId.toString(),
       false
     );
-    console.log("response", response);
+
     if (response.success) {
       setTransActionStatus("SUCCESS");
     }
@@ -484,8 +465,8 @@ export default function HashConnectProvider({
       setTransActionStatus("FAILED");
     }
 
-    console.log("saveData", saveData);
-    console.log("saveDataRef", saveDataRef.current);
+    // console.log("saveData", saveData);
+    // console.log("saveDataRef", saveDataRef.current);
     getAccounts(accountId.toString());
     getTvl();
     //  hashConnect.transactionResponseEvent.on(transactionResponseHandler);
@@ -507,7 +488,7 @@ export default function HashConnectProvider({
       },
     };
     const response = await hashConnect.sendTransaction(topic, transaction);
-    console.log("transaction sent", response);
+    // console.log("transaction sent", response);
     return response;
   };
 
@@ -540,7 +521,7 @@ const defaultProps: Partial<PropsType> = {
     description: "Stake Hbars",
     icon: "https://www.hashpack.app/img/logo.svg",
   },
-  network: "testnet",
+  network: config.network.name as Networks,
   debug: false,
 };
 

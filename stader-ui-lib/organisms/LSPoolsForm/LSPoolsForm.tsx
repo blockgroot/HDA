@@ -27,10 +27,8 @@ function LSPoolsForm(props: LSPoolProps) {
   const {
     exchangeRate,
     handleStake,
-    contractConfig,
     holding,
     transactionStatus,
-    tvlLoading,
     setTransactionStatus,
   } = props;
 
@@ -82,7 +80,7 @@ function LSPoolsForm(props: LSPoolProps) {
             </div>
             <div className="justify-center flex p-2">
               <Typography variant={"body1"} fontWeight="bold">
-                Staking of HBAR is successful!
+                HBAR Staked successfully!
               </Typography>
             </div>
             <div className="justify-center flex p-5 mt-3">
@@ -122,9 +120,6 @@ function LSPoolsForm(props: LSPoolProps) {
               <LSPoolsFormStake
                 tvlExchangeRate={exchangeRate}
                 walletBalance={holding}
-                transactionFees={transactionFees}
-                maximumDeposit={contractConfig.max_deposit}
-                minimumDeposit={contractConfig.min_deposit}
                 handleStake={handleStake}
               />
             )}

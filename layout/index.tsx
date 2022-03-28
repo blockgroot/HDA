@@ -1,6 +1,8 @@
+import { bannerText } from "@constants/constants";
+import Banner from "@molecules/Banner";
 import c from "classnames";
 import Head from "next/head";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import NProgress from "nprogress";
 import React, { useState } from "react";
 import Header from "../stader-ui-lib/organisms/Header/Header";
@@ -18,14 +20,24 @@ NProgress.configure({ showSpinner: false });
 };
 
 function MainLayout(props: any) {
+  const router = useRouter();
   const [hideSidebar, setHideSidebar] = useState<Boolean>(true);
+  const [hideBanner, setHideBanner] = useState<Boolean>(false);
+
+  const handleHideBanner = () => setHideBanner(true);
 
   return (
     <>
       <Head>
         <title>Stader</title>
       </Head>
-
+      {!hideBanner && (
+        <Banner
+          activePage={router.pathname}
+          onClose={handleHideBanner}
+          message={`${bannerText}`}
+        ></Banner>
+      )}
       <Header />
       <div
         className={c(
