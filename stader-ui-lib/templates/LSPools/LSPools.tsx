@@ -26,9 +26,9 @@ function LSPools() {
 
   // console.log(apy, exchangeRate);
 
-  if (status === "INITIALIZING") {
-    return <Loader text={"Please wait while we set things up for you"} />;
-  }
+  // if (status === "INITIALIZING") {
+  //   return <Loader text={"Please wait while we set things up for you"} />;
+  // }
 
   if (status !== "WALLET_CONNECTED") {
     return <WelcomeScreenPoolLiquidStaking />;
