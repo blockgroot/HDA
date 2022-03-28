@@ -199,6 +199,11 @@ export default function HashConnectProvider({
 
         //find any supported local wallets
         hashConnect.findLocalWallets();
+        setTimeout(() => {
+          if (!isExtensionInstalled) {
+            setStatus(WalletStatus.WALLET_NOT_CONNECTED);
+          }
+        }, 5000);
       } else {
         // if (debug) console.log("====Local data found====", localData);
         //use loaded data for initialization + connection
@@ -281,24 +286,24 @@ export default function HashConnectProvider({
     // console.log("received data", data);
   };
 
-  useEffect(() => {
-    const listener = (event: MessageEvent) => {
-      if (event.data.type === "hashconnect-query-extension-response") {
-        setExtensionInstalled(true);
-      }
-    };
-    window.addEventListener("message", listener);
-    window.postMessage({ type: "hashconnect-query-extension" }, "*");
-    setTimeout(() => {
-      window.removeEventListener("message", listener);
-      if (!isExtensionInstalled) {
-        setStatus(WalletStatus.WALLET_NOT_CONNECTED);
-      }
-    }, 5000);
-    return () => {
-      window.removeEventListener("message", listener);
-    };
-  });
+  // useEffect(() => {
+  //   const listener = (event: MessageEvent) => {
+  //     if (event.data.type === "hashconnect-query-extension-response") {
+  //       setExtensionInstalled(true);
+  //     }
+  //   };
+  //   window.addEventListener("message", listener);
+  //   window.postMessage({ type: "hashconnect-query-extension" }, "*");
+  //   setTimeout(() => {
+  //     window.removeEventListener("message", listener);
+  //     if (!isExtensionInstalled) {
+  //       setStatus(WalletStatus.WALLET_NOT_CONNECTED);
+  //     }
+  //   }, 5000);
+  //   return () => {
+  //     window.removeEventListener("message", listener);
+  //   };
+  // });
 
   useEffect(() => {
     hashConnect.foundExtensionEvent.once(foundExtensionEventHandler);
@@ -325,23 +330,23 @@ export default function HashConnectProvider({
   // }, [status]);
 
   const connect = async (type: ConnectType) => {
-    console.log({ type, installedExtensions });
-    switch (type) {
-      case ConnectType.CHROME_EXTENSION:
-        await hashConnect.connectToLocalWallet(saveData?.pairingString);
-        break;
-      case ConnectType.INSTALL_EXTENSION:
-        window.open(config.extension_url, "_blank");
-        break;
-    }
-
-    // if (installedExtensions) {
-    //   if (debug) console.log("Pairing String::", saveData.pairingString);
-    //   await hashConnect.connectToLocalWallet(saveData?.pairingString);
-    // } else {
-    //   if (debug) console.log("====No Extension is not in browser====");
-    //   return "wallet not installed";
+    // console.log({ type, installedExtensions });
+    // switch (type) {
+    //   case ConnectType.CHROME_EXTENSION:
+    //     await hashConnect.connectToLocalWallet(saveData?.pairingString);
+    //     break;
+    //   case ConnectType.INSTALL_EXTENSION:
+    //     window.open(config.extension_url, "_blank");
+    //     break;
     // }
+
+    if (installedExtensions) {
+      if (debug) console.log("Pairing String::", saveData.pairingString);
+      hashConnect.connectToLocalWallet(saveData?.pairingString);
+    } else {
+      if (debug) console.log("====No Extension is not in browser====");
+      window.open(config.extension_url, "_blank");
+    }
   };
 
   const disconnect = () => {

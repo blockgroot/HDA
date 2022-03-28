@@ -1,15 +1,16 @@
+import Loader from "@atoms/Loader/Loader";
+import { urls } from "@constants/constants";
+import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
+import useAPY from "@hooks/useAPY";
+import useExchangeRate from "@hooks/useExchangeRate";
 import useHashConnect from "@hooks/useHashConnect";
 import useAccount from "@hooks/useUserAccount";
 import { Grid, useMediaQuery } from "@material-ui/core";
-import { ContractConfigType } from "@types_/liquid-staking-pool";
-import Loader from "@atoms/Loader/Loader";
+import InfoPageMobile from "components/common/InfoPageMobile";
 import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolLiquidStaking";
+import { Link, Typography } from "../../atoms";
 import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
 import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
-import useExchangeRate from "@hooks/useExchangeRate";
-import useAPY from "@hooks/useAPY";
-import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
-import InfoPageMobile from "components/common/InfoPageMobile";
 
 function LSPools() {
   const { status, stake, tvl, transactionStatus, setTransActionStatus } =
@@ -26,9 +27,9 @@ function LSPools() {
 
   // console.log(apy, exchangeRate);
 
-  // if (status === "INITIALIZING") {
-  //   return <Loader text={"Please wait while we set things up for you"} />;
-  // }
+  if (status === "INITIALIZING") {
+    return <Loader text={"Please wait while we set things up for you"} />;
+  }
 
   if (status !== "WALLET_CONNECTED") {
     return <WelcomeScreenPoolLiquidStaking />;
@@ -42,7 +43,7 @@ function LSPools() {
         spacing={3}
         {...(!tabletDown && { alignItems: "center" })}
       >
-        <Grid item xs={12} md={8}>
+        <Grid item xs={8} md={8}>
           <LSPoolsEstimate
             tvl={tvl}
             holdings={hbarX}
@@ -50,7 +51,7 @@ function LSPools() {
             apy={apy}
           />
         </Grid>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={8} md={8}>
           <LSPoolsForm
             tvlLoading={true}
             holding={hbar}
@@ -60,6 +61,17 @@ function LSPools() {
             exchangeRate={exchangeRate}
           />
         </Grid>
+        <div className="p-4">
+          <Link href={urls.faq} target={"_blank"}>
+            <Typography
+              variant={"body1"}
+              fontWeight={"semi-bold"}
+              color="textPrimary"
+            >
+              FAQ
+            </Typography>
+          </Link>
+        </div>
       </Grid>
     </div>
   );

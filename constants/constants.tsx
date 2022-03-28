@@ -9,7 +9,7 @@ export const tvlCap = {};
 export const tooltips = {};
 
 export const urls = {
-  faq: "https://hedera.staderlabs.io/faq",
+  faq: "https://test.docs.staderlabs.com/",
   termsOfService: "https://hedera.staderlabs.io/terms-of-service",
 };
 
@@ -20,7 +20,7 @@ export const transactionsStatusMap = {};
 export const NATIVE_TOKEN_MULTIPLIER = 100000000;
 export const minDeposit = 0.01 * NATIVE_TOKEN_MULTIPLIER;
 export const maxDeposit = 4 * NATIVE_TOKEN_MULTIPLIER;
-export const emissionRate = 20 * NATIVE_TOKEN_MULTIPLIER;
+export const emissionRate = (50 / 86400) * NATIVE_TOKEN_MULTIPLIER;
 export const stakeTransactionFee = 1 * NATIVE_TOKEN_MULTIPLIER;
 export const version = 1.0;
 export const apiPath = "api/v1/";

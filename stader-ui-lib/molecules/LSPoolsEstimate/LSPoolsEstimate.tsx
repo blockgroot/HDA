@@ -41,7 +41,9 @@ function LSPoolsEstimate(props: Props) {
                 APY
               </Typography>
               <SDTooltip
-                content={"Average 24 hours APY including additon of rewards"}
+                content={
+                  "Estimated annualized return based on current Emission Rate and TVL"
+                }
                 className="text-white ml-1"
                 fontSize="small"
               />
