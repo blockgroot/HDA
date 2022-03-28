@@ -41,6 +41,13 @@ function LSPoolsFormStake(props: Props) {
 
   const validation = Yup.object().shape({
     nativeToken: Yup.number()
+      .test("wailet-no-money", "", function (value: number | undefined) {
+        if (!value || value + stakingFee < userBalance) {
+          return true;
+        } else {
+          return this.createError({ message: "not enough money" });
+        }
+      })
       .lessThan(
         userBalance - stakingFee,
         `Deposit amount should be less than ${userBalance - stakingFee}`
