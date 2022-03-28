@@ -41,9 +41,7 @@ function LSPoolsEstimate(props: Props) {
                 APY
               </Typography>
               <SDTooltip
-                content={
-                  "Average 48 hours APY including autocompounding of rewards."
-                }
+                content={"Average 24 hours APY including additon of rewards"}
                 className="text-white ml-1"
                 fontSize="small"
               />

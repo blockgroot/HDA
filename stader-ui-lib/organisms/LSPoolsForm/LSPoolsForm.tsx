@@ -1,11 +1,10 @@
+import { ButtonOutlined } from "@atoms/Button/Button";
 import LSPoolsFormStake from "@molecules/LSPoolsForms/LSPoolsFormStake";
 import LSPoolsFormUnstake from "@molecules/LSPoolsForms/LSPoolsFormUnstake";
-import { Box, Loader, Tab, Tabs, Typography, Link } from "../../atoms";
-import React, { useState } from "react";
 import { LSPoolProps } from "@types_/liquid-staking-pool";
+import React, { useState } from "react";
+import { Box, Loader, Tab, Tabs, Typography } from "../../atoms";
 import styles from "./LSPoolsForm.module.scss";
-import { ButtonOutlined } from "@atoms/Button/Button";
-import { transactionFees } from "@constants/constants";
 
 const ErrSVG = () => (
   <svg

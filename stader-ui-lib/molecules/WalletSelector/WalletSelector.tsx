@@ -77,12 +77,12 @@ const WalletSelector = ({
         icon={
           variant !== "solid" ? (
             <div className={styles.wallet_icon}>
-              <img
+              {/* <img
                 alt=""
                 src={greenTick}
                 width="10"
                 className={styles.wallet_connected_badge}
-              />
+              /> */}
 
               <Icon name={"wallet"} height={20} width={20} />
             </div>

@@ -7,4 +7,4 @@ export const config =
     ? mainnetConfig
     : process.env.NEXT_PUBLIC_GIT_REF === "preview"
     ? previewNetConfig
-    : mainnetConfig;
+    : testnetConfig;
