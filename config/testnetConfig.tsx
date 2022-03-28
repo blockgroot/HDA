@@ -3,6 +3,8 @@ export const testnetConfig = {
     name: "testnet",
     url: "https://testnet.mirrornode.hedera.com/",
   },
+  extension_url:
+    "https://chrome.google.com/webstore/detail/hashpack/gjagmgiddbbciopjhllkdnddhcglnemk",
   stakeApi:
     "https://sjbw7qqdz3.execute-api.us-east-2.amazonaws.com/Stage/signTransaction",
   ids: {

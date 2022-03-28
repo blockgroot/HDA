@@ -33,7 +33,8 @@ const WalletSelector = ({
     anchorEl: null,
   });
 
-  const { connect, disconnect, selectedAccount, status } = useHashConnect();
+  const { connect, disconnect, selectedAccount, status, installedExtensions } =
+    useHashConnect();
 
   const { hbar } = useAccount();
 
@@ -63,6 +64,9 @@ const WalletSelector = ({
 
   const disconnectWalletModal = (
     <DisconnectWalletModal
+      installedExtensions={installedExtensions}
+      isWalletInitializing={isWalletInitializing}
+      isWalletDisconnected={isWalletDisconnected}
       installWallet={(type: ConnectType) => {
         closeModal();
         connect(type);
@@ -102,10 +106,10 @@ const WalletSelector = ({
   };
 
   const renderWalletButton = useCallback(() => {
-    if (isWalletInitializing) {
-      return <WalletButton> Initializing Wallet...</WalletButton>;
-    }
-    if (isWalletDisconnected) {
+    // if (isWalletInitializing) {
+    //   return <WalletButton> Initializing Wallet...</WalletButton>;
+    // }
+    if (isWalletDisconnected || isWalletInitializing) {
       return <WalletButton> Connect Wallet</WalletButton>;
     }
     return (
@@ -165,7 +169,7 @@ const WalletSelector = ({
           <div className={styles.wallet_dropdown_container}>
             <WalletDropDown>
               {isWalletConnected && connectedWalletModal}
-              {isWalletDisconnected && disconnectWalletModal}
+              {!isWalletConnected && disconnectWalletModal}
             </WalletDropDown>
           </div>
         </ClickAwayListener>
