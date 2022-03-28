@@ -33,7 +33,7 @@ const WalletSelector = ({
     anchorEl: null,
   });
 
-  const { connect, disconnect, selectedAccount, status } = useHashConnect();
+  const { connect, disconnect, selectedAccount, status, installedExtensions } = useHashConnect();
 
   const { hbar } = useAccount();
 
