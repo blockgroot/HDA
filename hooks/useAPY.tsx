@@ -1,4 +1,5 @@
-import { emissionRate, NATIVE_TOKEN_MULTIPLIER } from "@constants/constants";
+import { emissionRate } from "@constants/constants";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import { useEffect, useState } from "react";
 import useHashConnect from "./useHashConnect";
 
@@ -8,7 +9,8 @@ export default function useAPY() {
 
   useEffect(() => {
     if (tvl > 0) {
-      setAPY((emissionRate * NATIVE_TOKEN_MULTIPLIER * 31536000) / (tvl * 100));
+      const apy = (nativeTokenFormatter(emissionRate) * 31536000 * 100) / tvl;
+      setAPY(apy);
     }
     //
   }, [tvl]);
