@@ -1,11 +1,10 @@
+import { ButtonOutlined } from "@atoms/Button/Button";
 import LSPoolsFormStake from "@molecules/LSPoolsForms/LSPoolsFormStake";
 import LSPoolsFormUnstake from "@molecules/LSPoolsForms/LSPoolsFormUnstake";
-import { Box, Loader, Tab, Tabs, Typography, Link } from "../../atoms";
-import React, { useState } from "react";
 import { LSPoolProps } from "@types_/liquid-staking-pool";
+import React, { useState } from "react";
+import { Box, Loader, Tab, Tabs, Typography } from "../../atoms";
 import styles from "./LSPoolsForm.module.scss";
-import { ButtonOutlined } from "@atoms/Button/Button";
-import { transactionFees } from "@constants/constants";
 
 const ErrSVG = () => (
   <svg
@@ -27,10 +26,8 @@ function LSPoolsForm(props: LSPoolProps) {
   const {
     exchangeRate,
     handleStake,
-    contractConfig,
     holding,
     transactionStatus,
-    tvlLoading,
     setTransactionStatus,
   } = props;
 
@@ -82,7 +79,7 @@ function LSPoolsForm(props: LSPoolProps) {
             </div>
             <div className="justify-center flex p-2">
               <Typography variant={"body1"} fontWeight="bold">
-                Staking of HBAR is successful!
+                HBAR Staked successfully!
               </Typography>
             </div>
             <div className="justify-center flex p-5 mt-3">
@@ -122,9 +119,6 @@ function LSPoolsForm(props: LSPoolProps) {
               <LSPoolsFormStake
                 tvlExchangeRate={exchangeRate}
                 walletBalance={holding}
-                transactionFees={transactionFees}
-                maximumDeposit={contractConfig.max_deposit}
-                minimumDeposit={contractConfig.min_deposit}
                 handleStake={handleStake}
               />
             )}

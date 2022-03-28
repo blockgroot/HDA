@@ -29,6 +29,8 @@ interface SaveData {
 
 type Networks = "testnet" | "mainnet" | "previewnet";
 
+declare var chrome: any;
+
 interface PropsType {
   children: React.ReactNode;
   hashConnect: HashConnect;
@@ -56,6 +58,7 @@ export interface HashConnectProviderAPI {
   network: Networks;
   metadata?: HashConnectTypes.AppMetadata;
   installedExtensions: HashConnectTypes.WalletMetadata | null;
+  isExtensionInstalled: boolean;
   status: string;
   stake: (amount: number) => void;
   transactionStatus: string;
@@ -66,6 +69,7 @@ export interface HashConnectProviderAPI {
 export enum ConnectType {
   CHROME_EXTENSION,
   BLADE_WALLET,
+  INSTALL_EXTENSION,
 }
 
 const INITIAL_SAVE_DATA: SaveData = {
@@ -88,7 +92,7 @@ let APP_CONFIG: HashConnectTypes.AppMetadata = {
   icon: "https://www.hashpack.app/img/logo.svg",
 };
 
-const SAVE_KEY = "hashConnectData";
+const SAVE_KEY = `hashConnectData/${config.network.name}`;
 
 const loadLocalData = (): null | SaveData => {
   // console.log("loadLocalData", localStorage.getItem(SAVE_KEY));
@@ -108,6 +112,7 @@ export const HashConnectAPIContext =
     disconnect: () => null,
     accountBalance: null,
     selectedAccount: "",
+    isExtensionInstalled: false,
     walletData: INITIAL_SAVE_DATA,
     network: config.network.name as Networks,
     installedExtensions: null,
@@ -141,6 +146,8 @@ export default function HashConnectProvider({
   const [saveData, _setSaveData] = useState<SaveData>(INITIAL_SAVE_DATA);
   const [installedExtensions, setInstalledExtensions] =
     useState<HashConnectTypes.WalletMetadata | null>(null);
+  const [isExtensionInstalled, setExtensionInstalled] =
+    useState<boolean>(false);
   const [accountBalance, setAccountBalance] = useState<AccountBalance | null>(
     null
   );
@@ -149,6 +156,7 @@ export default function HashConnectProvider({
 
   const [status, _setStatus] = useState<string>(WalletStatus.INITIALIZING);
   const [transactionStatus, setTransActionStatus] = useState<string>("");
+  const [networkError, setNetworkError] = useState<boolean>(false);
 
   const statusRef = useRef(status);
 
@@ -181,7 +189,7 @@ export default function HashConnectProvider({
         //then connect, storing the new topic for later
         const state = await hashConnect.connect();
         saveData.topic = state.topic;
-
+        console.log({ state });
         //generate a pairing string, which you can display and generate a QR code from
         saveData.pairingString = hashConnect.generatePairingString(
           state,
@@ -191,17 +199,23 @@ export default function HashConnectProvider({
 
         //find any supported local wallets
         hashConnect.findLocalWallets();
+        setTimeout(() => {
+          if (!isExtensionInstalled) {
+            setStatus(WalletStatus.WALLET_NOT_CONNECTED);
+          }
+        }, 5000);
       } else {
         // if (debug) console.log("====Local data found====", localData);
         //use loaded data for initialization + connection
         await hashConnect.init(metadata ?? APP_CONFIG, localData?.privateKey);
         setInstalledExtensions(localData?.pairedWalletData);
-        await hashConnect.connect(
+        const state = await hashConnect.connect(
           localData?.topic,
           localData?.pairedWalletData ?? metadata
         );
       }
     } catch (error) {
+      setNetworkError(true);
       console.log("error found", error);
     } finally {
       if (localData) {
@@ -268,24 +282,28 @@ export default function HashConnectProvider({
     saveDataInLocalStorage(data);
   };
 
-  // const transactionResponseHandler = async (
-  //   data: MessageTypes.TransactionResponse
-  // ) => {
-  //   console.log("received data", data);
-  //   if (data.success && !data.signedTransaction)
-  //     console.log(TransactionReceipt.fromBytes(data.receipt as Uint8Array));
-  //   else if (data.success && data.signedTransaction)
-  //     console.log(Transaction.fromBytes(data.signedTransaction as Uint8Array));
-
-  //   console.log("saveData", saveData);
-  //   console.log("saveDataRef", saveDataRef.current);
-  //   // getAccounts(saveDataRef.current.accountIds[0]);
-  //   // getTvl();
-  // };
-
   const transactionHandler = (data: MessageTypes.Transaction) => {
     // console.log("received data", data);
   };
+
+  // useEffect(() => {
+  //   const listener = (event: MessageEvent) => {
+  //     if (event.data.type === "hashconnect-query-extension-response") {
+  //       setExtensionInstalled(true);
+  //     }
+  //   };
+  //   window.addEventListener("message", listener);
+  //   window.postMessage({ type: "hashconnect-query-extension" }, "*");
+  //   setTimeout(() => {
+  //     window.removeEventListener("message", listener);
+  //     if (!isExtensionInstalled) {
+  //       setStatus(WalletStatus.WALLET_NOT_CONNECTED);
+  //     }
+  //   }, 5000);
+  //   return () => {
+  //     window.removeEventListener("message", listener);
+  //   };
+  // });
 
   useEffect(() => {
     hashConnect.foundExtensionEvent.once(foundExtensionEventHandler);
@@ -312,17 +330,23 @@ export default function HashConnectProvider({
   // }, [status]);
 
   const connect = async (type: ConnectType) => {
-    console.log({ type, installedExtensions });
-    // if (type === ConnectType.CHROME_EXTENSION) {
-    await hashConnect.connectToLocalWallet(saveData?.pairingString);
+    // console.log({ type, installedExtensions });
+    // switch (type) {
+    //   case ConnectType.CHROME_EXTENSION:
+    //     await hashConnect.connectToLocalWallet(saveData?.pairingString);
+    //     break;
+    //   case ConnectType.INSTALL_EXTENSION:
+    //     window.open(config.extension_url, "_blank");
+    //     break;
     // }
-    // if (installedExtensions) {
-    //   if (debug) console.log("Pairing String::", saveData.pairingString);
-    //   await hashConnect.connectToLocalWallet(saveData?.pairingString);
-    // } else {
-    //   if (debug) console.log("====No Extension is not in browser====");
-    //   return "wallet not installed";
-    // }
+
+    if (installedExtensions) {
+      if (debug) console.log("Pairing String::", saveData.pairingString);
+      hashConnect.connectToLocalWallet(saveData?.pairingString);
+    } else {
+      if (debug) console.log("====No Extension is not in browser====");
+      window.open(config.extension_url, "_blank");
+    }
   };
 
   const disconnect = () => {
@@ -334,34 +358,44 @@ export default function HashConnectProvider({
   };
 
   const getTvl = async () => {
-    //Create the query
-    const query = new AccountBalanceQuery().setContractId(
-      config.ids.syakingContractId
-    );
+    try {
+      //Create the query
+      const query = new AccountBalanceQuery().setContractId(
+        config.ids.stakingContractId
+      );
 
-    const client = Client.forName(config.network.name);
+      const client = Client.forName(config.network.name);
 
-    //Sign the query with the client operator private key and submit to a Hedera network
-    const balance = await query.execute(client);
-    // console.log(balance);
+      //Sign the query with the client operator private key and submit to a Hedera network
+      const balance = await query.execute(client);
+      // console.log(balance);
 
-    // console.log(contractInfo);
-    setTvl(balance.hbars.toTinybars().toNumber());
+      // console.log(contractInfo);
+      setTvl(balance.hbars.toTinybars().toNumber());
+    } catch (error: any) {
+      setNetworkError(true);
+      console.log(error.message);
+    }
   };
 
   const getAccounts = async (accountId: string) => {
     //Create the account info query
     //moved to api
-    const query = new AccountBalanceQuery().setAccountId(accountId);
+    try {
+      const query = new AccountBalanceQuery().setAccountId(accountId);
 
-    // const balance =  (await provider.getBalance(accountId)).toNumber();
+      // const balance =  (await provider.getBalance(accountId)).toNumber();
 
-    const client = Client.forName(config.network.name);
-    // Sign with client operator private key and submit the query to a Hedera network
-    const balance = await query.execute(client);
+      const client = Client.forName(config.network.name);
+      // Sign with client operator private key and submit the query to a Hedera network
+      const balance = await query.execute(client);
 
-    setAccountBalance(balance);
-    setStatus("WALLET_CONNECTED");
+      setAccountBalance(balance);
+      setStatus("WALLET_CONNECTED");
+    } catch (error: any) {
+      setNetworkError(true);
+      console.log(error.message);
+    }
   };
 
   //TODO: move this code
@@ -377,7 +411,7 @@ export default function HashConnectProvider({
       }
     } catch (err) {
       // Handle Error Here
-
+      setNetworkError(true);
       console.error("error", err);
     }
   };
@@ -393,7 +427,7 @@ export default function HashConnectProvider({
     let transId = TransactionId.generate(accountId);
 
     const transaction = new ContractExecuteTransaction()
-      .setContractId(config.ids.syakingContractId)
+      .setContractId(config.ids.stakingContractId)
       .setGas(2_000_000)
       .setPayableAmount(amount)
       .setFunction(
@@ -473,6 +507,7 @@ export default function HashConnectProvider({
         walletData: saveData,
         network: network,
         installedExtensions,
+        isExtensionInstalled,
         status,
         stake,
         transactionStatus,

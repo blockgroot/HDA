@@ -1,3 +1,4 @@
+import { bannerText } from "@constants/constants";
 import Banner from "@molecules/Banner";
 import c from "classnames";
 import Head from "next/head";
@@ -28,14 +29,24 @@ function MainLayout(props: any) {
   return (
     <>
       <Head>
-        <title>Stader</title>
+        <title>Stader| Staking Hbar Simplified</title>
+
+        <meta
+          name="description"
+          content="Liquid staking with Stader. Stake Hbar with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks."
+        />
+        <meta property="og:title" content="Stader|Staking Hbar Simplified" />
+
+        <meta
+          property="og:description"
+          content="Liquid staking with Stader. Stake Hbar with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks."
+        />
       </Head>
       {!hideBanner && (
         <Banner
           activePage={router.pathname}
           onClose={handleHideBanner}
-          message={`  3 Million SD tokens have been farmed. Maximize your{" "}
-          {NATIVE_TOKEN_LABEL} with auto-compounding on Stader.`}
+          message={`${bannerText}`}
         ></Banner>
       )}
       <Header />

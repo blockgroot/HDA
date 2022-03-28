@@ -1,22 +1,17 @@
-import React, { FC, useCallback, useState } from "react";
-import { ClickAwayListener } from "@material-ui/core";
-
-import { Button, Typography } from "../../atoms";
-import styles from "./WalletSelector.module.scss";
-import Icon from "../../atoms/Icon/Icon";
-
-import greenTick from "../../assets/svg/check_success.svg";
-import { CheckCircle, Info } from "@material-ui/icons";
-import classNames from "classnames";
-import {
-  NATIVE_TOKEN_LABEL,
-  NATIVE_TOKEN_MULTIPLIER,
-  precision,
-} from "@constants/constants";
+import { NATIVE_TOKEN_LABEL } from "@constants/constants";
 import useHashConnect from "@hooks/useHashConnect";
 import useAccount from "@hooks/useUserAccount";
-import { ConnectedWalletModal, DisconnectWalletModal } from "./WalletModals";
+import { ClickAwayListener } from "@material-ui/core";
+import { CheckCircle, Info } from "@material-ui/icons";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
+import classNames from "classnames";
 import { ConnectType } from "context/HashConnectProvider";
+import React, { FC, useCallback, useState } from "react";
+import greenTick from "../../assets/svg/check_success.svg";
+import { Button, Typography } from "../../atoms";
+import Icon from "../../atoms/Icon/Icon";
+import { ConnectedWalletModal, DisconnectWalletModal } from "./WalletModals";
+import styles from "./WalletSelector.module.scss";
 
 export const WalletStatus = {
   WALLET_CONNECTED: "WALLET_CONNECTED",
@@ -38,15 +33,8 @@ const WalletSelector = ({
     anchorEl: null,
   });
 
-  const {
-    connect,
-    disconnect,
-    selectedAccount,
-    walletData: saveData,
-    network: network,
-    status,
-    stake,
-  } = useHashConnect();
+  const { connect, disconnect, selectedAccount, status, installedExtensions } =
+    useHashConnect();
 
   const { hbar } = useAccount();
 
@@ -62,25 +50,6 @@ const WalletSelector = ({
     setModal({ open: false, anchorEl: null });
   };
 
-  const walletButtonElements = (
-    <>
-      <Typography
-        variant={"body2"}
-        fontWeight={"medium"}
-        className={"inline ml-4 capitalize"}
-      >
-        {selectedAccount}
-      </Typography>
-      <div className={styles.divider} />
-      <Typography variant={"body2"} fontWeight={"bold"} className={"mr-1"}>
-        {(hbar / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}
-      </Typography>
-      <Typography variant={"body3"} fontWeight={"bold"} className={"inline"}>
-        {NATIVE_TOKEN_LABEL}
-      </Typography>
-    </>
-  );
-
   const connectedWalletModal = (
     <ConnectedWalletModal
       walletBalance={hbar}
@@ -95,6 +64,9 @@ const WalletSelector = ({
 
   const disconnectWalletModal = (
     <DisconnectWalletModal
+      installedExtensions={installedExtensions}
+      isWalletInitializing={isWalletInitializing}
+      isWalletDisconnected={isWalletDisconnected}
       installWallet={(type: ConnectType) => {
         closeModal();
         connect(type);
@@ -109,12 +81,12 @@ const WalletSelector = ({
         icon={
           variant !== "solid" ? (
             <div className={styles.wallet_icon}>
-              <img
+              {/* <img
                 alt=""
                 src={greenTick}
                 width="10"
                 className={styles.wallet_connected_badge}
-              />
+              /> */}
 
               <Icon name={"wallet"} height={20} width={20} />
             </div>
@@ -134,15 +106,32 @@ const WalletSelector = ({
   };
 
   const renderWalletButton = useCallback(() => {
-    if (isWalletInitializing) {
-      return <WalletButton> Initializing Wallet...</WalletButton>;
-    }
-    if (isWalletDisconnected) {
+    // if (isWalletInitializing) {
+    //   return <WalletButton> Initializing Wallet...</WalletButton>;
+    // }
+    if (isWalletDisconnected || isWalletInitializing) {
       return <WalletButton> Connect Wallet</WalletButton>;
     }
-    return <WalletButton>{walletButtonElements}</WalletButton>;
+    return (
+      <WalletButton>
+        <Typography
+          variant={"body2"}
+          fontWeight={"medium"}
+          className={"inline ml-4 capitalize"}
+        >
+          {selectedAccount}
+        </Typography>
+        <div className={styles.divider} />
+        <Typography variant={"body2"} fontWeight={"bold"} className={"mr-1"}>
+          {nativeTokenFormatter(hbar)}
+        </Typography>
+        <Typography variant={"body3"} fontWeight={"bold"} className={"inline"}>
+          {NATIVE_TOKEN_LABEL}
+        </Typography>
+      </WalletButton>
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+  }, [status, hbar]);
 
   const iconOnlyWalletButton = useCallback(() => {
     // if(isWalletInitializing){
@@ -180,7 +169,7 @@ const WalletSelector = ({
           <div className={styles.wallet_dropdown_container}>
             <WalletDropDown>
               {isWalletConnected && connectedWalletModal}
-              {isWalletDisconnected && disconnectWalletModal}
+              {!isWalletConnected && disconnectWalletModal}
             </WalletDropDown>
           </div>
         </ClickAwayListener>

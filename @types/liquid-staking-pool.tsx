@@ -7,7 +7,6 @@ export type TvlType = {
 export type LSPoolProps = {
   exchangeRate: number;
   tvlLoading?: boolean;
-  contractConfig: ContractConfigType;
   holding: number;
   handleStake: (amount: number) => void;
   setTransactionStatus: (status: string) => void;
