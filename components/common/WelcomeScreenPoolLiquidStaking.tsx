@@ -76,7 +76,7 @@ function WelcomeScreenPoolLiquidStaking({ toggleConnectWallet }: Props) {
         onClose={handleClose}
         action={action}
       >
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+        <Alert onClose={handleClose} severity="error" >
           wallet extension not found, Click&nbsp;
           <a href={config.extension_url} target="_blank" rel="noreferrer">
             here
