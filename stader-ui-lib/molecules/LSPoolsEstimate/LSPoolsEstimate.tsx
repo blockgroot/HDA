@@ -54,12 +54,10 @@ function LSPoolsEstimate(props: Props) {
               TVL
             </Typography>
             <SDTooltip
-                content={
-                  "Total HBAR in the Stake Pool"
-                }
-                className="text-white ml-1"
-                fontSize="small"
-              />
+              content={"Total HBAR in the Stake Pool"}
+              className="text-white ml-1"
+              fontSize="small"
+            />
           </div>
         </div>
 
