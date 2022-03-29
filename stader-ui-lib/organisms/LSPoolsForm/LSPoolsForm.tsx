@@ -42,7 +42,7 @@ function LSPoolsForm(props: LSPoolProps) {
   const onStakeSent = (stake: number) => {
     setAmount(stake);
     handleStake(stake);
-  }
+  };
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -85,7 +85,7 @@ function LSPoolsForm(props: LSPoolProps) {
             </div>
             <div className="justify-center flex p-2">
               <Typography variant={"body1"} fontWeight="bold">
-              {amount} HBAR staked Successfully.
+                {amount} HBAR staked Successfully.
               </Typography>
             </div>
             <div className="justify-center flex p-5 mt-3">
