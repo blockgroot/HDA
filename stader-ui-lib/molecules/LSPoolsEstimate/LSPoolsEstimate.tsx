@@ -29,7 +29,7 @@ function LSPoolsEstimate(props: Props) {
         <div className="flex flex-row justify-between w-full align-middle pl-5 pr-10">
           <div className={styles.headerTitle}>
             <Typography variant={"body1"} fontWeight={"bold"}>
-              My {LIQUID_NATIVE_TOKEN_LABEL}
+              My {LIQUID_NATIVE_TOKEN_LABEL.toUpperCase()}
             </Typography>
           </div>
 
