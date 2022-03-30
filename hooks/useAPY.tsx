@@ -9,7 +9,7 @@ export default function useAPY() {
 
   useEffect(() => {
     if (tvl > 0) {
-      const apy = (nativeTokenFormatter(emissionRate) * 31536000 * 100) / tvl;
+      const apy = (emissionRate * 365 * 100) / tvl;
       setAPY(apy);
     }
     //
