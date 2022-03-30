@@ -1,0 +1,40 @@
+name: manual prod deploy
+on:
+  workflow_dispatch:
+    inputs:
+      git-tag:
+        description: git tag to deploy
+        required: true
+jobs:
+  nextjs:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      GIT_TAG: ${{ github.event.inputs.git-tag }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - run: git checkout tags/$GIT_TAG
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: "Install vercel"
+        run: npm i -g vercel
+      - name: "Deploy to vercel"
+        id: deploy
+        run: |
+          echo "::set-output name=DEPLOYMENT_URL::$(vercel --confirm -t $VERCEL_TOKEN --scope $VERCEL_ORG_ID)"
+      - name: "Set alias"
+        run: |
+          echo ${{steps.alias.outputs.prop}}
+          vercel alias set ${{ steps.deploy.outputs.DEPLOYMENT_URL }} devnet.hedera.staderlabs.com -t $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+      - uses: chrnorm/deployment-action@releases/v1
+        id: deployment
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target_url: devnet.hedera.staderlabs.com
+          environment: manual-production-deployment
+          ref: ${{ github.event.inputs.git-tag }}
