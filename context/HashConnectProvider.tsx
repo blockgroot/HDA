@@ -10,7 +10,6 @@ import {
   TransactionReceipt,
 } from "@hashgraph/sdk";
 import { WalletStatus } from "@molecules/WalletSelector/WalletSelector";
-import axios from "axios";
 import { config } from "config/config";
 import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
 import React, { useEffect, useRef, useState } from "react";
@@ -398,24 +397,6 @@ export default function HashConnectProvider({
     }
   };
 
-  //TODO: move this code
-  const sendPostRequest = async (bytes: Uint8Array) => {
-    try {
-      //TODO: Move this to url
-      const resp: any = await axios.post(config.stakeApi, {
-        transactionBytes: bytes,
-      });
-      // console.log("responseee", resp.data.result.data);
-      if (resp.data.result) {
-        return resp.data.result.data as Uint8Array;
-      }
-    } catch (err) {
-      // Handle Error Here
-      setNetworkError(true);
-      console.error("error", err);
-    }
-  };
-
   const stake = async (amount: number) => {
     console.log("staked Amount", amount);
     setTransActionStatus("START");
@@ -440,15 +421,7 @@ export default function HashConnectProvider({
       .setTransactionId(transId)
       .freeze();
 
-    const transBytes = transaction.toBytes();
-    const sendTx = await sendPostRequest(transBytes);
-
-    if (!sendTx) {
-      setTransActionStatus("FAILED");
-      return;
-    }
-
-    const transactionBytes = new Uint8Array(sendTx as Uint8Array);
+    const transactionBytes = transaction.toBytes();
 
     const response: MessageTypes.TransactionResponse = await sendTransaction(
       transactionBytes,
