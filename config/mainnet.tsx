@@ -5,8 +5,7 @@ export const mainnetConfig = {
   },
   extension_url:
     "https://chrome.google.com/webstore/detail/hashpack/gjagmgiddbbciopjhllkdnddhcglnemk",
-  stakeApi:
-    "https://aa60gklj3i.execute-api.us-east-2.amazonaws.com/Prod/signTransaction",
+  stakeApi: "https://apis-dev.staderlabs.com/signTransaction",
   ids: {
     tokenId: "0.0.803264",
     stakingContractId: "0.0.803295",
