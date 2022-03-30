@@ -4,7 +4,7 @@ const path = require("path");
 
 const withImages = require("next-images");
 module.exports = withImages({
-  reactStrictMode: true,
+  reactStrictMode: false,
   async redirects() {
     return [
       {
@@ -17,5 +17,9 @@ module.exports = withImages({
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
     prependData: `@import "./styles/_mixins.scss";`,
+  },
+  compiler: {
+    // ssr and displayName are configured by default
+    styledComponents: true,
   },
 });

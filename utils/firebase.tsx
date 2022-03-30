@@ -6,7 +6,7 @@ let firebase: any;
 try {
   firebase = getApp();
 } catch {
-  firebase = initializeApp(config.firebaseConfig);
+  firebase = initializeApp({});
 }
 
 export { firebase };

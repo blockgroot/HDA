@@ -7,7 +7,7 @@ let isAlreadyFetchingAccessToken = false;
 let subscribers: any = [];
 
 const client = axios.create({
-  baseURL: config.BASE_API_URL,
+  baseURL: "https://localhost:3000",
   headers: {
     Accept: "application/json",
   },
