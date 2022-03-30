@@ -312,8 +312,9 @@ export default function HashConnectProvider({
     hashConnect.transactionResolver = () => {};
     //
     //Intialize the setup
-    initializeHashConnect();
     getTvl();
+    initializeHashConnect();
+
     // Attach event handlers
 
     return () => {
@@ -368,9 +369,8 @@ export default function HashConnectProvider({
 
       //Sign the query with the client operator private key and submit to a Hedera network
       const balance = await query.execute(client);
-      // console.log(balance);
+      console.log(balance);
 
-      // console.log(contractInfo);
       setTvl(balance.hbars.toTinybars().toNumber());
     } catch (error: any) {
       setNetworkError(true);
@@ -522,8 +522,9 @@ export default function HashConnectProvider({
 
 const defaultProps: Partial<PropsType> = {
   metadata: {
-    name: "Hedera Staking DApp",
-    description: "Stake Hbars",
+    name: "Stader| Staking Hbar Simplified",
+    description:
+      "Liquid staking with Stader. Stake Hbar with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks",
     icon: "https://www.hashpack.app/img/logo.svg",
   },
   network: config.network.name as Networks,
