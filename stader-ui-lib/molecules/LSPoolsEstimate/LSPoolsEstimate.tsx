@@ -49,10 +49,15 @@ function LSPoolsEstimate(props: Props) {
               />
             </div>
           </div>
-          <div className={styles.headerTitle}>
+          <div className={`${styles.headerTitle} flex items-center mb-3 mr-10`}>
             <Typography variant={"body1"} fontWeight={"bold"}>
               TVL
             </Typography>
+            <SDTooltip
+              content={"Total HBAR in the Stake Pool"}
+              className="text-white ml-1"
+              fontSize="small"
+            />
           </div>
         </div>
 
