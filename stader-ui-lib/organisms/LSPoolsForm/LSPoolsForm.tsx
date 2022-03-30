@@ -31,12 +31,18 @@ function LSPoolsForm(props: LSPoolProps) {
     setTransactionStatus,
   } = props;
 
+  const [amount, setAmount] = useState<number>(0);
   const [tab, setTab] = useState<number>(0);
   const handleTabChange = (val: number) => {
     setTab(val);
   };
 
   // console.log("transactionStatus", transactionStatus);
+
+  const onStakeSent = (stake: number) => {
+    setAmount(stake);
+    handleStake(stake);
+  };
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -79,7 +85,7 @@ function LSPoolsForm(props: LSPoolProps) {
             </div>
             <div className="justify-center flex p-2">
               <Typography variant={"body1"} fontWeight="bold">
-                HBAR Staked successfully!
+                {amount} HBAR staked Successfully.
               </Typography>
             </div>
             <div className="justify-center flex p-5 mt-3">
@@ -101,7 +107,7 @@ function LSPoolsForm(props: LSPoolProps) {
         <div className={styles.container}>
           <Loader
             position={"center"}
-            text="Your transaction is in progress..."
+            text={`Staking of ${amount} HBAR is in progress`}
           />
         </div>
       </Box>
@@ -119,7 +125,7 @@ function LSPoolsForm(props: LSPoolProps) {
               <LSPoolsFormStake
                 tvlExchangeRate={exchangeRate}
                 walletBalance={holding}
-                handleStake={handleStake}
+                handleStake={onStakeSent}
               />
             )}
             {tab === 1 && <LSPoolsFormUnstake />}
