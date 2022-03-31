@@ -96,7 +96,7 @@ function LSPoolsFormStake(props: Props) {
                 <Typography variant={"body3"} color={"secondary"}>
                   Available:{" "}
                   {(walletBalance / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}{" "}
-                  {NATIVE_TOKEN_LABEL}
+                  {NATIVE_TOKEN_LABEL} (ℏ)
                 </Typography>
 
                 <Typography variant={"body3"}>{`1 ${tokenLabel} = ${(
