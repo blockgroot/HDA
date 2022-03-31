@@ -3,7 +3,8 @@ export const mainnetConfig = {
     name: "mainnet",
     url: "https://mainnet-public.mirrornode.hedera.com/",
   },
-  hbar_pay_url: 'https://buy.moonpay.com/?colorCode=�E5E5&currencyCode=hbar&enableRecurringBuys=true&walletAddress=0.0.793785',
+  hbar_pay_url:
+    "https://buy.moonpay.com/?colorCode=�E5E5&currencyCode=hbar&enableRecurringBuys=true&walletAddress=0.0.793785",
   extension_url:
     "https://chrome.google.com/webstore/detail/hashpack/gjagmgiddbbciopjhllkdnddhcglnemk",
   stakeApi: "https://apis-dev.staderlabs.com/signTransaction",

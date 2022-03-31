@@ -34,7 +34,7 @@ export const icons = {
   arrow_down: arrow_down,
   check_success: check_success,
   check_success_aqua: check_success_aqua,
-  token_icon:token_icon
+  token_icon: token_icon,
 };
 
 export interface IconType extends React.ComponentPropsWithoutRef<"img"> {
