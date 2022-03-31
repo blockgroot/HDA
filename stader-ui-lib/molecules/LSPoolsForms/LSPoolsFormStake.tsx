@@ -59,7 +59,7 @@ function LSPoolsFormStake(props: Props) {
 
     // fees: Yup.number().moreThan(
     //   walletBalance-stakingFee-,
-    //   `Not enough Hbar for transaction fees ${stakingFee}`
+    //   `Not enough HBAR for transaction fees ${stakingFee}`
     // ),
   });
 
