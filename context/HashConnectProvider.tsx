@@ -62,6 +62,9 @@ export interface HashConnectProviderAPI {
   stake: (amount: number) => void;
   transactionStatus: string;
   setTransActionStatus: (status: string) => void;
+  signTransaction: (
+    transaction: string
+  ) => Promise<signedTransactionParams | null>;
   tvl: number;
 }
 
@@ -119,8 +122,14 @@ export const HashConnectAPIContext =
     stake: () => null,
     transactionStatus: "",
     setTransActionStatus: () => null,
+    signTransaction: (transaction) => Promise.resolve(null),
     tvl: 0,
   });
+
+interface signedTransactionParams {
+  publicKey: string;
+  signature: string;
+}
 
 // //fetch this from config/move to config
 // export const tokenId = "0.0.30873456";
@@ -397,6 +406,36 @@ export default function HashConnectProvider({
     }
   };
 
+  const signTransaction = async (transactionString: string) => {
+    const transaction = Buffer.from(transactionString, "base64");
+
+    const response: MessageTypes.TransactionResponse = await sendTransaction(
+      transaction,
+      selectedAccount,
+      true
+    );
+
+    console.log("response", response);
+    if (response.success && response.signedTransaction) {
+      const signedTransaction = Transaction.fromBytes(
+        response.signedTransaction as Uint8Array
+      );
+
+      const encodedSignature = Buffer.from(response.signedTransaction).toString(
+        "base64"
+      );
+      console.log(encodedSignature);
+      const output: signedTransactionParams = {
+        publicKey: selectedAccount,
+        signature: encodedSignature,
+      };
+      // console.log("output", output);
+      return output;
+    }
+
+    return null;
+  };
+
   const stake = async (amount: number) => {
     console.log("staked Amount", amount);
     setTransActionStatus("START");
@@ -485,6 +524,7 @@ export default function HashConnectProvider({
         stake,
         transactionStatus,
         setTransActionStatus,
+        signTransaction,
         tvl,
       }}
     >
