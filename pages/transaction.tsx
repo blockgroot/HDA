@@ -27,7 +27,7 @@ function Sign() {
 
   //   }
 
-  if (status === "WALLET_NOT_CONNECTED") {
+  if (status !== "WALLET_CONNECTED") {
     return (
       <div>
         <MainLayout></MainLayout>
