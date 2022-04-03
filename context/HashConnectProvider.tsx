@@ -127,7 +127,7 @@ export const HashConnectAPIContext =
   });
 
 interface signedTransactionParams {
-  publicKey: string;
+  userId: string;
   signature: string;
 }
 
@@ -426,7 +426,7 @@ export default function HashConnectProvider({
       );
       console.log(encodedSignature);
       const output: signedTransactionParams = {
-        publicKey: selectedAccount,
+        userId: selectedAccount,
         signature: encodedSignature,
       };
       // console.log("output", output);

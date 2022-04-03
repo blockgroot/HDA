@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import MainLayout from "../layout";
 
 interface signedTransactionParams {
-  publicKey: string;
+  userId: string;
   signature: string;
 }
 
