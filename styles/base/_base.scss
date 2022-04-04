@@ -55,6 +55,25 @@ body {
   @include for-phone-only() {
     padding: 16px;
   }
+
+  .speed_container{
+    position: relative;
+    width: 60px;
+    margin: auto auto 20px auto;
+    height: 60px;
+    img{
+      position: absolute;
+      &:first-child{
+        top:16px;
+        left: 13px;
+      }
+    }
+  }
+  .comming-soon_container{
+    margin: 20px auto auto;
+    text-align: center;
+    width: 330px;
+  }
 }
 
 @media (min-width: 1524px) {

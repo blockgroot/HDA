@@ -1,4 +1,4 @@
-import { Typography } from "../../atoms";
+import { Icon, Typography } from "../../atoms";
 import styles from "./LSPoolsFormLaToLx.module.scss";
 
 interface Props {}
@@ -6,10 +6,17 @@ interface Props {}
 function LSPoolsFormUnstake(props: Props) {
   return (
     <div className={styles.root}>
-      <div className="flex height-full">
+      <div className=" flex flex-center flex-column height-full" style={{height:'80%'}}>
+        <div className="speed_container"> 
+          <Icon name="speed" width={20} height={20}  className=""/>
+          <Icon name="speed_circle" width={60} height={60}  className=""/>
+        </div>
+        
+        <div className="comming-soon_container">
         <Typography variant={"body1"} fontWeight={"normal"}>
-          Unstaking /Withdrawal will be available in V2 launch around July 2022
+          Unstaking / Withdrawal will be available in V2 launch around July 2022
         </Typography>
+        </div>
       </div>
     </div>
   );
