@@ -15,6 +15,7 @@ import info_outline from "../../assets/svg/info_outline.svg";
 import wallet_icon from "../../assets/svg/wallet_icon.svg";
 import check_success from "../../assets/svg/check_success.svg";
 import check_success_aqua from "../../assets/svg/check_success_aqua.svg";
+import token_icon from "../../assets/svg/token_icon.svg";
 
 export const icons = {
   clipboard: copy_address,
@@ -33,6 +34,7 @@ export const icons = {
   arrow_down: arrow_down,
   check_success: check_success,
   check_success_aqua: check_success_aqua,
+  token_icon: token_icon,
 };
 
 export interface IconType extends React.ComponentPropsWithoutRef<"img"> {
