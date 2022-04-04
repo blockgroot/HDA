@@ -87,9 +87,10 @@ const INITIAL_SAVE_DATA: SaveData = {
 // }
 
 let APP_CONFIG: HashConnectTypes.AppMetadata = {
-  name: "Hedera Staking DApp",
-  description: "Stake Hbars",
-  icon: "https://www.hashpack.app/img/logo.svg",
+  name: "Stader| Staking Hbar Simplified",
+  description:
+    "Liquid staking with Stader. Stake Hbar with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks",
+  icon: "https://hedera.staderlabs.com/hbarx.png",
 };
 
 const SAVE_KEY = `hashConnectData/${config.network.name}`;
@@ -315,6 +316,14 @@ export default function HashConnectProvider({
     hashConnect.foundExtensionEvent.once(foundExtensionEventHandler);
     hashConnect.pairingEvent.on(pairingEventHandler);
     hashConnect.transactionEvent.on(transactionHandler);
+    hashConnect.connectionStatusChange.on((connectionStatus) => {
+      //do something with connection status
+      console.log("connectionStatus", connectionStatus);
+    });
+    hashConnect.acknowledgeMessageEvent.once((acknowledgeData) => {
+      //do something with acknowledge response data
+      console.log("acknowledgeData", acknowledgeData);
+    });
     hashConnect.transactionResolver = () => {};
     //
     //Intialize the setup
@@ -534,10 +543,10 @@ export default function HashConnectProvider({
 
 const defaultProps: Partial<PropsType> = {
   metadata: {
-    name: "Stader| Staking Hbar Simplified",
+    name: "Stader | Staking Hbar Simplified",
     description:
       "Liquid staking with Stader. Stake Hbar with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks",
-    icon: "https://www.hashpack.app/img/logo.svg",
+    icon: "https://hedera.staderlabs.com/hbarx.png",
   },
   network: config.network.name as Networks,
   debug: false,
