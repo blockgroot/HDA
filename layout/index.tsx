@@ -60,7 +60,13 @@ function MainLayout(props: any) {
       >
         <div className={c("layout-child", styles.layoutChild)}>
           <div className={"layout-child-container"}>{props.children}</div>
-          <Link href={urls.faq} target={"_blank"} className="help-link  text-white">Get Help</Link>
+          <Link
+            href={urls.faq}
+            target={"_blank"}
+            className="help-link  text-white"
+          >
+            Get Help
+          </Link>
         </div>
       </div>
     </>
