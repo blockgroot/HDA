@@ -36,7 +36,7 @@ export const icons = {
   check_success: check_success,
   check_success_aqua: check_success_aqua,
   speed,
-  speed_circle
+  speed_circle,
 };
 
 export interface IconType extends React.ComponentPropsWithoutRef<"img"> {
