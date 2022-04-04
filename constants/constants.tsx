@@ -1,5 +1,5 @@
-export const LIQUID_NATIVE_TOKEN_LABEL = "HbarX";
-export const NATIVE_TOKEN_LABEL = "Hbar";
+export const LIQUID_NATIVE_TOKEN_LABEL = "HBARX";
+export const NATIVE_TOKEN_LABEL = "HBAR";
 
 export const tvlCap = {};
 

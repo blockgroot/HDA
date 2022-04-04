@@ -29,17 +29,17 @@ function MainLayout(props: any) {
   return (
     <>
       <Head>
-        <title>Stader| Staking Hbar Simplified</title>
+        <title>Stader| Staking HBAR Simplified</title>
 
         <meta
           name="description"
-          content="Liquid staking with Stader. Stake Hbar with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks."
+          content="Liquid staking with Stader. Stake HBAR with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks."
         />
-        <meta property="og:title" content="Stader|Staking Hbar Simplified" />
+        <meta property="og:title" content="Stader|Staking HBAR Simplified" />
 
         <meta
           property="og:description"
-          content="Liquid staking with Stader. Stake Hbar with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks."
+          content="Liquid staking with Stader. Stake HBAR with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks."
         />
       </Head>
       {!hideBanner && (
