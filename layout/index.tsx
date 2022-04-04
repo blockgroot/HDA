@@ -1,4 +1,5 @@
-import { bannerText } from "@constants/constants";
+import { bannerText, urls } from "@constants/constants";
+import { Link } from "@material-ui/core";
 import Banner from "@molecules/Banner";
 import c from "classnames";
 import Head from "next/head";
@@ -59,6 +60,7 @@ function MainLayout(props: any) {
       >
         <div className={c("layout-child", styles.layoutChild)}>
           <div className={"layout-child-container"}>{props.children}</div>
+          <Link href={urls.faq} target={"_blank"} className="help-link  text-white">Get Help</Link>
         </div>
       </div>
     </>
