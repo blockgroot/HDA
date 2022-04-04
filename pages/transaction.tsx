@@ -3,15 +3,11 @@ import useHashConnect from "@hooks/useHashConnect";
 import React, { useState } from "react";
 import MainLayout from "../layout";
 
-interface signedTransactionParams {
-  userId: string;
-  signature: string;
-}
-
 function Sign() {
   const [transaction, setTranasaction] = useState("");
-  const [signedTransaction, setSignedTransaction] =
-    useState<signedTransactionParams | null>(null);
+  const [signedTransaction, setSignedTransaction] = useState<string | null>(
+    null
+  );
   const { signTransaction, status } = useHashConnect();
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -21,11 +17,7 @@ function Sign() {
   const getSignedTransaction = async () => {
     const trans = await signTransaction(transaction);
     setSignedTransaction(trans);
-    // setSignedTransaction(signTransaction(transaction));
   };
-  //   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-  //   }
 
   if (status !== "WALLET_CONNECTED") {
     return (
@@ -69,15 +61,6 @@ function Sign() {
               onChange={(e) => setTranasaction(e.target.value)}
               value={transaction}
             ></textarea>
-            {/* <div className="flex space-x-2 justify-center">
-              <button
-                onClick={handleClick}
-                type="button"
-                className="inline-block m-6 px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-              >
-                Sign transaction
-              </button>
-            </div> */}
             <div className="mt-4 lg:mt-8 flex justify-center">
               <ButtonOutlined
                 type="button"
@@ -90,7 +73,7 @@ function Sign() {
           </div>
           {signedTransaction && (
             <div className="mt-4 lg:mt-8 break-words justify-center text-center text-white w-full">
-              {JSON.stringify(signedTransaction)}
+              {signedTransaction}
             </div>
           )}
         </div>

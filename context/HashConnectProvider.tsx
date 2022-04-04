@@ -62,9 +62,7 @@ export interface HashConnectProviderAPI {
   stake: (amount: number) => void;
   transactionStatus: string;
   setTransActionStatus: (status: string) => void;
-  signTransaction: (
-    transaction: string
-  ) => Promise<signedTransactionParams | null>;
+  signTransaction: (transaction: string) => Promise<string | null>;
   tvl: number;
 }
 
@@ -407,7 +405,10 @@ export default function HashConnectProvider({
   };
 
   const signTransaction = async (transactionString: string) => {
+    // console.log("transactionString", transactionString);
     const transaction = Buffer.from(transactionString, "base64");
+
+    // console.log("transaction", transaction.buffer);
 
     const response: MessageTypes.TransactionResponse = await sendTransaction(
       transaction,
@@ -415,22 +416,20 @@ export default function HashConnectProvider({
       true
     );
 
-    console.log("response", response);
+    // console.log("response", response);
     if (response.success && response.signedTransaction) {
-      const signedTransaction = Transaction.fromBytes(
-        response.signedTransaction as Uint8Array
-      );
+      // console.log("signedTransaction", signedTransaction);
 
-      const encodedSignature = Buffer.from(response.signedTransaction).toString(
-        "base64"
-      );
-      console.log(encodedSignature);
-      const output: signedTransactionParams = {
-        userId: selectedAccount,
-        signature: encodedSignature,
-      };
+      const signedTransaction = Buffer.from(
+        response.signedTransaction
+      ).toString("base64");
+      // console.log(encodedSignature);
+      // const output: signedTransactionParams = {
+      //   userId: selectedAccount,
+      //   signature: encodedSignature,
+      // };
       // console.log("output", output);
-      return output;
+      return signedTransaction;
     }
 
     return null;
