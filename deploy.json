@@ -10,5 +10,9 @@
   "main": {
     "isProd": "true",
     "alias": "hedera.staderlabs.com"
+  },
+  "beta": {
+    "isProd": "false",
+    "alias": "test.hedera.staderlabs.com"
   }
 }
