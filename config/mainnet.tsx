@@ -12,4 +12,5 @@ export const mainnetConfig = {
     stakingContractId: "0.0.803295",
     rewardsContractId: "0.0.803296",
   },
+  launchDate: "2022-04-08",
 };

@@ -1,11 +1,10 @@
-import { previewNetConfig } from "./previewnetConfig";
+import { betaMainnetConfig } from "./betaMainnetConfig";
 import { testnetConfig } from "./testnetConfig";
 import { mainnetConfig } from "./mainnet";
 
 export const config =
-  process.env.NEXT_PUBLIC_GIT_REF === "main" ||
-  process.env.NEXT_PUBLIC_GIT_REF === "beta"
+  process.env.NEXT_PUBLIC_GIT_REF === "main"
     ? mainnetConfig
-    : process.env.NEXT_PUBLIC_GIT_REF === "preview"
-    ? previewNetConfig
+    : process.env.NEXT_PUBLIC_GIT_REF === "beta"
+    ? betaMainnetConfig
     : testnetConfig;

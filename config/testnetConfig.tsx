@@ -12,4 +12,5 @@ export const testnetConfig = {
     stakingContractId: "0.0.34082352",
     rewardsContractId: "0.0.34082354",
   },
+  launchDate: "2022-03-05",
 };
