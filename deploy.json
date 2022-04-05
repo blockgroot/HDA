@@ -13,6 +13,6 @@
   },
   "beta": {
     "isProd": "false",
-    "alias": "test.hedera.staderlabs.com"
+    "alias": "beta.hedera.staderlabs.com"
   }
 }
