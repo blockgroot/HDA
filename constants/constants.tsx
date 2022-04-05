@@ -17,8 +17,7 @@ export const transactionsTypeMap = {};
 export const transactionsStatusMap = {};
 
 export const NATIVE_TOKEN_MULTIPLIER = 100000000;
-export const minDeposit = 0.01 * NATIVE_TOKEN_MULTIPLIER;
-export const maxDeposit = 500 * NATIVE_TOKEN_MULTIPLIER;
+
 export const emissionRate = 50 * NATIVE_TOKEN_MULTIPLIER; //Per day
 export const stakeTransactionFee = 1 * NATIVE_TOKEN_MULTIPLIER;
 export const version = 1.0;

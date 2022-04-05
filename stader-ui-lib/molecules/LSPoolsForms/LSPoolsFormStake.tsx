@@ -2,8 +2,6 @@
 import { ButtonOutlined } from "@atoms/Button/Button";
 import {
   LIQUID_NATIVE_TOKEN_LABEL,
-  maxDeposit,
-  minDeposit,
   NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
   NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS,
   NATIVE_TOKEN_LABEL,
@@ -12,6 +10,7 @@ import {
   stakeTransactionFee,
   tokenLabel,
 } from "@constants/constants";
+import { config } from "config/config";
 import { InputAdornment } from "@material-ui/core";
 import { NumberInput } from "@terra-dev/neumorphism-ui/components/NumberInput";
 import { Formik } from "formik";
@@ -29,6 +28,8 @@ type Props = {
 
 function LSPoolsFormStake(props: Props) {
   const { tvlExchangeRate, walletBalance, handleStake } = props;
+  const minDeposit = config.minDeposit;
+  const maxDeposit = config.maxDeposit;
 
   // console.log(tvlExchangeRate);
 

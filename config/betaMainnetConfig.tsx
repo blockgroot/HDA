@@ -13,4 +13,6 @@ export const betaMainnetConfig = {
     rewardsContractId: "0.0.803296",
   },
   launchDate: "2022-03-05",
+  minDeposit: 0.01 * 10 ** 8,
+  maxDeposit: 1000 * 10 ** 8,
 };
