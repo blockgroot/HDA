@@ -45,23 +45,23 @@ function LSPoolsFormStake(props: Props) {
         if (!value || value + stakingFee < userBalance) {
           return true;
         } else {
-          return this.createError({ message: "not enough money" });
+          return this.createError({ message: "not enough HBARs" });
         }
       })
       .lessThan(
         userBalance - stakingFee,
-        `Deposit amount should be less than ${userBalance - stakingFee}`
+        `Stake amount should be less than ${userBalance - stakingFee}`
       )
       .max(
         maxDep,
-        `Deposit amount should be less than or equal to ${maxDep} ${NATIVE_TOKEN_LABEL}`
+        `Stake amount should be less than or equal to ${maxDep} ${NATIVE_TOKEN_LABEL}`
       )
       .min(
         minDep,
-        `Deposit amount should be equal or more than ${minDep} ${NATIVE_TOKEN_LABEL}`
+        `Stake amount should be equal or more than ${minDep} ${NATIVE_TOKEN_LABEL}`
       )
       .required(
-        `Deposit amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`
+        `Stake amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`
       ),
 
     // fees: Yup.number().moreThan(

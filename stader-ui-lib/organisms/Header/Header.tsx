@@ -42,7 +42,7 @@ export default function Header() {
                 fontWeight={"bold"}
                 className={"mr-1"}
               >
-                Buy Hbar
+                Buy HBAR
               </Typography>
               <Icon name="token_icon" height={20} width={20} />
             </ButtonOutlined>

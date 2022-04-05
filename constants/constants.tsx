@@ -30,6 +30,6 @@ export const NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS = precision;
 export const NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS = 6;
 
 export const bannerText =
-  "We are in Beta mode right now, and transactions are capped at 4 Hbars. Any Hbars staked will be lost.";
+  "We are in Beta mode right now, and transactions are capped at 4 HBARS. Any HBARs staked will be lost.";
 
 export const gtmId = "GTM-W2PZ7KX";
