@@ -1,5 +1,4 @@
 import Loader from "@atoms/Loader/Loader";
-import { urls } from "@constants/constants";
 import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
 import useAPY from "@hooks/useAPY";
 import useExchangeRate from "@hooks/useExchangeRate";
@@ -8,7 +7,6 @@ import useAccount from "@hooks/useUserAccount";
 import { Grid, useMediaQuery } from "@material-ui/core";
 import InfoPageMobile from "components/common/InfoPageMobile";
 import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolLiquidStaking";
-import { Link, Typography } from "../../atoms";
 import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
 import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
 
@@ -61,17 +59,6 @@ function LSPools() {
             exchangeRate={exchangeRate}
           />
         </Grid>
-        <div className="p-4">
-          <Link href={urls.faq} target={"_blank"}>
-            <Typography
-              variant={"body1"}
-              fontWeight={"semi-bold"}
-              color="textPrimary"
-            >
-              FAQ
-            </Typography>
-          </Link>
-        </div>
       </Grid>
     </div>
   );

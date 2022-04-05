@@ -8,7 +8,8 @@ export const tooltips = {};
 
 export const urls = {
   faq: "https://test.docs.staderlabs.com/",
-  termsOfService: "https://hedera.staderlabs.io/terms-of-service",
+  termsOfService:
+    "https://staderlabs.notion.site/Stader-Terms-of-Service-af2b3b2aa4c942eea76e4857faa248e4",
 };
 
 export const transactionsTypeMap = {};
