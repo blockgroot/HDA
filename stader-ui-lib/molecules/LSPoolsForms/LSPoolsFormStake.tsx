@@ -32,36 +32,62 @@ function LSPoolsFormStake(props: Props) {
 
   // console.log(tvlExchangeRate);
 
-  const minDep = nativeTokenFormatter(minDeposit);
-  const maxDep = Math.min(nativeTokenFormatter(maxDeposit), walletBalance);
-  const stakingFee = nativeTokenFormatter(stakeTransactionFee);
-  const userBalance = nativeTokenFormatter(walletBalance);
+  // const minDep = nativeTokenFormatter(minDeposit);
+  // const maxDep = Math.min(nativeTokenFormatter(maxDeposit), walletBalance);
+  // const stakingFee = nativeTokenFormatter(stakeTransactionFee);
+  // const userBalance = nativeTokenFormatter(walletBalance);
+
+  const calculateStakeValue = (value: number, setFieldValue: any) => {
+    //check for - value
+    // let val = (walletBalance * value) / NATIVE_TOKEN_MULTIPLIER;
+    let val = (walletBalance - stakeTransactionFee) * value;
+    val = Math.min(val, maxDeposit);
+    val = Math.max(val, minDeposit);
+
+    setFieldValue(
+      "liquidNativeToken",
+      nativeTokenFormatter(val * tvlExchangeRate)
+      // outputAmountLiquidNativeToken(val, tvlExchangeRate)
+    );
+    setFieldValue("nativeToken", nativeTokenFormatter(val));
+  };
 
   // console.log(minDep, maxDep, stakingFee);
 
   const validation = Yup.object().shape({
     nativeToken: Yup.number()
       .test("wailet-no-money", "", function (value: number | undefined) {
-        if (!value || value + stakingFee < userBalance) {
+        if (
+          !value ||
+          value + stakeTransactionFee + minDeposit < walletBalance
+        ) {
           return true;
         } else {
-          return this.createError({ message: "not enough HBARs" });
+          return this.createError({ message: "You do not have enough HBARs" });
         }
       })
       .lessThan(
-        userBalance - stakingFee,
-        `Stake amount should be less than ${userBalance - stakingFee}`
+        nativeTokenFormatter(walletBalance - stakeTransactionFee),
+        `Entered amount should be less than ${nativeTokenFormatter(
+          walletBalance - stakeTransactionFee
+        )}`
       )
       .max(
-        maxDep,
-        `Stake amount should be less than or equal to ${maxDep} ${NATIVE_TOKEN_LABEL}`
+        nativeTokenFormatter(maxDeposit),
+        `Entered amount should be less than or equal to ${nativeTokenFormatter(
+          maxDeposit
+        )} ${NATIVE_TOKEN_LABEL}`
       )
       .min(
-        minDep,
-        `Stake amount should be equal or more than ${minDep} ${NATIVE_TOKEN_LABEL}`
+        nativeTokenFormatter(minDeposit),
+        `Entered amount should be equal or more than ${nativeTokenFormatter(
+          minDeposit
+        )} ${NATIVE_TOKEN_LABEL}`
       )
       .required(
-        `Stake amount should be more than ${minDep} ${NATIVE_TOKEN_LABEL}`
+        `Entered amount should be more than ${nativeTokenFormatter(
+          minDeposit
+        )} ${NATIVE_TOKEN_LABEL}`
       ),
 
     // fees: Yup.number().moreThan(
@@ -76,7 +102,7 @@ function LSPoolsFormStake(props: Props) {
         initialValues={{
           nativeToken: 0,
           liquidNativeToken: 0,
-          fees: stakingFee,
+          fees: stakeTransactionFee,
         }}
         onSubmit={(values) => {
           if (values.nativeToken) {
@@ -116,7 +142,9 @@ function LSPoolsFormStake(props: Props) {
                   {...nativeTokenProps}
                   maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
                   maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
-                  label="Enter Amount"
+                  label={`Enter Amount min ${nativeTokenFormatter(
+                    minDeposit
+                  )} ℏ max ${nativeTokenFormatter(maxDeposit)} ℏ`}
                   onChange={(e) => {
                     let value = e.target.value;
                     setFieldValue(
@@ -168,18 +196,13 @@ function LSPoolsFormStake(props: Props) {
                   total={walletBalance}
                   activeValue={nativeTokenProps.value}
                   onClick={(value) => {
-                    //check for - value
-                    let val = (walletBalance * value) / NATIVE_TOKEN_MULTIPLIER;
-                    setFieldValue(
-                      "liquidNativeToken",
-                      (Number(val) * tvlExchangeRate).toFixed(precision)
-                      // outputAmountLiquidNativeToken(val, tvlExchangeRate)
-                    );
-                    setFieldValue("nativeToken", val.toFixed(precision));
+                    calculateStakeValue(value, setFieldValue);
                   }}
                 />
                 <Typography variant={"body3"} color={"textSecondary"}>
-                  Transaction Fee: Approx {stakingFee} {NATIVE_TOKEN_LABEL}
+                  Transaction Fee: Approx{" "}
+                  {nativeTokenFormatter(stakeTransactionFee)}{" "}
+                  {NATIVE_TOKEN_LABEL}
                 </Typography>
               </div>
               {(errors.fees || errors.nativeToken) && (

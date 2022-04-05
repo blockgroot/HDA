@@ -47,9 +47,9 @@ body {
     bottom: 20px;
     display: flex;
     vertical-align: bottom;
-    align-items: end;
+    align-items: flex-end;
     text-decoration: none;
-    justify-content: end;
+    justify-content: flex-end;
     &::before{
       content: '?';
       display: block;
