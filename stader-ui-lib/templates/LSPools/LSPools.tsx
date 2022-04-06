@@ -49,7 +49,7 @@ function LSPools() {
             apy={apy}
           />
         </Grid>
-        <Grid item xs={8} md={8}>
+        <Grid item xs={8} md={8} className="flex-center">
           <LSPoolsForm
             tvlLoading={true}
             holding={hbar}
