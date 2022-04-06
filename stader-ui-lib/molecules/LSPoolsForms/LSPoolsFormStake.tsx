@@ -201,9 +201,8 @@ function LSPoolsFormStake(props: Props) {
                   }}
                 />
                 <Typography variant={"body3"} color={"textSecondary"}>
-                  Transaction Fee: Approx{" "}
-                  {nativeTokenFormatter(stakeTransactionFee)}{" "}
-                  {NATIVE_TOKEN_LABEL}
+                  Transaction Fee: ~ {nativeTokenFormatter(stakeTransactionFee)}{" "}
+                  {NATIVE_TOKEN_LABEL} (ℏ)
                 </Typography>
               </div>
               {(errors.fees || errors.nativeToken) && (

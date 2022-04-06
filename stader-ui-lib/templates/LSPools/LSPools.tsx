@@ -66,7 +66,7 @@ function LSPools() {
             className="w-full flex flex-row justify-between align-middle  bg-[#060606]"
           >
             <Typography variant={"body2"} fontWeight={"semi-bold"}>
-              Staked HBAR will be locked until the V2 product upgrade, expected
+              Staked HBAR will be locked till the V2 product upgrade, expected
               around July 2022
             </Typography>
           </Box>

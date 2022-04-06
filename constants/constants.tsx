@@ -28,10 +28,10 @@ export const tokenLabel = LIQUID_NATIVE_TOKEN_LABEL;
 export const precision = 4; //0.0001
 export const transactionFees = 1; //1 hbar
 export const NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS = precision;
-export const NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS = 6;
+export const NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS = 9;
 
 export const bannerText = `We are in Beta mode right now, and transactions are capped at ${
   config.maxDeposit / NATIVE_TOKEN_MULTIPLIER
-} HBARS. Any HBARs staked will be lost.`;
+} HBAR. Any HBAR staked will be lost.`;
 
 export const gtmId = "GTM-W2PZ7KX";
