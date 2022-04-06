@@ -59,9 +59,10 @@ function LSPoolsForm(props: LSPoolProps) {
             <div className="justify-center flex p-10 mt-10">
               <ErrSVG />
             </div>
-            <div className="justify-center flex p-2">
+            <div className="justify-center flex p-2 text-center">
               <Typography variant={"body1"} fontWeight="bold">
-                Something went wrong, please try again!
+                Something went wrong, please try again! <br />
+                <br /> We have refunded your {amount} HBAR.
               </Typography>
             </div>
             <div className="justify-center flex p-5 mt-3">
