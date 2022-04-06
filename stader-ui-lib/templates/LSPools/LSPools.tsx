@@ -9,6 +9,7 @@ import InfoPageMobile from "components/common/InfoPageMobile";
 import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolLiquidStaking";
 import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
 import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
+import { Box, Typography } from "../../atoms";
 
 function LSPools() {
   const { status, stake, tvl, transactionStatus, setTransActionStatus } =
@@ -58,6 +59,17 @@ function LSPools() {
             setTransactionStatus={setTransActionStatus}
             exchangeRate={exchangeRate}
           />
+        </Grid>
+        <Grid item xs={8} md={8} className="flex-center">
+          <Box
+            noShadow
+            className="w-full flex flex-row justify-between align-middle  bg-[#060606]"
+          >
+            <Typography variant={"body2"} fontWeight={"semi-bold"}>
+              Staked HBAR will be locked until the V2 product upgrade, expected
+              around July 2022
+            </Typography>
+          </Box>
         </Grid>
       </Grid>
     </div>
