@@ -10,7 +10,7 @@ function Stake() {
   if (config.comingSoon) {
     return (
       <div className="bg-black">
-        <div className="bg-[url('/coming-soon.jpeg')] w-full flex flex-col h-screen content-center justify-center bg-center bg-no-repeat bg-cover"></div>
+        <div className="bg-[url('/coming-soon.jpeg')] w-full flex flex-col h-screen content-center justify-center bg-center bg-no-repeat "></div>
       </div>
     );
   }
