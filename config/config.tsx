@@ -1,6 +1,6 @@
 import { betaMainnetConfig } from "./betaMainnetConfig";
-import { testnetConfig } from "./testnetConfig";
 import { mainnetConfig } from "./mainnet";
+import { testnetConfig } from "./testnetConfig";
 
 export const config =
   process.env.NEXT_PUBLIC_GIT_REF === "main"
