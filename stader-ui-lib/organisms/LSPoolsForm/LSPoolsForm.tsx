@@ -32,6 +32,7 @@ function LSPoolsForm(props: LSPoolProps) {
   } = props;
 
   const [amount, setAmount] = useState<number>(0);
+  const [hbarXAmount, setHbarXAmount] = useState<number>(0);
   const [tab, setTab] = useState<number>(0);
   const handleTabChange = (val: number) => {
     setTab(val);
@@ -41,6 +42,7 @@ function LSPoolsForm(props: LSPoolProps) {
 
   const onStakeSent = (stake: number) => {
     setAmount(stake);
+    setHbarXAmount(stake * exchangeRate);
     handleStake(stake);
   };
 
@@ -57,9 +59,10 @@ function LSPoolsForm(props: LSPoolProps) {
             <div className="justify-center flex p-10 mt-10">
               <ErrSVG />
             </div>
-            <div className="justify-center flex p-2">
+            <div className="justify-center flex p-2 text-center">
               <Typography variant={"body1"} fontWeight="bold">
-                Something went wrong, please try again!
+                Something went wrong, please try again! <br />
+                <br /> We have refunded your {amount} HBAR.
               </Typography>
             </div>
             <div className="justify-center flex p-5 mt-3">
@@ -85,7 +88,7 @@ function LSPoolsForm(props: LSPoolProps) {
             </div>
             <div className="justify-center flex p-2">
               <Typography variant={"body1"} fontWeight="bold">
-                {amount} HBAR staked Successfully.
+                You received {hbarXAmount} HBARX
               </Typography>
             </div>
             <div className="justify-center flex p-5 mt-3">

@@ -4,8 +4,7 @@ on:
     branches:
       - main
       - testnet
-      - devnet
-      - alpha
+      - beta
 jobs:
   nextjs:
     runs-on: ubuntu-latest
@@ -29,15 +28,15 @@ jobs:
       - name: get isProd
         id: isProd
         uses: notiz-dev/github-action-json-property@release
-        with: 
-          path: './deploy.json'
-          prop_path: '${{ steps.extract_branch.outputs.branch }}.isProd'
+        with:
+          path: "./deploy.json"
+          prop_path: "${{ steps.extract_branch.outputs.branch }}.isProd"
       - name: get alias
         id: alias
         uses: notiz-dev/github-action-json-property@release
-        with: 
-          path: './deploy.json'
-          prop_path: '${{ steps.extract_branch.outputs.branch }}.alias'
+        with:
+          path: "./deploy.json"
+          prop_path: "${{ steps.extract_branch.outputs.branch }}.alias"
       - name: "Install vercel"
         run: npm i -g vercel
       - name: "Deploy to vercel"

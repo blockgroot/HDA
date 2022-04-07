@@ -1,5 +1,4 @@
 import Loader from "@atoms/Loader/Loader";
-import { urls } from "@constants/constants";
 import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
 import useAPY from "@hooks/useAPY";
 import useExchangeRate from "@hooks/useExchangeRate";
@@ -8,9 +7,9 @@ import useAccount from "@hooks/useUserAccount";
 import { Grid, useMediaQuery } from "@material-ui/core";
 import InfoPageMobile from "components/common/InfoPageMobile";
 import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolLiquidStaking";
-import { Link, Typography } from "../../atoms";
 import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
 import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
+import { Box, Typography } from "../../atoms";
 
 function LSPools() {
   const { status, stake, tvl, transactionStatus, setTransActionStatus } =
@@ -51,7 +50,7 @@ function LSPools() {
             apy={apy}
           />
         </Grid>
-        <Grid item xs={8} md={8}>
+        <Grid item xs={8} md={8} className="flex-center">
           <LSPoolsForm
             tvlLoading={true}
             holding={hbar}
@@ -61,17 +60,17 @@ function LSPools() {
             exchangeRate={exchangeRate}
           />
         </Grid>
-        <div className="p-4">
-          <Link href={urls.faq} target={"_blank"}>
-            <Typography
-              variant={"body1"}
-              fontWeight={"semi-bold"}
-              color="textPrimary"
-            >
-              FAQ
+        <Grid item xs={8} md={8} className="flex-center">
+          <Box
+            noShadow
+            className="w-full flex flex-row justify-between align-middle  bg-[#060606]"
+          >
+            <Typography variant={"body2"} fontWeight={"semi-bold"}>
+              Staked HBAR will be locked till the V2 product upgrade, expected
+              around July 2022
             </Typography>
-          </Link>
-        </div>
+          </Box>
+        </Grid>
       </Grid>
     </div>
   );

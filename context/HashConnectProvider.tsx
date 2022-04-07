@@ -10,7 +10,6 @@ import {
   TransactionReceipt,
 } from "@hashgraph/sdk";
 import { WalletStatus } from "@molecules/WalletSelector/WalletSelector";
-import axios from "axios";
 import { config } from "config/config";
 import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
 import React, { useEffect, useRef, useState } from "react";
@@ -63,6 +62,7 @@ export interface HashConnectProviderAPI {
   stake: (amount: number) => void;
   transactionStatus: string;
   setTransActionStatus: (status: string) => void;
+  signTransaction: (transaction: string) => Promise<string | null>;
   tvl: number;
 }
 
@@ -87,9 +87,10 @@ const INITIAL_SAVE_DATA: SaveData = {
 // }
 
 let APP_CONFIG: HashConnectTypes.AppMetadata = {
-  name: "Hedera Staking DApp",
-  description: "Stake Hbars",
-  icon: "https://www.hashpack.app/img/logo.svg",
+  name: "Stader| Staking HBAR Simplified",
+  description:
+    "Liquid staking with Stader. Stake HBAR with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks",
+  icon: "https://hedera.staderlabs.com/hbarx.png",
 };
 
 const SAVE_KEY = `hashConnectData/${config.network.name}`;
@@ -120,8 +121,14 @@ export const HashConnectAPIContext =
     stake: () => null,
     transactionStatus: "",
     setTransActionStatus: () => null,
+    signTransaction: (transaction) => Promise.resolve(null),
     tvl: 0,
   });
+
+interface signedTransactionParams {
+  userId: string;
+  signature: string;
+}
 
 // //fetch this from config/move to config
 // export const tokenId = "0.0.30873456";
@@ -309,11 +316,20 @@ export default function HashConnectProvider({
     hashConnect.foundExtensionEvent.once(foundExtensionEventHandler);
     hashConnect.pairingEvent.on(pairingEventHandler);
     hashConnect.transactionEvent.on(transactionHandler);
+    hashConnect.connectionStatusChange.on((connectionStatus) => {
+      //do something with connection status
+      console.log("connectionStatus", connectionStatus);
+    });
+    hashConnect.acknowledgeMessageEvent.once((acknowledgeData) => {
+      //do something with acknowledge response data
+      console.log("acknowledgeData", acknowledgeData);
+    });
     hashConnect.transactionResolver = () => {};
     //
     //Intialize the setup
-    initializeHashConnect();
     getTvl();
+    initializeHashConnect();
+
     // Attach event handlers
 
     return () => {
@@ -351,7 +367,7 @@ export default function HashConnectProvider({
 
   const disconnect = () => {
     console.log("disconnect");
-    // setSaveData(INITIAL_SAVE_DATA);
+    setSaveData(INITIAL_SAVE_DATA);
     setStatus(WalletStatus.WALLET_NOT_CONNECTED);
     // setInstalledExtensions(null);
     localStorage.removeItem(SAVE_KEY);
@@ -368,9 +384,8 @@ export default function HashConnectProvider({
 
       //Sign the query with the client operator private key and submit to a Hedera network
       const balance = await query.execute(client);
-      // console.log(balance);
+      console.log(balance);
 
-      // console.log(contractInfo);
       setTvl(balance.hbars.toTinybars().toNumber());
     } catch (error: any) {
       setNetworkError(true);
@@ -398,22 +413,35 @@ export default function HashConnectProvider({
     }
   };
 
-  //TODO: move this code
-  const sendPostRequest = async (bytes: Uint8Array) => {
-    try {
-      //TODO: Move this to url
-      const resp: any = await axios.post(config.stakeApi, {
-        transactionBytes: bytes,
-      });
-      // console.log("responseee", resp.data.result.data);
-      if (resp.data.result) {
-        return resp.data.result.data as Uint8Array;
-      }
-    } catch (err) {
-      // Handle Error Here
-      setNetworkError(true);
-      console.error("error", err);
+  const signTransaction = async (transactionString: string) => {
+    // console.log("transactionString", transactionString);
+    const transaction = Buffer.from(transactionString, "base64");
+
+    // console.log("transaction", transaction.buffer);
+
+    const response: MessageTypes.TransactionResponse = await sendTransaction(
+      transaction,
+      selectedAccount,
+      true
+    );
+
+    // console.log("response", response);
+    if (response.success && response.signedTransaction) {
+      // console.log("signedTransaction", signedTransaction);
+
+      const signedTransaction = Buffer.from(
+        response.signedTransaction
+      ).toString("base64");
+      // console.log(encodedSignature);
+      // const output: signedTransactionParams = {
+      //   userId: selectedAccount,
+      //   signature: encodedSignature,
+      // };
+      // console.log("output", output);
+      return signedTransaction;
     }
+
+    return null;
   };
 
   const stake = async (amount: number) => {
@@ -440,15 +468,7 @@ export default function HashConnectProvider({
       .setTransactionId(transId)
       .freeze();
 
-    const transBytes = transaction.toBytes();
-    const sendTx = await sendPostRequest(transBytes);
-
-    if (!sendTx) {
-      setTransActionStatus("FAILED");
-      return;
-    }
-
-    const transactionBytes = new Uint8Array(sendTx as Uint8Array);
+    const transactionBytes = transaction.toBytes();
 
     const response: MessageTypes.TransactionResponse = await sendTransaction(
       transactionBytes,
@@ -512,6 +532,7 @@ export default function HashConnectProvider({
         stake,
         transactionStatus,
         setTransActionStatus,
+        signTransaction,
         tvl,
       }}
     >
@@ -522,9 +543,10 @@ export default function HashConnectProvider({
 
 const defaultProps: Partial<PropsType> = {
   metadata: {
-    name: "Hedera Staking DApp",
-    description: "Stake Hbars",
-    icon: "https://www.hashpack.app/img/logo.svg",
+    name: "Stader | Staking HBAR Simplified",
+    description:
+      "Liquid staking with Stader. Stake HBAR with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks",
+    icon: "https://hedera.staderlabs.com/hbarx.png",
   },
   network: config.network.name as Networks,
   debug: false,

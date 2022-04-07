@@ -1,4 +1,4 @@
-export const mainnetConfig = {
+export const betaMainnetConfig = {
   network: {
     name: "mainnet",
     url: "https://mainnet-public.mirrornode.hedera.com/",
@@ -8,11 +8,11 @@ export const mainnetConfig = {
   extension_url:
     "https://chrome.google.com/webstore/detail/hashpack/gjagmgiddbbciopjhllkdnddhcglnemk",
   ids: {
-    tokenId: "0.0.803264",
-    stakingContractId: "0.0.803295",
-    rewardsContractId: "0.0.803296",
+    tokenId: "0.0.829841",
+    stakingContractId: "0.0.829847",
+    rewardsContractId: "0.0.829848",
   },
-  comingSoon: true,
+  comingSoon: false,
   minDeposit: 0.01 * 10 ** 8,
-  maxDeposit: 500 * 10 ** 8,
+  maxDeposit: 4 * 10 ** 8,
 };

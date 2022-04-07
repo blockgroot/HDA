@@ -19,6 +19,11 @@ body {
   min-height: 100vh;
 }
 
+.flex-center {
+    display: flex;
+    justify-content: center;
+}
+
 #nprogress .bar {
   background: $color-secondary-pink;
   height: 6px;
@@ -26,6 +31,7 @@ body {
 
 .main-layout {
   background: $background-secondary;
+ 
 }
 
 .main-layout::-webkit-scrollbar {
@@ -40,6 +46,26 @@ body {
 
 .layout-child {
   width: 100%;
+  .help-link {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    vertical-align: bottom;
+    align-items: flex-end;
+    text-decoration: none;
+    justify-content: flex-end;
+    &::before{
+      content: '?';
+      display: block;
+      border: 1px solid rgb(255 255 255 / var(--tw-text-opacity));
+      padding: 0px 6px ;
+      border-radius: 50%;
+      margin: 5px  5px 0 0 ;
+      font-size: 12px;
+      align-self: flex-start;
+    }
+  }
 }
 
 .layout-child-container-mobile {
@@ -54,6 +80,25 @@ body {
 
   @include for-phone-only() {
     padding: 16px;
+  }
+
+  .speed_container{
+    position: relative;
+    width: 60px;
+    margin: auto auto 20px auto;
+    height: 60px;
+    img{
+      position: absolute;
+      &:first-child{
+        top:16px;
+        left: 13px;
+      }
+    }
+  }
+  .comming-soon_container{
+    margin: 20px auto auto;
+    text-align: center;
+    width: 330px;
   }
 }
 

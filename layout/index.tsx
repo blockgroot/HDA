@@ -1,4 +1,5 @@
-import { bannerText } from "@constants/constants";
+import { bannerText, urls } from "@constants/constants";
+import { Link } from "@material-ui/core";
 import Banner from "@molecules/Banner";
 import c from "classnames";
 import Head from "next/head";
@@ -29,17 +30,17 @@ function MainLayout(props: any) {
   return (
     <>
       <Head>
-        <title>Stader| Staking Hbar Simplified</title>
+        <title>Stader| Staking HBAR Simplified</title>
 
         <meta
           name="description"
-          content="Liquid staking with Stader. Stake Hbar with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks."
+          content="Liquid staking with Stader. Stake HBAR with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks."
         />
-        <meta property="og:title" content="Stader|Staking Hbar Simplified" />
+        <meta property="og:title" content="Stader|Staking HBAR Simplified" />
 
         <meta
           property="og:description"
-          content="Liquid staking with Stader. Stake Hbar with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks."
+          content="Liquid staking with Stader. Stake HBAR with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks."
         />
       </Head>
       {!hideBanner && (
@@ -59,6 +60,13 @@ function MainLayout(props: any) {
       >
         <div className={c("layout-child", styles.layoutChild)}>
           <div className={"layout-child-container"}>{props.children}</div>
+          <Link
+            href={urls.faq}
+            target={"_blank"}
+            className="help-link  text-white"
+          >
+            Get Help
+          </Link>
         </div>
       </div>
     </>
