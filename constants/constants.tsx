@@ -20,7 +20,7 @@ export const transactionsStatusMap = {};
 
 export const NATIVE_TOKEN_MULTIPLIER = 100000000;
 
-export const emissionRate = 1000 * NATIVE_TOKEN_MULTIPLIER; //Per day
+export const emissionRate = 2000 * NATIVE_TOKEN_MULTIPLIER; //Per day
 export const stakeTransactionFee = 1 * NATIVE_TOKEN_MULTIPLIER;
 export const version = 1.0;
 export const apiPath = "api/v1/";
