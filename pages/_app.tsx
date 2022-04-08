@@ -2,7 +2,8 @@ import { ThemeProvider } from "@terra-dev/neumorphism-ui/themes/ThemeProvider";
 import { HashConnect } from "hashconnect";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-// import { getAnalytics, logEvent, setCurrentScreen } from "firebase/analytics";
+import { getAnalytics, logEvent, setCurrentScreen } from "firebase/analytics";
+import { firebase } from "../utils/firebase";
 import "nprogress/nprogress.css";
 import React, { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -26,12 +27,12 @@ export default function App({ Component, pageProps }: AppProps) {
   });
 
   const router = useRouter();
-  // let firebaseApp = firebase;
+  let firebaseApp = firebase;
 
   useEffect(() => {
-    // const analytics = getAnalytics();
-    // setCurrentScreen(analytics, router.pathname);
-    // logEvent(analytics, "screen_view");
+    const analytics = getAnalytics();
+    setCurrentScreen(analytics, router.pathname);
+    logEvent(analytics, "screen_view");
 
     TagManager.initialize({ gtmId: gtmId, preview: config.network.name });
   }, [router.pathname]);
