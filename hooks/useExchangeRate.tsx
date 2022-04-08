@@ -17,7 +17,7 @@ export default function useExchangeRate() {
       const response: any = await axios.get(
         `${config.network.url}${apiPath}tokens/${config.ids.tokenId}`
       );
-      console.log("response", response, tvl);
+
       if (response?.data) {
         setError(false);
         if (tvl != 0 && response.data.total_supply != 0) {

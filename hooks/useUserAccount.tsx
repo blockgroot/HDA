@@ -15,6 +15,8 @@ export default function useAccount() {
       if (_isAssociated) {
         const token = accountBalance.tokens?._map.get(config.ids.tokenId);
         setHbarX(token?.toNumber() || 0);
+      } else {
+        setHbarX(0);
       }
     }
   }, [accountBalance]);

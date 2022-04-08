@@ -125,7 +125,7 @@ function LSPoolsFormStake(props: Props) {
           const liquidNativeTokenProps = getFieldProps("liquidNativeToken");
 
           return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <div className={styles.available_amount_validation}>
                 <Typography variant={"body3"} color={"secondary"}>
                   Available:{" "}
@@ -159,7 +159,7 @@ function LSPoolsFormStake(props: Props) {
                     endAdornment: (
                       <InputAdornment position="end" className="text-white">
                         <span className={"text-white"}>
-                          {NATIVE_TOKEN_LABEL}
+                          ℏ {NATIVE_TOKEN_LABEL}
                         </span>
                       </InputAdornment>
                     ),
@@ -215,7 +215,7 @@ function LSPoolsFormStake(props: Props) {
                   {errors.fees || errors.nativeToken}
                 </Typography>
               )}
-              <div className="mt-4 lg:mt-8 flex justify-center">
+              <div className="mt-8 lg:mt-8 flex justify-center">
                 <ButtonOutlined
                   className="w-[200px] h-[48px]"
                   disabled={

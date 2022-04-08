@@ -87,10 +87,10 @@ const INITIAL_SAVE_DATA: SaveData = {
 // }
 
 let APP_CONFIG: HashConnectTypes.AppMetadata = {
-  name: "Stader| Staking HBAR Simplified",
+  name: "Stader HBAR staking",
   description:
     "Liquid staking with Stader. Stake HBAR with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks",
-  icon: "https://hedera.staderlabs.com/hbarx.png",
+  icon: "https://hedera.staderlabs.com/static/stader_logo.svg",
 };
 
 const SAVE_KEY = `hashConnectData/${config.network.name}`;
@@ -196,7 +196,7 @@ export default function HashConnectProvider({
         //then connect, storing the new topic for later
         const state = await hashConnect.connect();
         saveData.topic = state.topic;
-        console.log({ state });
+        // console.log({ state });
         //generate a pairing string, which you can display and generate a QR code from
         saveData.pairingString = hashConnect.generatePairingString(
           state,
@@ -318,11 +318,11 @@ export default function HashConnectProvider({
     hashConnect.transactionEvent.on(transactionHandler);
     hashConnect.connectionStatusChange.on((connectionStatus) => {
       //do something with connection status
-      console.log("connectionStatus", connectionStatus);
+      // console.log("connectionStatus", connectionStatus);
     });
     hashConnect.acknowledgeMessageEvent.once((acknowledgeData) => {
       //do something with acknowledge response data
-      console.log("acknowledgeData", acknowledgeData);
+      // console.log("acknowledgeData", acknowledgeData);
     });
     hashConnect.transactionResolver = () => {};
     //
@@ -366,11 +366,12 @@ export default function HashConnectProvider({
   };
 
   const disconnect = () => {
-    console.log("disconnect");
-    setSaveData(INITIAL_SAVE_DATA);
+    console.log("disconnected");
+    // setSaveData(INITIAL_SAVE_DATA);
     setStatus(WalletStatus.WALLET_NOT_CONNECTED);
     // setInstalledExtensions(null);
     localStorage.removeItem(SAVE_KEY);
+    initializeHashConnect();
   };
 
   const getTvl = async () => {
@@ -384,7 +385,7 @@ export default function HashConnectProvider({
 
       //Sign the query with the client operator private key and submit to a Hedera network
       const balance = await query.execute(client);
-      console.log(balance);
+      // console.log(balance);
 
       setTvl(balance.hbars.toTinybars().toNumber());
     } catch (error: any) {
@@ -543,10 +544,10 @@ export default function HashConnectProvider({
 
 const defaultProps: Partial<PropsType> = {
   metadata: {
-    name: "Stader | Staking HBAR Simplified",
+    name: "Stader HBAR staking",
     description:
       "Liquid staking with Stader. Stake HBAR with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks",
-    icon: "https://hedera.staderlabs.com/hbarx.png",
+    icon: "https://hedera.staderlabs.com/static/stader_logo.svg",
   },
   network: config.network.name as Networks,
   debug: false,

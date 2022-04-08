@@ -15,4 +15,13 @@ export const betaMainnetConfig = {
   comingSoon: false,
   minDeposit: 0.01 * 10 ** 8,
   maxDeposit: 4 * 10 ** 8,
+  firebaseConfig: {
+    apiKey: "AIzaSyCpAi4CmKEmaonFu6uePMH9eThL5EF4c8w",
+    authDomain: "stader-hedera-analytics-v0.firebaseapp.com",
+    projectId: "stader-hedera-analytics-v0",
+    storageBucket: "stader-hedera-analytics-v0.appspot.com",
+    messagingSenderId: "874435674431",
+    appId: "1:874435674431:web:93c5708fd5e132b524138a",
+    measurementId: "G-93GW5D8632",
+  },
 };
