@@ -20,7 +20,7 @@ export const transactionsStatusMap = {};
 
 export const NATIVE_TOKEN_MULTIPLIER = 100000000;
 
-export const emissionRate = 50 * NATIVE_TOKEN_MULTIPLIER; //Per day
+export const emissionRate = 1000 * NATIVE_TOKEN_MULTIPLIER; //Per day
 export const stakeTransactionFee = 1 * NATIVE_TOKEN_MULTIPLIER;
 export const version = 1.0;
 export const apiPath = "api/v1/";
@@ -30,8 +30,8 @@ export const transactionFees = 1; //1 hbar
 export const NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS = precision;
 export const NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS = 9;
 
-export const bannerText = `We are in Beta mode right now, and transactions are capped at ${
+export const bannerText = `Capped launch: Transactions are limited to  ${
   config.maxDeposit / NATIVE_TOKEN_MULTIPLIER
-} HBAR. Any HBAR staked will be lost.`;
+} HBAR each, users are advised to stake with caution.`;
 
 export const gtmId = "GTM-W2PZ7KX";

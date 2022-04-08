@@ -14,5 +14,5 @@ export const mainnetConfig = {
   },
   comingSoon: false,
   minDeposit: 0.01 * 10 ** 8,
-  maxDeposit: 500 * 10 ** 8,
+  maxDeposit: 1000 * 10 ** 8,
 };
