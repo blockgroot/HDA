@@ -125,7 +125,7 @@ function LSPoolsFormStake(props: Props) {
           const liquidNativeTokenProps = getFieldProps("liquidNativeToken");
 
           return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <div className={styles.available_amount_validation}>
                 <Typography variant={"body3"} color={"secondary"}>
                   Available:{" "}
