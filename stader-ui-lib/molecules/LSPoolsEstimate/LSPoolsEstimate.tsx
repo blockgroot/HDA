@@ -26,83 +26,86 @@ function LSPoolsEstimate(props: Props) {
   return (
     <div className={styles.root}>
       <div className={styles.container}>
-        <div className="flex flex-row justify-between w-full align-middle pl-5 pr-10">
-          <div className={styles.headerTitle}>
-            <Typography variant={"body1"} fontWeight={"bold"}>
-              My {LIQUID_NATIVE_TOKEN_LABEL.toUpperCase()}
-            </Typography>
-          </div>
+        <Box noPadding className="w-full  justify-between align-middle p-3">
+          <div className="flex flex-row justify-between w-full align-middle  ">
+            <div className={`${styles.headerTitle}  flex-coll flex-center`}>
+              <Typography variant={"body1"} fontWeight={"bold"}>
+                My {LIQUID_NATIVE_TOKEN_LABEL.toUpperCase()}
+              </Typography>
+            </div>
 
-          <div className={styles.headerTitle}>
             <div
-              className={`${styles.headerWithInfo} flex items-center mb-3 mr-10`}
+              className={`${styles.headerTitle} flex flex-row items-center flex-coll flex-center align-middle `}
+            >
+              <div
+                className={`${styles.headerWithInfo} flex flex-row  flex-center align-middle`}
+              >
+                <Typography variant={"body1"} fontWeight={"bold"}>
+                  APY
+                </Typography>
+                <SDTooltip
+                  content={
+                    "Estimated annualized return based on current Emission Rate and TVL"
+                  }
+                  className="text-white ml-1"
+                  fontSize="small"
+                />
+              </div>
+            </div>
+            <div
+              className={`${styles.headerTitle} flex  flex-center items-center flex-coll align-middle `}
             >
               <Typography variant={"body1"} fontWeight={"bold"}>
-                APY
+                TVL
               </Typography>
               <SDTooltip
-                content={
-                  "Estimated annualized return based on current Emission Rate and TVL"
-                }
+                content={"Total HBAR in the Stake Pool"}
                 className="text-white ml-1"
                 fontSize="small"
               />
             </div>
           </div>
-          <div className={`${styles.headerTitle} flex items-center mb-3 mr-10`}>
-            <Typography variant={"body1"} fontWeight={"bold"}>
-              TVL
-            </Typography>
-            <SDTooltip
-              content={"Total HBAR in the Stake Pool"}
-              className="text-white ml-1"
-              fontSize="small"
-            />
-          </div>
-        </div>
 
-        <Box
-          noPadding
-          className="w-full flex flex-row justify-between align-middle p-3"
-        >
-          <div>
-            <Typography
-              variant={"h2"}
-              fontWeight={"medium"}
-              className={classNames("mt-3", styles.value)}
-            >
-              {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}
-            </Typography>
-          </div>
-
-          <div>
-            <Typography
-              variant={"h2"}
-              fontWeight={"medium"}
-              className={classNames("mt-3", styles.value)}
-            >
-              {apy && apy.toFixed(precision)}%
-            </Typography>
-          </div>
-          <div>
-            <div className=" flex flex-row justify-between align-middle">
+          <div className="flex flex-row justify-between w-full align-middle mt-2">
+            <div className="flex-coll flex-center">
               <Typography
                 variant={"h2"}
                 fontWeight={"medium"}
-                className={classNames("mr-2 mt-3 text-gradient", styles.value)}
+                className={classNames("", styles.value)}
               >
-                {(tvl / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}
+                {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}
               </Typography>
+            </div>
+
+            <div className="flex-coll  flex-center">
               <Typography
-                variant={"body2"}
-                color={"secondary"}
-                className={classNames(
-                  "mr-2 mt-6 justify-center text-center align-middle ",
-                  styles.value
-                )}
+                variant={"h2"}
+                fontWeight={"medium"}
+                className={classNames("", styles.value)}
               >
-                {NATIVE_TOKEN_LABEL}
+                {apy && apy.toFixed(precision)}%
               </Typography>
+            </div>
+            <div className="flex-coll  flex-center">
+              <div className=" flex flex-row  align-middle">
+                <Typography
+                  variant={"h2"}
+                  fontWeight={"medium"}
+                  className={classNames("mr-2  text-gradient", styles.value)}
+                >
+                  {(tvl / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}
+                </Typography>
+                <Typography
+                  variant={"body2"}
+                  color={"secondary"}
+                  className={classNames(
+                    "justify-center text-center align-middle ",
+                    styles.value
+                  )}
+                >
+                  {NATIVE_TOKEN_LABEL}
+                </Typography>
+              </div>
             </div>
           </div>
         </Box>

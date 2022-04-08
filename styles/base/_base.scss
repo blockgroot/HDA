@@ -24,6 +24,18 @@ body {
     justify-content: center;
 }
 
+.font-size-12{
+  font-size: 12px;
+}
+
+.align-middle {
+  align-items: center;
+}
+
+.flex-coll {
+  flex: 0 0 33%;
+}
+
 #nprogress .bar {
   background: $color-secondary-pink;
   height: 6px;

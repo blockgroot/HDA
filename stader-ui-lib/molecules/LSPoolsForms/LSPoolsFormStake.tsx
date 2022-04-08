@@ -159,7 +159,7 @@ function LSPoolsFormStake(props: Props) {
                     endAdornment: (
                       <InputAdornment position="end" className="text-white">
                         <span className={"text-white"}>
-                          {NATIVE_TOKEN_LABEL}
+                          ℏ {NATIVE_TOKEN_LABEL}
                         </span>
                       </InputAdornment>
                     ),
