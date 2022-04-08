@@ -8,9 +8,9 @@ export const mainnetConfig = {
   extension_url:
     "https://chrome.google.com/webstore/detail/hashpack/gjagmgiddbbciopjhllkdnddhcglnemk",
   ids: {
-    tokenId: "0.0.829841",
-    stakingContractId: "0.0.829847",
-    rewardsContractId: "0.0.829848",
+    tokenId: "0.0.834116",
+    stakingContractId: "0.0.834119",
+    rewardsContractId: "0.0.834120",
   },
   comingSoon: false,
   minDeposit: 0.01 * 10 ** 8,
