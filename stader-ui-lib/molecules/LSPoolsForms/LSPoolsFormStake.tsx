@@ -215,7 +215,7 @@ function LSPoolsFormStake(props: Props) {
                   {errors.fees || errors.nativeToken}
                 </Typography>
               )}
-              <div className="mt-4 lg:mt-8 flex justify-center">
+              <div className="mt-8 lg:mt-8 flex justify-center">
                 <ButtonOutlined
                   className="w-[200px] h-[48px]"
                   disabled={

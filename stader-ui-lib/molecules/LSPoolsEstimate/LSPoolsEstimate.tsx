@@ -27,18 +27,33 @@ function LSPoolsEstimate(props: Props) {
     <div className={styles.root}>
       <div className={styles.container}>
         <Box noPadding className="w-full  justify-between align-middle p-3">
-          <div className="flex flex-row justify-between w-full align-middle  ">
-            <div className={`${styles.headerTitle}  flex-coll flex-center`}>
-              <Typography variant={"body1"} fontWeight={"bold"}>
-                My {LIQUID_NATIVE_TOKEN_LABEL.toUpperCase()}
+          {/* <div className="flex flex-row justify-between w-full align-middle  ">
+            <div
+              className={`${styles.headerTitle} flex flex-row items-center flex-coll flex-center align-middle `}
+            ></div>
+          </div> */}
+
+          <div className="flex flex-row justify-between w-full align-middle">
+            <div className="flex-center flex-col">
+              <div
+                className={`${styles.headerTitle}  flex-coll flex-center p-4`}
+              >
+                <Typography variant={"body1"} fontWeight={"bold"}>
+                  My {LIQUID_NATIVE_TOKEN_LABEL.toUpperCase()}
+                </Typography>
+              </div>
+              <Typography
+                variant={"h2"}
+                fontWeight={"medium"}
+                className={classNames("", styles.value)}
+              >
+                {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}
               </Typography>
             </div>
 
-            <div
-              className={`${styles.headerTitle} flex flex-row items-center flex-coll flex-center align-middle `}
-            >
+            <div className=" flex-center flex-col">
               <div
-                className={`${styles.headerWithInfo} flex flex-row  flex-center align-middle`}
+                className={`${styles.headerWithInfo} flex flex-row  flex-center align-middle p-4`}
               >
                 <Typography variant={"body1"} fontWeight={"bold"}>
                   APY
@@ -51,33 +66,6 @@ function LSPoolsEstimate(props: Props) {
                   fontSize="small"
                 />
               </div>
-            </div>
-            <div
-              className={`${styles.headerTitle} flex  flex-center items-center flex-coll align-middle `}
-            >
-              <Typography variant={"body1"} fontWeight={"bold"}>
-                TVL
-              </Typography>
-              <SDTooltip
-                content={"Total HBAR in the Stake Pool"}
-                className="text-white ml-1"
-                fontSize="small"
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-row justify-between w-full align-middle mt-2">
-            <div className="flex-coll flex-center">
-              <Typography
-                variant={"h2"}
-                fontWeight={"medium"}
-                className={classNames("", styles.value)}
-              >
-                {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}
-              </Typography>
-            </div>
-
-            <div className="flex-coll  flex-center">
               <Typography
                 variant={"h2"}
                 fontWeight={"medium"}
@@ -86,7 +74,19 @@ function LSPoolsEstimate(props: Props) {
                 {apy && apy.toFixed(precision)}%
               </Typography>
             </div>
-            <div className="flex-coll  flex-center">
+            <div className="flex-center flex-col mr-2">
+              <div
+                className={`${styles.headerTitle} flex  flex-center items-center flex-coll align-middle p-4`}
+              >
+                <Typography variant={"body1"} fontWeight={"bold"}>
+                  TVL
+                </Typography>
+                <SDTooltip
+                  content={"Total HBAR in the Stake Pool"}
+                  className="text-white ml-1"
+                  fontSize="small"
+                />
+              </div>
               <div className=" flex flex-row  align-middle">
                 <Typography
                   variant={"h2"}
