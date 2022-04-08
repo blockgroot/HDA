@@ -87,7 +87,7 @@ const INITIAL_SAVE_DATA: SaveData = {
 // }
 
 let APP_CONFIG: HashConnectTypes.AppMetadata = {
-  name: "Stader| Staking HBAR Simplified",
+  name: "Stader HBAR staking",
   description:
     "Liquid staking with Stader. Stake HBAR with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks",
   icon: "https://hedera.staderlabs.com/hbarx.png",
@@ -543,7 +543,7 @@ export default function HashConnectProvider({
 
 const defaultProps: Partial<PropsType> = {
   metadata: {
-    name: "Stader | Staking HBAR Simplified",
+    name: "Stader HBAR staking",
     description:
       "Liquid staking with Stader. Stake HBAR with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks",
     icon: "https://hedera.staderlabs.com/hbarx.png",
