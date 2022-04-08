@@ -9,7 +9,7 @@ export const tvlCap = {};
 export const tooltips = {};
 
 export const urls = {
-  faq: "https://test.docs.staderlabs.com/",
+  faq: "https://docs.staderlabs.com/stader-hbar-staking/faqs",
   termsOfService:
     "https://staderlabs.notion.site/Stader-Terms-of-Service-af2b3b2aa4c942eea76e4857faa248e4",
 };
