@@ -12,7 +12,7 @@ export const betaMainnetConfig = {
     stakingContractId: "0.0.829847",
     rewardsContractId: "0.0.829848",
   },
-  launchDate: "2022-03-05",
+  comingSoon: false,
   minDeposit: 0.01 * 10 ** 8,
   maxDeposit: 4 * 10 ** 8,
 };

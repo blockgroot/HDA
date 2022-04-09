@@ -12,7 +12,7 @@ export const testnetConfig = {
     stakingContractId: "0.0.34082352",
     rewardsContractId: "0.0.34082354",
   },
-  launchDate: "2022-03-05",
+  comingSoon: false,
   minDeposit: 0.01 * 10 ** 8,
   maxDeposit: 1000 * 10 ** 8,
 };
