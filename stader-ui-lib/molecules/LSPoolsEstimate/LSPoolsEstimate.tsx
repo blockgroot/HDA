@@ -93,7 +93,11 @@ function LSPoolsEstimate(props: Props) {
                   fontWeight={"medium"}
                   className={classNames("mr-2  text-gradient", styles.value)}
                 >
-                  {(tvl / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}
+                  {parseFloat(
+                    (tvl / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)
+                  ).toLocaleString(undefined, {
+                    maximumFractionDigits: precision,
+                  })}
                 </Typography>
                 <Typography
                   variant={"body2"}
