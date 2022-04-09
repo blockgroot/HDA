@@ -133,7 +133,7 @@ function LSPoolsFormStake(props: Props) {
                   {NATIVE_TOKEN_LABEL} (ℏ)
                 </Typography>
 
-                <Typography variant={"body3"}>{`1 ${tokenLabel} = ${(
+                <Typography variant={"body3"}>{`1 ${tokenLabel} = ~${(
                   1 / tvlExchangeRate
                 ).toFixed(precision)} ${NATIVE_TOKEN_LABEL}`}</Typography>
               </div>
