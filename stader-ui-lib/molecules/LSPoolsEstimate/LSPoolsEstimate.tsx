@@ -41,6 +41,11 @@ function LSPoolsEstimate(props: Props) {
                 <Typography variant={"body1"} fontWeight={"bold"}>
                   My {LIQUID_NATIVE_TOKEN_LABEL.toUpperCase()}
                 </Typography>
+                <SDTooltip
+                  content={"Total HBARX in your connected wallet"}
+                  className="text-white ml-1"
+                  fontSize="small"
+                />
               </div>
               <Typography
                 variant={"h2"}

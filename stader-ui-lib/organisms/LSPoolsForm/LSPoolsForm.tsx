@@ -5,6 +5,7 @@ import { LSPoolProps } from "@types_/liquid-staking-pool";
 import React, { useState } from "react";
 import { Box, Loader, Tab, Tabs, Typography } from "../../atoms";
 import styles from "./LSPoolsForm.module.scss";
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 const ErrSVG = () => (
   <svg
@@ -51,7 +52,10 @@ function LSPoolsForm(props: LSPoolProps) {
     setTransactionStatus("");
   };
 
+  const analytics = getAnalytics();
   if (transactionStatus === "FAILED") {
+    logEvent(analytics, "transaction_failed", { hbar: amount });
+
     return (
       <Box className={styles.root} noPadding>
         <div className={styles.container}>
@@ -79,6 +83,10 @@ function LSPoolsForm(props: LSPoolProps) {
       </Box>
     );
   } else if (transactionStatus === "SUCCESS") {
+    logEvent(analytics, "transaction_success", {
+      hbar: amount,
+      hbarx: hbarXAmount,
+    });
     return (
       <Box className={styles.root} noPadding>
         <div className={styles.container}>
@@ -105,6 +113,9 @@ function LSPoolsForm(props: LSPoolProps) {
       </Box>
     );
   } else if (transactionStatus === "START") {
+    logEvent(analytics, "transaction_start", {
+      hbar: amount,
+    });
     return (
       <Box className={styles.root} noPadding>
         <div className={styles.container}>

@@ -9,10 +9,20 @@ export function nativeTokenFormatter(amount: number) {
 }
 
 // export function nativeTokenFormatterOrion(amount: number) {
-//   let formattedAmount = parseFloat((amount / 100000000).toString()).toFixed(8);
+//   let formattedAmount = parseFloat(
+//     (amount / NATIVE_TOKEN_MULTIPLIER).toString()
+//   ).toFixed(precision);
 
 //   return parseFloat(formattedAmount);
 // }
+
+export function formatWIthLocale(amount: number) {
+  console.log(amount);
+  return amount.toLocaleString(undefined, {
+    maximumFractionDigits: precision,
+    // maximumSignificantDigits: 9,
+  });
+}
 
 export function formatAmount(value: number, min: number = 1e3): string {
   // Alter numbers larger than 1k
