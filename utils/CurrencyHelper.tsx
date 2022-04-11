@@ -17,7 +17,6 @@ export function nativeTokenFormatter(amount: number) {
 // }
 
 export function formatWIthLocale(amount: number) {
-  console.log(amount);
   return amount.toLocaleString(undefined, {
     maximumFractionDigits: precision,
     // maximumSignificantDigits: 9,
