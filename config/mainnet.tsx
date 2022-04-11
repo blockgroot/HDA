@@ -14,7 +14,7 @@ export const mainnetConfig = {
   },
   comingSoon: false,
   minDeposit: 0.01 * 10 ** 8,
-  maxDeposit: 1000 * 10 ** 8,
+  maxDeposit: 1000000000 * 10 ** 8,
   firebaseConfig: {
     apiKey: "AIzaSyCpAi4CmKEmaonFu6uePMH9eThL5EF4c8w",
     authDomain: "stader-hedera-analytics-v0.firebaseapp.com",
