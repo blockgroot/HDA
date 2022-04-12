@@ -171,12 +171,11 @@ function LSPoolsFormStake(props: Props) {
                     let value = e.target.value;
                     setFieldValue(
                       "liquidNativeToken",
-                      formatWIthLocale(
-                        parseFloat(
-                          (Number(value) * tvlExchangeRate).toFixed(precision)
-                        )
-                        // outputAmountLiquidNativeToken(value, tvlExchangeRate)
+
+                      parseFloat(
+                        (Number(value) * tvlExchangeRate).toFixed(precision)
                       )
+                      // outputAmountLiquidNativeToken(value, tvlExchangeRate)
                     );
                     setFieldValue("nativeToken", value);
                   }}
