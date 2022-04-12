@@ -4,13 +4,14 @@ import React, { useState } from "react";
 import MainLayout from "../layout";
 
 function Sign() {
-  const [transaction, setTranasaction] = useState("");
+  const [transaction, setTransaction] = useState("");
   const [signedTransaction, setSignedTransaction] = useState<string | null>(
     null
   );
   const { signTransaction, status } = useHashConnect();
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    setSignedTransaction("");
     getSignedTransaction();
   };
 
@@ -32,7 +33,7 @@ function Sign() {
         <div className="flex justify-center flex-col">
           <div className="mb-3 md:w-full">
             <label
-              htmlFor="signTranasactionTextArea"
+              htmlFor="signTransactionTextArea"
               className="form-label inline-block mb-2 text-white"
             >
               Paste Transaction
@@ -55,10 +56,10 @@ function Sign() {
         m-0
         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
       "
-              id="signTranasactionTextArea"
+              id="signTransactionTextArea"
               rows={3}
               placeholder="Your Transaction"
-              onChange={(e) => setTranasaction(e.target.value)}
+              onChange={(e) => setTransaction(e.target.value)}
               value={transaction}
             ></textarea>
             <div className="mt-4 lg:mt-8 flex justify-center">
