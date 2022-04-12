@@ -6,6 +6,8 @@ import React, { useState } from "react";
 import { Box, Loader, Tab, Tabs, Typography } from "../../atoms";
 import styles from "./LSPoolsForm.module.scss";
 import { getAnalytics, logEvent } from "firebase/analytics";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
+import { precision } from "@constants/constants";
 
 const ErrSVG = () => (
   <svg
@@ -85,7 +87,7 @@ function LSPoolsForm(props: LSPoolProps) {
   } else if (transactionStatus === "SUCCESS") {
     logEvent(analytics, "transaction_success", {
       hbar: amount,
-      hbarx: hbarXAmount,
+      hbarx: hbarXAmount.toPrecision(precision),
     });
     return (
       <Box className={styles.root} noPadding>
@@ -96,7 +98,7 @@ function LSPoolsForm(props: LSPoolProps) {
             </div>
             <div className="justify-center flex p-2">
               <Typography variant={"body1"} fontWeight="bold">
-                You received {hbarXAmount} HBARX
+                You received {hbarXAmount.toPrecision(precision)} HBARX
               </Typography>
             </div>
             <div className="justify-center flex p-5 mt-3">
