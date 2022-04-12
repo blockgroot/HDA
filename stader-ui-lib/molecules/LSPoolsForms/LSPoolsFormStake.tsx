@@ -15,10 +15,15 @@ import { InputAdornment } from "@material-ui/core";
 import { NumberInput } from "@terra-dev/neumorphism-ui/components/NumberInput";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { nativeTokenFormatter } from "../../../utils/CurrencyHelper";
+import {
+  nativeTokenFormatter,
+  formatWIthLocale,
+} from "../../../utils/CurrencyHelper";
 import { Typography } from "../../atoms";
 import PercentageButtons from "../PercentageButtons/PercentageButtons";
+import SDTooltip from "@atoms/SDTooltip/SDTooltip";
 import styles from "./LSPoolsFormLaToLx.module.scss";
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 type Props = {
   tvlExchangeRate: number;
@@ -107,6 +112,8 @@ function LSPoolsFormStake(props: Props) {
         }}
         onSubmit={(values) => {
           if (values.nativeToken) {
+            const analytics = getAnalytics();
+            logEvent(analytics, "stake_click", { amount: values.nativeToken });
             handleStake(values.nativeToken);
           }
         }}
@@ -127,15 +134,27 @@ function LSPoolsFormStake(props: Props) {
           return (
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <div className={styles.available_amount_validation}>
-                <Typography variant={"body3"} color={"secondary"}>
-                  Available:{" "}
-                  {(walletBalance / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}{" "}
-                  {NATIVE_TOKEN_LABEL} (ℏ)
-                </Typography>
-
-                <Typography variant={"body3"}>{`1 ${tokenLabel} = ~${(
-                  1 / tvlExchangeRate
-                ).toFixed(precision)} ${NATIVE_TOKEN_LABEL}`}</Typography>
+                <div className="flex flex-row align-middle">
+                  <Typography variant={"body3"} color={"secondary"}>
+                    Available:{" "}
+                    {(walletBalance / NATIVE_TOKEN_MULTIPLIER).toFixed(
+                      precision
+                    )}{" "}
+                    {NATIVE_TOKEN_LABEL} (ℏ)
+                  </Typography>
+                </div>
+                <div className="flex flex-row align-middle">
+                  <Typography variant={"body3"}>{`1 ${tokenLabel} = ~ ${(
+                    1 / tvlExchangeRate
+                  ).toFixed(precision)} ${NATIVE_TOKEN_LABEL}`}</Typography>
+                  <SDTooltip
+                    content={
+                      "Actual exchange rate may vary from the displayed value"
+                    }
+                    className="text-white ml-1"
+                    fontSize="small"
+                  />
+                </div>
               </div>
 
               <div className={"mt-4 mb-8 relative"}>
@@ -145,13 +164,19 @@ function LSPoolsFormStake(props: Props) {
                   maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
                   label={`Enter Amount min ${nativeTokenFormatter(
                     minDeposit
-                  )} ℏ max ${nativeTokenFormatter(maxDeposit)} ℏ`}
+                  )} ℏ max ${formatWIthLocale(
+                    nativeTokenFormatter(maxDeposit)
+                  )} ℏ`}
                   onChange={(e) => {
                     let value = e.target.value;
                     setFieldValue(
                       "liquidNativeToken",
-                      (Number(value) * tvlExchangeRate).toFixed(precision)
-                      // outputAmountLiquidNativeToken(value, tvlExchangeRate)
+                      formatWIthLocale(
+                        parseFloat(
+                          (Number(value) * tvlExchangeRate).toFixed(precision)
+                        )
+                        // outputAmountLiquidNativeToken(value, tvlExchangeRate)
+                      )
                     );
                     setFieldValue("nativeToken", value);
                   }}
@@ -197,6 +222,9 @@ function LSPoolsFormStake(props: Props) {
                   total={walletBalance}
                   activeValue={nativeTokenProps.value}
                   onClick={(value) => {
+                    const analytics = getAnalytics();
+
+                    logEvent(analytics, "percentage_button_click", { value });
                     calculateStakeValue(value, setFieldValue);
                   }}
                 />

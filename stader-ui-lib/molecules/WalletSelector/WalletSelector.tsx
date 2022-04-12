@@ -8,6 +8,7 @@ import classNames from "classnames";
 import { ConnectType } from "context/HashConnectProvider";
 import React, { FC, useCallback, useState } from "react";
 import greenTick from "../../assets/svg/check_success.svg";
+import { getAnalytics, logEvent, setUserId } from "firebase/analytics";
 import { Button, Typography } from "../../atoms";
 import Icon from "../../atoms/Icon/Icon";
 import { ConnectedWalletModal, DisconnectWalletModal } from "./WalletModals";
@@ -54,6 +55,10 @@ const WalletSelector = ({
     <ConnectedWalletModal
       walletBalance={hbar}
       disconnectWallet={() => {
+        const analytics = getAnalytics();
+        logEvent(analytics, "disconnect_wallet_click", {
+          account: selectedAccount,
+        });
         closeModal();
         disconnect();
       }}
@@ -112,6 +117,10 @@ const WalletSelector = ({
     if (isWalletDisconnected || isWalletInitializing) {
       return <WalletButton> Connect Wallet</WalletButton>;
     }
+    const analytics = getAnalytics();
+    setUserId(analytics, selectedAccount);
+    logEvent(analytics, "connect_wallet_click", { account: selectedAccount });
+
     return (
       <WalletButton>
         <Typography

@@ -12,12 +12,6 @@ import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolL
 import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
 import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
 import { Box, Icon, Typography } from "../../atoms";
-import {
-  InboxRounded,
-  InfoRounded,
-  Warning,
-  WarningRounded,
-} from "@material-ui/icons";
 
 function LSPools() {
   const { status, stake, tvl, transactionStatus, setTransActionStatus } =

@@ -17,7 +17,7 @@ function LSPoolsFormUnstake(props: Props) {
 
         <div className="comming-soon_container">
           <Typography variant={"body1"} fontWeight={"normal"}>
-            Unstake/ withdrawl functionality will be available with V2 product
+            Unstake/ withdrawal functionality will be available with V2 product
             upgrade, expected around July
           </Typography>
         </div>

@@ -10,6 +10,7 @@ import Sidebar from "@molecules/Sidebar";
 import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
 import { ButtonOutlined } from "@atoms/Button/Button";
 import { config } from "config/config";
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -22,7 +23,11 @@ export default function Header() {
   };
 
   const tabletDown = useMediaQuery(`(max-width:${MQ_FOR_TABLET_LANDSCAPE}px)`);
-  const buyHbarHandle = () => window.open(config.hbar_pay_url, "_blank");
+  const buyHbarHandle = () => {
+    const analytics = getAnalytics();
+    logEvent(analytics, "buy_hbar_click");
+    window.open(config.hbar_pay_url, "_blank");
+  };
   return (
     <div className={styles.header}>
       <div className={styles.main}>

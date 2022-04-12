@@ -149,7 +149,7 @@ export default function HashConnectProvider({
   debug,
 }: PropsType) {
   debug = true;
-  //Saving Wallet Details in Ustate
+  //Saving Wallet Details in state
   const [saveData, _setSaveData] = useState<SaveData>(INITIAL_SAVE_DATA);
   const [installedExtensions, setInstalledExtensions] =
     useState<HashConnectTypes.WalletMetadata | null>(null);
