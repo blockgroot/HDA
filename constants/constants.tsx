@@ -30,6 +30,6 @@ export const transactionFees = 1; //1 hbar
 export const NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS = precision;
 export const NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS = 9;
 
-export const bannerText = `Launch Phase 1: No limit on transaction value, emission rate is 500k HBAR per day.`;
+export const bannerText = `Launch Phase 2: No limit on transaction value, emission rate is 500k HBAR per day.`;
 
 export const gtmId = "GTM-KCLNW9N";
