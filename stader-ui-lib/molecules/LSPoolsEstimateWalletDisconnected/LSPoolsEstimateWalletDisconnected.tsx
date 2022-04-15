@@ -115,7 +115,7 @@ function LSPoolsEstimate(props: Props) {
               <Typography
                 variant={"h2"}
                 fontWeight={"medium"}
-                className={classNames("", styles.value)}
+                className={classNames("pr-4", styles.value)}
               >
                 {apy && apy.toFixed(precision)}%
               </Typography>
