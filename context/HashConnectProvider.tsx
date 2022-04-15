@@ -140,6 +140,7 @@ interface signedTransactionParams {
 
 // export const tokenId = "0.0.33986222";
 // export const contractId = "0.0.33986225";
+let tvlInterval: any;
 
 export default function HashConnectProvider({
   children,
@@ -328,6 +329,9 @@ export default function HashConnectProvider({
     //
     //Intialize the setup
     getTvl();
+    tvlInterval = setInterval(() => {
+      getTvl();
+    }, 10000);
     initializeHashConnect();
 
     // Attach event handlers
@@ -335,6 +339,7 @@ export default function HashConnectProvider({
     return () => {
       // Detach existing handlers
 
+      clearInterval(tvlInterval);
       hashConnect.foundExtensionEvent.off(foundExtensionEventHandler);
       hashConnect.pairingEvent.off(pairingEventHandler);
       hashConnect.transactionEvent.off(transactionHandler);
