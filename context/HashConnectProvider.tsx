@@ -13,6 +13,7 @@ import { WalletStatus } from "@molecules/WalletSelector/WalletSelector";
 import { config } from "config/config";
 import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
 import React, { useEffect, useRef, useState } from "react";
+import { tvlUpdateInterval } from "constants/constants";
 
 //Type declarations
 interface SaveData {
@@ -140,6 +141,7 @@ interface signedTransactionParams {
 
 // export const tokenId = "0.0.33986222";
 // export const contractId = "0.0.33986225";
+let tvlInterval: any;
 
 export default function HashConnectProvider({
   children,
@@ -313,6 +315,7 @@ export default function HashConnectProvider({
   // });
 
   useEffect(() => {
+    //Intialize the setup
     hashConnect.foundExtensionEvent.once(foundExtensionEventHandler);
     hashConnect.pairingEvent.on(pairingEventHandler);
     hashConnect.transactionEvent.on(transactionHandler);
@@ -326,8 +329,11 @@ export default function HashConnectProvider({
     });
     hashConnect.transactionResolver = () => {};
     //
-    //Intialize the setup
+
     getTvl();
+    tvlInterval = setInterval(() => {
+      getTvl();
+    }, tvlUpdateInterval);
     initializeHashConnect();
 
     // Attach event handlers
@@ -335,10 +341,12 @@ export default function HashConnectProvider({
     return () => {
       // Detach existing handlers
 
+      clearInterval(tvlInterval);
       hashConnect.foundExtensionEvent.off(foundExtensionEventHandler);
       hashConnect.pairingEvent.off(pairingEventHandler);
       hashConnect.transactionEvent.off(transactionHandler);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // useEffect(() => {

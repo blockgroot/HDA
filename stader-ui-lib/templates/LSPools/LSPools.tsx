@@ -1,15 +1,14 @@
 import Loader from "@atoms/Loader/Loader";
-import { NATIVE_TOKEN_LABEL, urls } from "@constants/constants";
 import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
 import useAPY from "@hooks/useAPY";
 import useExchangeRate from "@hooks/useExchangeRate";
 import useHashConnect from "@hooks/useHashConnect";
 import useAccount from "@hooks/useUserAccount";
 import { Grid, useMediaQuery } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
 import InfoPageMobile from "components/common/InfoPageMobile";
 import WelcomeScreenPoolLiquidStaking from "components/common/WelcomeScreenPoolLiquidStaking";
 import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
+import LSPoolsEstimateWalletDisconnected from "../../molecules/LSPoolsEstimateWalletDisconnected/LSPoolsEstimateWalletDisconnected";
 import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
 import { Box, Icon, Typography } from "../../atoms";
 
@@ -33,7 +32,18 @@ function LSPools() {
   }
 
   if (status !== "WALLET_CONNECTED") {
-    return <WelcomeScreenPoolLiquidStaking />;
+    return (
+      <>
+        <LSPoolsEstimateWalletDisconnected
+          tvl={tvl}
+          holdings={undefined}
+          isLoading={false}
+          apy={apy}
+          exchangeRate={exchangeRate}
+        />
+        <WelcomeScreenPoolLiquidStaking />
+      </>
+    );
   }
 
   return (

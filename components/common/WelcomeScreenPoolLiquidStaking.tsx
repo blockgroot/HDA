@@ -50,7 +50,7 @@ function WelcomeScreenPoolLiquidStaking({ toggleConnectWallet }: Props) {
   );
 
   return (
-    <div className="welcome-container welcome-container-liquid-staking">
+    <div className="welcome-container welcome-container-liquid-staking pl-4 pr-4">
       <div className="welcome-content">
         <div>
           <img src={welcome_wave} alt="welcome" />
