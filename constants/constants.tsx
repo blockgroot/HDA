@@ -33,3 +33,4 @@ export const NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS = 9;
 export const bannerText = `Launch Phase 2: No limit on transaction value, emission rate is 500k HBAR per day.`;
 
 export const gtmId = "GTM-KCLNW9N";
+export const tvlUpdateInterval = 10 * 1000;
