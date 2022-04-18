@@ -28,7 +28,7 @@
     @include for-tablet-landscape-down {
       display: flex;
       align-items: center;
-      margin: 0 0 .75rem 0;
+      // margin: 0 0 .75rem 0;
     }
   }
 
@@ -41,7 +41,7 @@
   .value {
     @include for-tablet-landscape-down {
       font-size: 14px !important;
-      margin-top: 0.9rem !important;
+      // margin-top: 0.9rem !important;
     }
   }
   .nativeToken {
