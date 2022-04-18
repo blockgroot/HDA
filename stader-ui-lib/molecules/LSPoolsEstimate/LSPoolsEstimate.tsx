@@ -8,6 +8,8 @@ import { Box, Loader, Typography } from "../../atoms";
 import styles from "./LSPoolsEstimate.module.scss";
 import classNames from "classnames";
 import SDTooltip from "@atoms/SDTooltip/SDTooltip";
+import { useMediaQuery } from "@material-ui/core";
+import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
 
 type Props = {
   tvl: any;
@@ -18,7 +20,7 @@ type Props = {
 
 function LSPoolsEstimate(props: Props) {
   const { tvl, holdings, isLoading, apy } = props;
-
+  const tabletDown = useMediaQuery(`(max-width:${MQ_FOR_TABLET_LANDSCAPE}px)`);
   if (isLoading) {
     return <Loader height={100} className={"mx-auto"} />;
   }
@@ -33,7 +35,11 @@ function LSPoolsEstimate(props: Props) {
             ></div>
           </div> */}
 
-          <div className="flex flex-row justify-between w-full align-middle">
+          <div
+            className={`flex ${
+              tabletDown ? "flex-column" : "flex-row"
+            }  justify-between w-full align-middle`}
+          >
             <div className="flex-center flex-col">
               <div
                 className={`${styles.headerTitle}  flex-coll flex-center p-4`}
