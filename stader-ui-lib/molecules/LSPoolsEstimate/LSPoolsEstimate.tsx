@@ -35,7 +35,11 @@ function LSPoolsEstimate(props: Props) {
             ></div>
           </div> */}
 
-          <div className={`flex ${ tabletDown ? 'flex-column' :'flex-row'}  justify-between w-full align-middle`}>
+          <div
+            className={`flex ${
+              tabletDown ? "flex-column" : "flex-row"
+            }  justify-between w-full align-middle`}
+          >
             <div className="flex-center flex-col">
               <div
                 className={`${styles.headerTitle}  flex-coll flex-center p-4`}
