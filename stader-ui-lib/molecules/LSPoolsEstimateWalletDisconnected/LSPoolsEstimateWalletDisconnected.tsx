@@ -68,7 +68,7 @@ function LSPoolsEstimate(props: Props) {
                 />
               </div>
               <Typography
-                variant={"h3"}
+                variant={"h2"}
                 fontWeight={"medium"}
                 className={classNames(mobileDown ? "" : "pl-4", styles.value)}
               >{`1 ${tokenLabel} = ~ ${(1 / exchangeRate).toFixed(
@@ -113,7 +113,7 @@ function LSPoolsEstimate(props: Props) {
                   variant={"body2"}
                   color={"secondary"}
                   className={classNames(
-                    "justify-center text-center align-middle ",
+                    "justify-center text-center align-middle pl-1 ",
                     styles.value
                   )}
                 >
