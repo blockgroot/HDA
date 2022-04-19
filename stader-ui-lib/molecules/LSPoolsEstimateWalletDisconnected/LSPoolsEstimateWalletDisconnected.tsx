@@ -9,7 +9,7 @@ import { Box, Loader, Typography } from "../../atoms";
 import styles from "./LSPoolsEstimateWalletDisconnected.module.scss";
 import classNames from "classnames";
 import SDTooltip from "@atoms/SDTooltip/SDTooltip";
-import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
+import { MQ_FOR_PHONE } from "@constants/media-queries";
 import { useMediaQuery } from "@material-ui/core";
 
 type Props = {
@@ -22,7 +22,7 @@ type Props = {
 
 function LSPoolsEstimate(props: Props) {
   const { tvl, holdings, isLoading, apy, exchangeRate } = props;
-  const tabletDown = useMediaQuery(`(max-width:${MQ_FOR_TABLET_LANDSCAPE}px)`);
+  const mobileDown = useMediaQuery(`(max-width:${MQ_FOR_PHONE}px)`);
   if (isLoading) {
     return <Loader height={100} className={"mx-auto"} />;
   }
@@ -39,17 +39,21 @@ function LSPoolsEstimate(props: Props) {
 
           <div
             className={`flex ${
-              tabletDown
+              mobileDown
                 ? "flex-column"
                 : "flex-row  justify-between w-full align-middle"
             } `}
           >
             <div
-              className={` ${tabletDown ? "" : "flex-center "} flex-col mt-4`}
+              className={` ${
+                mobileDown
+                  ? "h-[65px] flex justify-content-center"
+                  : "flex-center "
+              } flex-col `}
             >
               <div
                 className={`${styles.headerTitle}  flex-coll   ${
-                  tabletDown ? "" : " flex-center p-4"
+                  mobileDown ? "" : " flex-center p-4"
                 }`}
               >
                 <Typography variant={"body1"} fontWeight={"bold"}>
@@ -66,18 +70,22 @@ function LSPoolsEstimate(props: Props) {
               <Typography
                 variant={"h3"}
                 fontWeight={"medium"}
-                className={classNames(tabletDown ? "" : "p-4", styles.value)}
+                className={classNames(mobileDown ? "" : "pl-4", styles.value)}
               >{`1 ${tokenLabel} = ~ ${(1 / exchangeRate).toFixed(
                 precision
               )} ${NATIVE_TOKEN_LABEL}`}</Typography>
             </div>
 
             <div
-              className={` ${tabletDown ? "" : "flex-center "} flex-col mr-2`}
+              className={` ${
+                mobileDown
+                  ? "h-[65px] flex justify-content-center"
+                  : "flex-center "
+              } flex-col mr-2`}
             >
               <div
                 className={`${styles.headerTitle} flex   flex-coll  ${
-                  tabletDown ? "" : " flex-center items-center align-middle p-4"
+                  mobileDown ? "" : " flex-center items-center align-middle p-4"
                 }`}
               >
                 <Typography variant={"body1"} fontWeight={"bold"}>
@@ -113,12 +121,18 @@ function LSPoolsEstimate(props: Props) {
                 </Typography>
               </div>
             </div>
-            <div className={`${tabletDown ? "" : "flex-center "} flex-col`}>
+            <div
+              className={`${
+                mobileDown
+                  ? "h-[65px] flex justify-content-center"
+                  : "flex-center "
+              } flex-col`}
+            >
               <div
                 className={`${
                   styles.headerWithInfo
                 } flex flex-row   align-middle ${
-                  tabletDown ? "" : " flex-center p-4"
+                  mobileDown ? "" : " flex-center p-4"
                 }`}
               >
                 <Typography variant={"body1"} fontWeight={"bold"}>
