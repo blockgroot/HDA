@@ -30,12 +30,6 @@ function LSPoolsEstimate(props: Props) {
     <div className={styles.root}>
       <div className={styles.container}>
         <Box noPadding className="w-full  justify-between align-middle">
-          {/* <div className="flex flex-row justify-between w-full align-middle  ">
-            <div
-              className={`${styles.headerTitle} flex flex-row items-center flex-coll flex-center align-middle `}
-            ></div>
-          </div> */}
-
           <div
             className={`flex ${
               tabletDown ? "flex-column" : "flex-row"
@@ -61,14 +55,6 @@ function LSPoolsEstimate(props: Props) {
               >
                 {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}
               </Typography>
-              {/* <Typography
-                variant={"body3"}
-                fontWeight={"medium"}
-                color={"secondary"}
-                className={classNames("", styles.value)}
-              >
-                Estimated HBAR: 23121.1
-              </Typography> */}
             </div>
 
             <div className="flex-center flex-col">
