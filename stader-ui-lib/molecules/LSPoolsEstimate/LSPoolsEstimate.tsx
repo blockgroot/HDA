@@ -140,10 +140,14 @@ function LSPoolsEstimate(props: Props) {
               color={"secondary"}
               className={classNames("", styles.value)}
             >
-              {(
-                ((1 / exchangeRate) * holdings) /
-                NATIVE_TOKEN_MULTIPLIER
-              ).toFixed(precision)}{" "}
+              {parseFloat(
+                (
+                  ((1 / exchangeRate) * holdings) /
+                  NATIVE_TOKEN_MULTIPLIER
+                ).toFixed(precision)
+              ).toLocaleString(undefined, {
+                maximumFractionDigits: precision,
+              })}{" "}
               HBAR
             </Typography>
           </div>
