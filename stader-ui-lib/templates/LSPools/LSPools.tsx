@@ -71,6 +71,7 @@ function LSPools() {
             holdings={hbarX}
             isLoading={false}
             apy={apy}
+            exchangeRate={exchangeRate}
           />
         </Grid>
         <Grid item xs={8} md={8} className="flex-center">
