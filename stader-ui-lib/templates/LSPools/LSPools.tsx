@@ -22,7 +22,18 @@ function LSPools() {
   const tabletDown = useMediaQuery(`(max-width:${MQ_FOR_TABLET_LANDSCAPE}px)`);
 
   if (tabletDown) {
-    return <InfoPageMobile />;
+    return (
+      <>
+        <LSPoolsEstimateWalletDisconnected
+          tvl={tvl}
+          holdings={undefined}
+          isLoading={false}
+          apy={apy}
+          exchangeRate={exchangeRate}
+        />
+        <InfoPageMobile />
+      </>
+    );
   }
 
   // console.log(apy, exchangeRate);

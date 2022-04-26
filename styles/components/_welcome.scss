@@ -11,6 +11,14 @@
     border: 1px solid #2e2e2e;
     box-shadow: 3px 3px 12px #010101;
     border-radius: 24px;
+    @include for-tablet-landscape-down {
+      padding: 30px;
+    }
+    
+    @include for-phone-only {
+      padding: 15px;
+      
+    }
 
     .welcome-main-text {
       font-weight: 400;
