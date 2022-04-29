@@ -20,7 +20,7 @@ export const transactionsStatusMap = {};
 
 export const NATIVE_TOKEN_MULTIPLIER = 100000000;
 
-export const emissionRate = 500000 * NATIVE_TOKEN_MULTIPLIER; //Per day
+export const emissionRate = 668132 * NATIVE_TOKEN_MULTIPLIER; //Per day
 export const stakeTransactionFee = 1 * NATIVE_TOKEN_MULTIPLIER;
 export const version = 1.0;
 export const apiPath = "api/v1/";
@@ -30,7 +30,7 @@ export const transactionFees = 1; //1 hbar
 export const NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS = precision;
 export const NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS = 9;
 
-export const bannerText = `Launch Phase 2: No limit on transaction value, emission rate is 500k HBAR per day.`;
+export const bannerText = `Launch Phase 3: No limit on transaction value, emission rate is ~668k HBAR per day.`;
 
 export const gtmId = "GTM-KCLNW9N";
 export const tvlUpdateInterval = 10 * 1000;
