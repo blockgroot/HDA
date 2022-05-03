@@ -333,8 +333,8 @@ export default function HashConnectProvider({
     //
 
     getTvl();
-    tvlInterval = setInterval(() => {
-      getTvl();
+    tvlInterval = setInterval(async () => {
+      await getTvl();
     }, tvlUpdateInterval);
     initializeHashConnect();
 
@@ -469,12 +469,12 @@ export default function HashConnectProvider({
   };
 
   const stake = async (amount: number) => {
-    console.log(getTimeStamp());
+    // console.log(getTimeStamp());
+    setTransActionStatus("START");
     // const timestamp = Math.floor(new Date().getTime() / 1000);
     const timestamp = await getTimeStamp();
     const validStart = new Timestamp(timestamp, 0);
     console.log("staked Amount", amount);
-    setTransActionStatus("START");
 
     const accountId: AccountId = AccountId.fromString(
       selectedAccount as string
