@@ -8,12 +8,14 @@ import {
   Transaction,
   TransactionId,
   TransactionReceipt,
+  Timestamp,
 } from "@hashgraph/sdk";
 import { WalletStatus } from "@molecules/WalletSelector/WalletSelector";
 import { config } from "config/config";
 import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
 import React, { useEffect, useRef, useState } from "react";
 import { tvlUpdateInterval } from "constants/constants";
+import axios from "axios";
 
 //Type declarations
 interface SaveData {
@@ -404,7 +406,6 @@ export default function HashConnectProvider({
 
   const getAccounts = async (accountId: string) => {
     //Create the account info query
-    //moved to api
     try {
       const query = new AccountBalanceQuery().setAccountId(accountId);
 
@@ -419,6 +420,20 @@ export default function HashConnectProvider({
     } catch (error: any) {
       setNetworkError(true);
       console.log(error.message);
+    }
+  };
+
+  const getTimeStamp = async () => {
+    const timestamp = Math.floor(new Date().getTime() / 1000);
+    try {
+      const response: any = await axios.get(`/api/timestamp`);
+      if (response?.data) {
+        return response.data.timestamp;
+      }
+    } catch (err) {
+      // Handle Error Here
+      console.error("error", err);
+      return timestamp;
     }
   };
 
@@ -454,6 +469,10 @@ export default function HashConnectProvider({
   };
 
   const stake = async (amount: number) => {
+    console.log(getTimeStamp());
+    // const timestamp = Math.floor(new Date().getTime() / 1000);
+    const timestamp = await getTimeStamp();
+    const validStart = new Timestamp(timestamp, 0);
     console.log("staked Amount", amount);
     setTransActionStatus("START");
 
@@ -461,7 +480,7 @@ export default function HashConnectProvider({
       selectedAccount as string
     );
 
-    let transId = TransactionId.generate(accountId);
+    let transId = TransactionId.withValidStart(accountId, validStart);
 
     const transaction = new ContractExecuteTransaction()
       .setContractId(config.ids.stakingContractId)
