@@ -69,7 +69,7 @@ function LSPoolsFormStake(props: Props) {
         ) {
           return true;
         } else {
-          return this.createError({ message: "You do not have enough HBARs" });
+          return this.createError({ message: "You do not have enough HBAR" });
         }
       })
       .lessThan(
