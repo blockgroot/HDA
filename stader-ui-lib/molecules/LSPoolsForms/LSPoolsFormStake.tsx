@@ -64,7 +64,7 @@ function LSPoolsFormStake(props: Props) {
     nativeToken: Yup.number()
       .test("wailet-no-money", "", function (value: number | undefined) {
         if (
-          value &&
+          !value ||
           value * 10 ** 8 + stakeTransactionFee + minDeposit < walletBalance
         ) {
           return true;
