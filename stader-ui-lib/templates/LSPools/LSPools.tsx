@@ -11,10 +11,20 @@ import LSPoolsEstimate from "../../molecules/LSPoolsEstimate/LSPoolsEstimate";
 import LSPoolsEstimateWalletDisconnected from "../../molecules/LSPoolsEstimateWalletDisconnected/LSPoolsEstimateWalletDisconnected";
 import LSPoolsForm from "../../organisms/LSPoolsForm/LSPoolsForm";
 import { Box, Icon, Typography } from "../../atoms";
+import { unBondingTime } from "@constants/constants";
 
 function LSPools() {
-  const { status, stake, tvl, transactionStatus, setTransActionStatus } =
-    useHashConnect();
+  const {
+    status,
+    stake,
+    unstake,
+    withdraw,
+    tvl,
+    transactionStatus,
+    transactionType,
+    setTransActionStatus,
+    withdrawStatus,
+  } = useHashConnect();
 
   const { hbarX, hbar } = useAccount();
   const { exchangeRate, error } = useExchangeRate();
@@ -22,21 +32,8 @@ function LSPools() {
   const tabletDown = useMediaQuery(`(max-width:${MQ_FOR_TABLET_LANDSCAPE}px)`);
 
   if (tabletDown) {
-    return (
-      <>
-        <LSPoolsEstimateWalletDisconnected
-          tvl={tvl}
-          holdings={undefined}
-          isLoading={false}
-          apy={apy}
-          exchangeRate={exchangeRate}
-        />
-        <InfoPageMobile />
-      </>
-    );
+    return <InfoPageMobile />;
   }
-
-  // console.log(apy, exchangeRate);
 
   if (status === "INITIALIZING") {
     return <Loader text={"Please wait while we set things up for you"} />;
@@ -79,9 +76,13 @@ function LSPools() {
             tvlLoading={true}
             holding={hbar}
             handleStake={stake}
+            handleUnstake={unstake}
+            handleWithdraw={withdraw}
             transactionStatus={transactionStatus}
+            transactionType={transactionType}
             setTransactionStatus={setTransActionStatus}
             exchangeRate={exchangeRate}
+            withdrawStatus={withdrawStatus}
           />
         </Grid>
         <Grid item xs={8} md={8} className="flex-center">
@@ -102,8 +103,7 @@ function LSPools() {
                 height={20}
                 className="mr-2"
               />{" "}
-              Staked HBAR will be locked till the V2 product upgrade, expected
-              around July 2022
+              HBARs will be available for withdrawal 7 days after unstaking
             </Typography>
           </Box>
         </Grid>

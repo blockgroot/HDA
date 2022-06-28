@@ -1,0 +1,9 @@
+.withdraw_modal_form {
+  &_close_icon {
+    position: absolute;
+    top: 40px;
+    right: 23px;
+    fill: #8c8c8c !important;
+    cursor: pointer;
+  }
+}

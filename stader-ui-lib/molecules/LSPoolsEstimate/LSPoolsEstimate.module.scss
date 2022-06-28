@@ -1,7 +1,7 @@
 .root {
   display: flex;
   justify-content: center;
-  padding: 16px;
+  // padding: 16px;
 
   @include for-tablet-landscape-up {
     // padding: 36px 32px;
@@ -19,8 +19,34 @@
   .container {
     min-width: 680px;
     width: 100%;
+    overflow: hidden;
+    position: relative;
+    // margin-bottom: 50px;
     @include for-tablet-landscape-down {
       min-width: auto;
+    }
+
+    .exchange_rate_container{
+      background: #010101;
+      color: #F9F9F9;
+      position: absolute;
+      left: 0;
+      right: 0;
+      display:none;
+      bottom: 0;
+      width: 100%;
+      min-width: 100%;
+      text-align: center;
+      background: #010101;
+      border: 1px solid #2E2E2E;
+      box-sizing: border-box;
+      box-shadow: 3px 3px 12px #010101;
+      border-radius: 0 0 1.5rem 1.5rem;
+      font-size: 14px !important;
+      padding: 10px;
+        span{
+          font-size: 14px !important;
+        }
     }
   }
 
@@ -46,7 +72,7 @@
   .value {
     @include for-tablet-landscape-down {
       font-size: 14px !important;
-      // margin-top: 0.9rem !important;
+      margin-top: 0.9rem !important;
     }
     @include for-phone-only {
       font-size: 14px !important;

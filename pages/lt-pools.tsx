@@ -6,15 +6,13 @@ import LSPools from "../stader-ui-lib/templates/LSPools/LSPools";
 
 function Stake() {
   //check for coming soon
-
   if (config.comingSoon === true) {
     return (
       <div className="bg-black">
-        <div className="bg-[url('/coming-soon.jpeg')] w-full flex flex-col h-screen content-center justify-center bg-center bg-no-repeat "></div>
+        <div className="bg-[url('/v2upgrade.jpg')] w-full flex flex-col h-screen content-center justify-center bg-center bg-no-repeat "></div>
       </div>
     );
   }
-
   return (
     <div>
       <MainLayout>

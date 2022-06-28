@@ -8,8 +8,9 @@ import { Box, Loader, Typography } from "../../atoms";
 import styles from "./LSPoolsEstimate.module.scss";
 import classNames from "classnames";
 import SDTooltip from "@atoms/SDTooltip/SDTooltip";
-import { useMediaQuery } from "@material-ui/core";
 import { MQ_FOR_TABLET_LANDSCAPE } from "@constants/media-queries";
+import { useMediaQuery } from "@material-ui/core";
+import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 
 type Props = {
   tvl: any;
@@ -53,7 +54,7 @@ function LSPoolsEstimate(props: Props) {
                 fontWeight={"medium"}
                 className={classNames("", styles.value)}
               >
-                {(holdings / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)}
+                {nativeTokenFormatter(holdings)}
               </Typography>
             </div>
 

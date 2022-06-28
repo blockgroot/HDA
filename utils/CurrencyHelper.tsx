@@ -1,20 +1,52 @@
-import { NATIVE_TOKEN_MULTIPLIER, precision } from "@constants/constants";
+import {
+  fiatPrecision,
+  NATIVE_TOKEN_MULTIPLIER,
+  precision,
+} from "@constants/constants";
+import BigNumber from "bignumber.js";
 
-export function nativeTokenFormatter(amount: number) {
-  let formattedAmount = parseFloat(
-    (amount / NATIVE_TOKEN_MULTIPLIER).toString()
-  ).toFixed(precision);
+const getPrecisionMul = (precision: number) => {
+  let val = 1;
+  for (let index = 0; index < precision; index++) {
+    val = val * 0.1;
+  }
+  return val.toPrecision(precision);
+};
+
+// export function nativeTokenFormatter(amount: number) {
+//   let amount_fixed_precision = amount / NATIVE_TOKEN_MULTIPLIER;
+//   const precision_mul: string = getPrecisionMul(precision);
+//   amount_fixed_precision = amount_fixed_precision - Number(precision_mul);
+//   const formattedAmount = parseFloat(amount_fixed_precision.toString()).toFixed(
+//     precision
+//   );
+//   return parseFloat(formattedAmount);
+// }
+
+export function convertTokenToUsd(amount: number, usdRate: number) {
+  const formattedAmount = (
+    (amount / NATIVE_TOKEN_MULTIPLIER) *
+    usdRate
+  ).toFixed(fiatPrecision);
 
   return parseFloat(formattedAmount);
 }
 
-// export function nativeTokenFormatterOrion(amount: number) {
+// export function nativeTokenFormatter(amount: number) {
 //   let formattedAmount = parseFloat(
 //     (amount / NATIVE_TOKEN_MULTIPLIER).toString()
 //   ).toFixed(precision);
 
 //   return parseFloat(formattedAmount);
 // }
+
+export function nativeTokenFormatter(amount: number) {
+  const bigNumAmount = new BigNumber(amount);
+  const formattedAmount = bigNumAmount
+    .dividedBy(new BigNumber(NATIVE_TOKEN_MULTIPLIER))
+    .toFixed(precision, 3);
+  return parseFloat(formattedAmount);
+}
 
 export function formatWIthLocale(amount: number) {
   return amount.toLocaleString(undefined, {

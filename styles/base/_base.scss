@@ -90,7 +90,7 @@ body {
 // Use media query to adjust width while accomodating for sidebar
 .layout-child-container {
   width: 100%;
-  padding: 56px 32px;
+  padding: 32px 32px;
 
   @include for-phone-only() {
     padding: 16px;
@@ -118,7 +118,7 @@ body {
 
 @media (min-width: 1524px) {
   .layout-child-container {
-    padding: 56px 160px;
+    padding: 32px 160px;
   }
 }
 
@@ -428,4 +428,21 @@ body {
       }
     }
   }
+}
+
+.grid_tabs{
+  width: 100%;
+
+  button{
+    color: #8C8C8C;   
+  }
+
+  button.MuiButtonBase-root.MuiTab-root.MuiTab-textColorInherit.Mui-selected{
+   color: #43B8D2 !important;
+  }
+
+  .MuiTabs-indicator{
+    background-color: #43B8D2 !important;
+  }
+
 }

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import useClipboard from "react-use-clipboard";
 import Divider from "../../atoms/Divider/Divider";
 import { Button, Typography } from "../../atoms";
@@ -16,6 +16,7 @@ import { ConnectType } from "context/HashConnectProvider";
 import useHashConnect from "@hooks/useHashConnect";
 import { WalletStatus } from "./WalletSelector";
 import { HashConnectTypes } from "hashconnect";
+import { StorageService } from "@services/storage.service";
 
 type WailetsConfig = {
   availableInstallTypes: Array<ConnectType>;
@@ -87,22 +88,61 @@ interface DisconnectedProps {
   isWalletDisconnected: boolean;
   installedExtensions: HashConnectTypes.WalletMetadata | null;
   isWalletInitializing: boolean;
+  isBladeExtensionInstalled: boolean;
   installWallet: (props: ConnectType) => void;
 }
 
 export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
   const { installWallet } = props;
   const wallet = useWallet();
-  const { isWalletDisconnected, installedExtensions, isWalletInitializing } =
-    props;
+  const [termsAccepted, setTermsAccepted] = useState<boolean>(
+    StorageService.getTerms()
+  );
+  const {
+    isWalletDisconnected,
+    installedExtensions,
+    isWalletInitializing,
+    isBladeExtensionInstalled,
+  } = props;
+
+  const termsAcceptedHandle = (checked: boolean) => {
+    setTermsAccepted(checked);
+    StorageService.saveTerms(checked);
+  };
 
   return (
     <>
+      <div className="flex flex-center ">
+        <label className={styles.checkbox}>
+          <input
+            type="checkbox"
+            name="accept_terms"
+            checked={termsAccepted}
+            onChange={(e) => termsAcceptedHandle(e.target.checked)}
+          />
+        </label>
+        <Typography
+          fontWeight={"bold"}
+          className={"text-white"}
+          variant={"caption1"}
+        >
+          By connecting a wallet, you agree to our{" "}
+          <a
+            href={urls.termsOfService}
+            target="_blank"
+            rel="noreferrer"
+            className={styles.term_of_service}
+          >
+            Terms of Service
+          </a>
+        </Typography>
+      </div>
       {wallet.availableInstallTypes.includes(ConnectType.CHROME_EXTENSION) && (
         <Button
           variant={"flat"}
           childClassName={"px-5"}
           parentClassName={"w-full"}
+          disabled={!termsAccepted}
           onClick={() =>
             !isWalletInitializing &&
             installWallet(
@@ -118,35 +158,31 @@ export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
               ? "HashPack Wallet"
               : isWalletInitializing
               ? "Initializing Wallet..."
-              : "Install Extension"}
+              : "Install HashPack Extension"}
           </Typography>
         </Button>
       )}
-      {/* <Button
-        variant={"flat"}
-        childClassName={"px-5"}
-        parentClassName={"w-full"}
-        onClick={() => installWallet(ConnectType.BLADE_WALLET)}
-        size={"small"}
-      >
-        <Typography fontWeight={"medium"}>Blade Wallet</Typography>
-      </Button> */}
-
-      <Typography
-        fontWeight={"bold"}
-        className={"text-white mt-5 text-center"}
-        variant={"caption1"}
-      >
-        By connecting a wallet, you agree to our{" "}
-        <a
-          href={urls.termsOfService}
-          target="_blank"
-          rel="noreferrer"
-          className={styles.term_of_service}
+      {
+        <Button
+          variant={"flat"}
+          childClassName={"px-5 mb-2"}
+          parentClassName={"w-full"}
+          disabled={!termsAccepted}
+          onClick={() => installWallet(ConnectType.BLADE_WALLET)}
+          size={"small"}
         >
-          Terms of Service
-        </a>
-      </Typography>
+          {isWalletInitializing ? (
+            <Typography fontWeight={"medium"}>
+              Initializing Wallet...
+            </Typography>
+          ) : (
+            <Typography fontWeight={"medium"}>
+              {isBladeExtensionInstalled ? "" : "Install"} Blade
+              {isBladeExtensionInstalled ? " Wallet (Beta)" : " Extension"}
+            </Typography>
+          )}
+        </Button>
+      }
     </>
   );
 };

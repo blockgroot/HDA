@@ -1,0 +1,35 @@
+.root {
+  margin: auto;
+  min-width: 600px;
+  min-height: 300px;
+  background: #111 !important;
+  border: none;
+}
+
+.dialog {
+  position: relative;
+  background-color: transparent !important;
+  &_close_icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    fill: #8c8c8c !important;
+    cursor: pointer;
+  }
+  form {
+    h2 {
+      text-align: center;
+      font-weight: 900;
+      color: #ffffff !important;
+    }
+
+    button[type="submit"] {
+      background-color: #f04adc !important;
+      width: 100%;
+    }
+
+    .withdraw-close-icon {
+      cursor: pointer;
+    }
+  }
+}

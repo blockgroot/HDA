@@ -14,8 +14,10 @@ import { theme } from "../theme";
 import TagManager from "react-gtm-module";
 import { gtmId } from "@constants/constants";
 import { config } from "config/config";
+import { HashConnectService } from "@services/hash-connect.service";
+import TransactionFeeProvider from "context/TransactionFeeProvider";
 
-const hashConnect = new HashConnect(false);
+const hashConnect = new HashConnectService(new HashConnect(false));
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient({
@@ -41,9 +43,11 @@ export default function App({ Component, pageProps }: AppProps) {
     <main id="main-root">
       <QueryClientProvider client={queryClient}>
         <HashConnectProvider hashConnect={hashConnect} debug>
-          <ThemeProvider theme={theme}>
-            <Component {...pageProps} />
-          </ThemeProvider>
+          <TransactionFeeProvider>
+            <ThemeProvider theme={theme}>
+              <Component {...pageProps} />
+            </ThemeProvider>
+          </TransactionFeeProvider>
         </HashConnectProvider>
       </QueryClientProvider>
     </main>

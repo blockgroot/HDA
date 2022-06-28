@@ -1,3 +1,5 @@
+import { TransactionType, WithdrawStatus } from "context/HashConnectProvider";
+
 export type TvlType = {
   uNativeToken: number;
   valueInUSD: number;
@@ -9,8 +11,12 @@ export type LSPoolProps = {
   tvlLoading?: boolean;
   holding: number;
   handleStake: (amount: number) => void;
+  handleUnstake: (amount: number, exchangeRate: number) => void;
+  handleWithdraw: (index: number) => void;
   setTransactionStatus: (status: string) => void;
   transactionStatus: string;
+  transactionType: TransactionType;
+  withdrawStatus: WithdrawStatus;
 };
 
 export type ContractConfigType = {

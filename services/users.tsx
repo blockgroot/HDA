@@ -23,7 +23,7 @@ export const authenticateUser = () => {
         localStorage.setItem("user", JSON.stringify(authenticatedUser));
       }
 
-      console.log("Authentication Successfull");
+      console.log("Authentication Successful");
       return authenticatedUser;
     })
     .catch((error) => {

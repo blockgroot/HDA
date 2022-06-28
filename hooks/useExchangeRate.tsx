@@ -12,7 +12,7 @@ export default function useExchangeRate() {
   // const [totalSupply, setTotalSupply] = useState<number>(0);
   const [error, setError] = useState<boolean>(false);
 
-  const getTotalSupply = async () => {
+  const updateExchangeRate = async () => {
     try {
       const response: any = await axios.get(
         `${config.network.url}${apiPath}tokens/${config.ids.tokenId}`
@@ -34,18 +34,13 @@ export default function useExchangeRate() {
     }
   };
 
-  // useEffect(() => {
-  //   getTotalSupply();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   useEffect(() => {
     if (tvl > 0) {
       // getTotalSupply();
       setTimeout(
         () => {
           isFirstTime = false;
-          getTotalSupply();
+          updateExchangeRate();
         },
         isFirstTime ? 0 : 10000
       );
@@ -53,5 +48,5 @@ export default function useExchangeRate() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tvl]);
 
-  return { exchangeRate, error };
+  return { exchangeRate, updateExchangeRate, error };
 }

@@ -75,3 +75,58 @@ box-shadow: 2px 8px 5px -4px rgba(0, 0, 0, 0.37);
 .popover {
   z-index: 100;
 }
+
+.checkbox{
+  
+  margin-right: 5px;
+  margin-top: 0;
+  
+    display: inline-flex;
+    cursor: pointer;
+    position: relative;
+
+
+& > span {
+    color: #34495E;
+    padding: 0.5rem 0.25rem;
+}
+
+& > input {
+    position: relative;
+    height: 18px;
+    width: 18px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    outline: none;
+    transition-duration: 0.3s;
+    background-color: #1E1E1E;
+    border: 1px solid #F9F9F9;
+    border-radius: 4px;
+    cursor: pointer;
+    &:hover{
+      background-color: #3E3E3E;
+    }
+  }
+
+& > input:checked {
+    background-color: #F9F9F9;
+    border: 1px solid #F9F9F9;
+}
+
+& > input:checked::before {
+    content: '\2713';
+    display: block;
+    text-align: center;
+    font-weight: 900;
+    color: #000;
+    position: absolute;
+    left: 0.2rem;
+    top: -0.2rem;
+}
+
+& > input:active {
+    border: 2px solid #34495E;
+}
+}

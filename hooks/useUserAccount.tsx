@@ -9,7 +9,6 @@ export default function useAccount() {
 
   useEffect(() => {
     if (accountBalance) {
-      // console.log(accountBalance);
       setHbar(accountBalance.hbars.toTinybars().toNumber());
       const _isAssociated = accountBalance.tokens?._map.has(config.ids.tokenId);
       if (_isAssociated) {

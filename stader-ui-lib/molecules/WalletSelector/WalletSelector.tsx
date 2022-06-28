@@ -6,9 +6,8 @@ import { CheckCircle, Info } from "@material-ui/icons";
 import { nativeTokenFormatter } from "@utils/CurrencyHelper";
 import classNames from "classnames";
 import { ConnectType } from "context/HashConnectProvider";
-import React, { FC, useCallback, useState } from "react";
-import greenTick from "../../assets/svg/check_success.svg";
 import { getAnalytics, logEvent, setUserId } from "firebase/analytics";
+import { FC, useCallback, useState } from "react";
 import { Button, Typography } from "../../atoms";
 import Icon from "../../atoms/Icon/Icon";
 import { ConnectedWalletModal, DisconnectWalletModal } from "./WalletModals";
@@ -34,9 +33,14 @@ const WalletSelector = ({
     anchorEl: null,
   });
 
-  const { connect, disconnect, selectedAccount, status, installedExtensions } =
-    useHashConnect();
-
+  const {
+    connect,
+    disconnect,
+    selectedAccount,
+    status,
+    installedExtensions,
+    isBladeExtensionInstalled,
+  } = useHashConnect();
   const { hbar } = useAccount();
 
   const isWalletConnected: boolean = status === WalletStatus.WALLET_CONNECTED;
@@ -72,7 +76,15 @@ const WalletSelector = ({
       installedExtensions={installedExtensions}
       isWalletInitializing={isWalletInitializing}
       isWalletDisconnected={isWalletDisconnected}
+      isBladeExtensionInstalled={isBladeExtensionInstalled}
       installWallet={(type: ConnectType) => {
+        const analytics = getAnalytics();
+        const walletName =
+          type === ConnectType.BLADE_WALLET ? "Blade" : "HashPack";
+        logEvent(analytics, "selected_wallet", {
+          account: selectedAccount,
+          value: walletName,
+        });
         closeModal();
         connect(type);
       }}
@@ -120,7 +132,6 @@ const WalletSelector = ({
     const analytics = getAnalytics();
     setUserId(analytics, selectedAccount);
     logEvent(analytics, "connect_wallet_click", { account: selectedAccount });
-
     return (
       <WalletButton>
         <Typography
@@ -140,7 +151,7 @@ const WalletSelector = ({
       </WalletButton>
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status, hbar]);
+  }, [status, hbar, selectedAccount]);
 
   const iconOnlyWalletButton = useCallback(() => {
     // if(isWalletInitializing){

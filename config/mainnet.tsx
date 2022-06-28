@@ -1,18 +1,24 @@
+import { HederaNetwork } from "@bladelabs/blade-web3.js/lib/src/models/blade";
+
 export const mainnetConfig = {
   network: {
     name: "mainnet",
     url: "https://mainnet-public.mirrornode.hedera.com/",
+    bladeWallet: HederaNetwork.Mainnet,
   },
-  hbar_pay_url:
-    "https://buy.moonpay.com/?colorCode=�E5E5&currencyCode=hbar&enableRecurringBuys=true&walletAddress=0.0.793785",
+  hbar_buy_url: "https://purchase.banxa.com/",
   extension_url:
     "https://chrome.google.com/webstore/detail/hashpack/gjagmgiddbbciopjhllkdnddhcglnemk",
+  blade_extension_url:
+    "https://chrome.google.com/webstore/detail/blade-new-hedera-wallet/abogmiocnneedmmepnohnhlijcjpcifd",
   ids: {
     tokenId: "0.0.834116",
+    oldContractIds: [],
     stakingContractId: "0.0.834119",
     rewardsContractId: "0.0.834120",
+    undelegationContractId: "0.0.34386429",
   },
-  comingSoon: false,
+  comingSoon: true,
   minDeposit: 0.01 * 10 ** 8,
   maxDeposit: 999999999.9999 * 10 ** 8,
   firebaseConfig: {

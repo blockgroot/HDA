@@ -5,20 +5,23 @@ import {
   Client,
   ContractExecuteTransaction,
   ContractFunctionParameters,
+  Timestamp,
   Transaction,
   TransactionId,
   TransactionReceipt,
-  Timestamp,
 } from "@hashgraph/sdk";
 import { WalletStatus } from "@molecules/WalletSelector/WalletSelector";
-import { config } from "config/config";
-import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
-import React, { useEffect, useRef, useState } from "react";
-import { tvlUpdateInterval } from "constants/constants";
+import { BladeService } from "@services/blade.service";
+import { HashConnectService } from "@services/hash-connect.service";
+import { StorageService } from "@services/storage.service";
 import axios from "axios";
+import { config } from "config/config";
+import { tvlUpdateInterval } from "constants/constants";
+import { HashConnectTypes, MessageTypes } from "hashconnect";
+import React, { useEffect, useRef, useState } from "react";
 
 //Type declarations
-interface SaveData {
+export interface SaveData {
   topic: string;
   pairingString: string;
   privateKey: string;
@@ -27,15 +30,20 @@ interface SaveData {
   network?: string;
   id?: string;
   accountIds?: string[];
+  walletExtensionType: WalletExtensionType;
 }
 
 type Networks = "testnet" | "mainnet" | "previewnet";
+type WalletExtensionType = "hashpack" | "blade" | "";
+export type TransactionType = "stake" | "unstake";
+export type WithdrawStatus = "NONE" | "IN_PROGRESS" | "SUCCESS" | "FAILED";
 
 declare var chrome: any;
+let bladeConnect: any;
 
 interface PropsType {
   children: React.ReactNode;
-  hashConnect: HashConnect;
+  hashConnect: HashConnectService;
   network: Networks;
   metadata?: HashConnectTypes.AppMetadata;
   debug?: boolean;
@@ -60,9 +68,15 @@ export interface HashConnectProviderAPI {
   network: Networks;
   metadata?: HashConnectTypes.AppMetadata;
   installedExtensions: HashConnectTypes.WalletMetadata | null;
+  isBladeExtensionInstalled: boolean;
   isExtensionInstalled: boolean;
+  withdrawStatus: WithdrawStatus;
+  transactionType: TransactionType;
+  setWithdrawStatus: (status: WithdrawStatus) => void;
   status: string;
   stake: (amount: number) => void;
+  unstake: (amount: number, exchangeRate: number) => void;
+  withdraw: (index: number) => void;
   transactionStatus: string;
   setTransActionStatus: (status: string) => void;
   signTransaction: (transaction: string) => Promise<string | null>;
@@ -81,6 +95,7 @@ const INITIAL_SAVE_DATA: SaveData = {
   privateKey: "",
   pairedAccounts: [],
   pairedWalletData: null,
+  walletExtensionType: "",
 };
 
 // export declare enum WalletStatus {
@@ -89,25 +104,13 @@ const INITIAL_SAVE_DATA: SaveData = {
 //   WALLET_CONNECTED = "WALLET_CONNECTED",
 // }
 
+const bladeService = new BladeService();
+
 let APP_CONFIG: HashConnectTypes.AppMetadata = {
   name: "Stader HBAR staking",
   description:
     "Liquid staking with Stader. Stake HBAR with Stader to earn rewards while keeping full control of your staked tokens. Start earning rewards in just a few clicks",
   icon: "https://hedera.staderlabs.com/static/stader_logo.svg",
-};
-
-const SAVE_KEY = `hashConnectData/${config.network.name}`;
-
-const loadLocalData = (): null | SaveData => {
-  // console.log("loadLocalData", localStorage.getItem(SAVE_KEY));
-  let foundData = localStorage.getItem(SAVE_KEY);
-  // console.log("foundData", foundData);
-
-  if (foundData) {
-    const saveData: SaveData = JSON.parse(foundData);
-    // setSaveData(saveData);
-    return saveData;
-  } else return null;
 };
 
 export const HashConnectAPIContext =
@@ -116,12 +119,18 @@ export const HashConnectAPIContext =
     disconnect: () => null,
     accountBalance: null,
     selectedAccount: "",
+    isBladeExtensionInstalled: false,
     isExtensionInstalled: false,
     walletData: INITIAL_SAVE_DATA,
     network: config.network.name as Networks,
     installedExtensions: null,
+    transactionType: "stake",
+    withdrawStatus: "NONE",
     status: "INITIALIZING",
+    setWithdrawStatus: () => {},
     stake: () => null,
+    unstake: () => null,
+    withdraw: () => null,
     transactionStatus: "",
     setTransActionStatus: () => null,
     signTransaction: (transaction) => Promise.resolve(null),
@@ -164,10 +173,17 @@ export default function HashConnectProvider({
   );
   const [tvl, setTvl] = useState<number>(0);
   const [selectedAccount, setSelectedAccount] = useState<string>("");
-
+  const [transactionType, setTransactionType] =
+    useState<TransactionType>("stake");
   const [status, _setStatus] = useState<string>(WalletStatus.INITIALIZING);
   const [transactionStatus, setTransActionStatus] = useState<string>("");
+  const [withdrawStatus, setWithdrawStatus] = useState<WithdrawStatus>("NONE");
   const [networkError, setNetworkError] = useState<boolean>(false);
+  const [connectedAccountType, setConnectedAccountType] =
+    useState<WalletExtensionType>("");
+
+  const [isBladeExtensionInstalled, setBladeExtensionInstalled] =
+    useState<boolean>(Boolean(bladeConnect));
 
   const statusRef = useRef(status);
 
@@ -186,44 +202,41 @@ export default function HashConnectProvider({
   //? Initialize the package in mount
   const initializeHashConnect = async () => {
     const saveData = INITIAL_SAVE_DATA;
-    const localData = loadLocalData();
-
+    const localData = StorageService.loadLocalData();
+    await bladeService.checkExtensionInstalled();
+    setBladeExtensionInstalled(bladeService.isExtensionInstalled);
+    bladeService.setSigner();
     // console.log("localData", localData);
     try {
       if (!localData) {
         if (debug) console.log("===Local data not found.=====");
 
         //first init and store the private for later
-        let initData = await hashConnect.init(metadata ?? APP_CONFIG);
-        saveData.privateKey = initData.privKey;
+        let initData = await hashConnect.initialize(
+          metadata ?? APP_CONFIG,
+          network,
+          debug
+        );
+        saveData.privateKey = initData.privateKey;
 
-        //then connect, storing the new topic for later
-        const state = await hashConnect.connect();
-        saveData.topic = state.topic;
+        saveData.topic = initData.topic;
         // console.log({ state });
         //generate a pairing string, which you can display and generate a QR code from
-        saveData.pairingString = hashConnect.generatePairingString(
-          state,
-          network,
-          debug ?? false
-        );
-
-        //find any supported local wallets
-        hashConnect.findLocalWallets();
-        setTimeout(() => {
-          if (!isExtensionInstalled) {
-            setStatus(WalletStatus.WALLET_NOT_CONNECTED);
-          }
-        }, 5000);
+        saveData.pairingString = initData.pairingString;
       } else {
         // if (debug) console.log("====Local data found====", localData);
         //use loaded data for initialization + connection
-        await hashConnect.init(metadata ?? APP_CONFIG, localData?.privateKey);
-        setInstalledExtensions(localData?.pairedWalletData);
-        const state = await hashConnect.connect(
-          localData?.topic,
-          localData?.pairedWalletData ?? metadata
-        );
+        if (localData.walletExtensionType == "hashpack") {
+          await hashConnect.init(metadata ?? APP_CONFIG, localData?.privateKey);
+          setInstalledExtensions(localData?.pairedWalletData);
+          setExtensionInstalled(true);
+          const state = await hashConnect.connect(
+            localData?.topic,
+            localData?.pairedWalletData ?? metadata
+          );
+        } else {
+          await bladeService.loadWallet();
+        }
       }
     } catch (error) {
       setNetworkError(true);
@@ -231,6 +244,7 @@ export default function HashConnectProvider({
     } finally {
       if (localData) {
         setSaveData({ ...saveData, ...localData });
+        setConnectedAccountType(localData.walletExtensionType);
         localData.accountIds && setSelectedAccount(localData.accountIds[0]);
         localData.accountIds && (await getAccounts(localData.accountIds[0]));
       } else {
@@ -241,16 +255,21 @@ export default function HashConnectProvider({
       // console.log(saveData);
       if (debug) console.log("====Wallet details updated to state====");
     }
+    return localData;
   };
 
-  const saveDataInLocalStorage = async (data: MessageTypes.ApprovePairing) => {
+  const saveDataInLocalStorage = async (
+    data: MessageTypes.ApprovePairing,
+    extensionType?: WalletExtensionType
+  ) => {
     if (debug)
       console.info("===============Saving to localstorage::=============");
     const { metadata, ...restData } = data;
-    const saveObj = {
+    const saveObj: SaveData = {
       ...saveData,
       pairedWalletData: metadata,
       pairedAccounts: restData.accountIds,
+      walletExtensionType: extensionType || connectedAccountType,
       ...restData,
     };
     // console.log(saveObj, "saveObj");
@@ -262,11 +281,15 @@ export default function HashConnectProvider({
     // console.log("saveData", saveData);
     setSaveData(saveObj);
     // setAccountId(restData.accountIds[0]);
-
-    let dataToSave = JSON.stringify(saveObj);
-    localStorage.setItem(SAVE_KEY, dataToSave);
-    setSelectedAccount(saveObj.accountIds[0]);
-    await getAccounts(saveObj.accountIds[0]);
+    StorageService.saveData(saveObj);
+    if (
+      saveObj !== undefined &&
+      saveObj.accountIds &&
+      saveObj.accountIds[0] !== undefined
+    ) {
+      setSelectedAccount(saveObj.accountIds[0]);
+      await getAccounts(saveObj.accountIds[0]!);
+    }
   };
 
   const additionalAccountResponseEventHandler = (
@@ -282,15 +305,17 @@ export default function HashConnectProvider({
     if (debug) console.debug("====foundExtensionEvent====", data);
     // Do a thing
     console.log("foundExtensionEventHandler", data);
-    setStatus(WalletStatus.WALLET_NOT_CONNECTED);
-    setInstalledExtensions(data as HashConnectTypes.WalletMetadata);
+    if (status === WalletStatus.INITIALIZING) {
+      setStatus(WalletStatus.WALLET_NOT_CONNECTED);
+      setInstalledExtensions(data as HashConnectTypes.WalletMetadata);
+    }
   };
 
   const pairingEventHandler = (data: MessageTypes.ApprovePairing) => {
     if (debug) console.log("===Wallet connected=====", data);
     // Save Data to localStorage
 
-    saveDataInLocalStorage(data);
+    saveDataInLocalStorage(data, "hashpack");
   };
 
   const transactionHandler = (data: MessageTypes.Transaction) => {
@@ -318,25 +343,26 @@ export default function HashConnectProvider({
 
   useEffect(() => {
     //Intialize the setup
-    hashConnect.foundExtensionEvent.once(foundExtensionEventHandler);
-    hashConnect.pairingEvent.on(pairingEventHandler);
-    hashConnect.transactionEvent.on(transactionHandler);
-    hashConnect.connectionStatusChange.on((connectionStatus) => {
-      //do something with connection status
-      // console.log("connectionStatus", connectionStatus);
-    });
-    hashConnect.acknowledgeMessageEvent.once((acknowledgeData) => {
-      //do something with acknowledge response data
-      // console.log("acknowledgeData", acknowledgeData);
-    });
-    hashConnect.transactionResolver = () => {};
+
+    hashConnect.listeners.foundExtensionEvent.once(foundExtensionEventHandler);
+    hashConnect.listeners.pairingEvent.on(pairingEventHandler);
+    hashConnect.listeners.transactionEvent.on(transactionHandler);
+
+    hashConnect.listeners.transactionResolver = () => {};
     //
 
     getTvl();
     tvlInterval = setInterval(async () => {
       await getTvl();
     }, tvlUpdateInterval);
-    initializeHashConnect();
+    initializeHashConnect().then((localData) => {
+      if (StorageService.loadLocalData()) return;
+      setTimeout(() => {
+        if (!installedExtensions || !bladeService.isExtensionInstalled) {
+          setStatus(WalletStatus.WALLET_NOT_CONNECTED);
+        }
+      }, 5000);
+    });
 
     // Attach event handlers
 
@@ -344,12 +370,12 @@ export default function HashConnectProvider({
       // Detach existing handlers
 
       clearInterval(tvlInterval);
-      hashConnect.foundExtensionEvent.off(foundExtensionEventHandler);
-      hashConnect.pairingEvent.off(pairingEventHandler);
-      hashConnect.transactionEvent.off(transactionHandler);
+      hashConnect.listeners.foundExtensionEvent.off(foundExtensionEventHandler);
+      hashConnect.listeners.pairingEvent.off(pairingEventHandler);
+      hashConnect.listeners.transactionEvent.off(transactionHandler);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [connectedAccountType]);
 
   // useEffect(() => {
   //   console.log("status", status);
@@ -365,9 +391,20 @@ export default function HashConnectProvider({
     //     window.open(config.extension_url, "_blank");
     //     break;
     // }
-
-    if (installedExtensions) {
+    if (type === ConnectType.BLADE_WALLET && !isBladeExtensionInstalled) {
+      window.open(config.blade_extension_url, "_blank");
+    } else if (type === ConnectType.BLADE_WALLET) {
+      const account = await bladeService.loadWallet();
+      setStatus(WalletStatus.WALLET_CONNECTED);
+      setConnectedAccountType("blade");
+      setSelectedAccount(account.toString());
+      const balance = await bladeService.getBalance();
+      setAccountBalance(balance);
+      const walletData = bladeService.getWalletData();
+      saveDataInLocalStorage(walletData, "blade");
+    } else if (installedExtensions) {
       if (debug) console.log("Pairing String::", saveData.pairingString);
+      setConnectedAccountType("hashpack");
       hashConnect.connectToLocalWallet(saveData?.pairingString);
     } else {
       if (debug) console.log("====No Extension is not in browser====");
@@ -380,7 +417,8 @@ export default function HashConnectProvider({
     // setSaveData(INITIAL_SAVE_DATA);
     setStatus(WalletStatus.WALLET_NOT_CONNECTED);
     // setInstalledExtensions(null);
-    localStorage.removeItem(SAVE_KEY);
+
+    StorageService.remove();
     initializeHashConnect();
   };
 
@@ -407,16 +445,19 @@ export default function HashConnectProvider({
   const getAccounts = async (accountId: string) => {
     //Create the account info query
     try {
-      const query = new AccountBalanceQuery().setAccountId(accountId);
-
-      // const balance =  (await provider.getBalance(accountId)).toNumber();
-
-      const client = Client.forName(config.network.name);
-      // Sign with client operator private key and submit the query to a Hedera network
-      const balance = await query.execute(client);
-
-      setAccountBalance(balance);
-      setStatus("WALLET_CONNECTED");
+      if (connectedAccountType === "hashpack") {
+        const query = new AccountBalanceQuery().setAccountId(accountId);
+        const client = Client.forName(config.network.name);
+        // Sign with client operator private key and submit the query to a Hedera network
+        const balance = await query.execute(client);
+        setAccountBalance(balance);
+      } else if (connectedAccountType === "blade") {
+        const balance = await bladeService.getBalance();
+        setAccountBalance(balance);
+      }
+      if (connectedAccountType !== "") {
+        setStatus("WALLET_CONNECTED");
+      }
     } catch (error: any) {
       setNetworkError(true);
       console.log(error.message);
@@ -468,13 +509,87 @@ export default function HashConnectProvider({
     return null;
   };
 
+  const stakeHashpack = async (
+    accountId: AccountId,
+    transaction: ContractExecuteTransaction,
+    isWithDrawn: boolean = false
+  ) => {
+    const transactionBytes = transaction.toBytes();
+
+    const response: MessageTypes.TransactionResponse = await sendTransaction(
+      transactionBytes,
+      accountId.toString(),
+      false
+    );
+
+    if (response.success) {
+      if (!isWithDrawn) {
+        setTransActionStatus("SUCCESS");
+      } else {
+        setWithdrawStatus("SUCCESS");
+      }
+    }
+
+    if (response.success && !response.signedTransaction)
+      console.log(TransactionReceipt.fromBytes(response.receipt as Uint8Array));
+    else if (response.success && response.signedTransaction)
+      console.log(
+        Transaction.fromBytes(response.signedTransaction as Uint8Array)
+      );
+    else {
+      if (!isWithDrawn) {
+        setTransActionStatus("FAILED");
+      } else {
+        setWithdrawStatus("FAILED");
+      }
+    }
+
+    getAccounts(accountId.toString());
+    getTvl();
+  };
+
+  const stakeBlade = async (
+    accountId: AccountId,
+    transaction: ContractExecuteTransaction,
+    isWithDrawn: boolean = false
+  ) => {
+    try {
+      const response = await bladeService.sendTransaction(transaction);
+      const client = Client.forName(config.network.name);
+      const receipt: TransactionReceipt = await response.getReceipt(client);
+
+      if (receipt.status.toString() === "SUCCESS") {
+        if (!isWithDrawn) {
+          setTransActionStatus("SUCCESS");
+        } else {
+          setWithdrawStatus("SUCCESS");
+        }
+      } else {
+        if (!isWithDrawn) {
+          setTransActionStatus("FAILED");
+        } else {
+          setWithdrawStatus("FAILED");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      if (!isWithDrawn) {
+        setTransActionStatus("FAILED");
+      } else {
+        setWithdrawStatus("FAILED");
+      }
+    }
+
+    getAccounts(accountId.toString());
+    getTvl();
+  };
+
   const stake = async (amount: number) => {
-    // console.log(getTimeStamp());
     setTransActionStatus("START");
-    // const timestamp = Math.floor(new Date().getTime() / 1000);
+    setTransactionType("stake");
+    // const timestamp = Math. floor(new Date().getTime() / 1000);
     const timestamp = await getTimeStamp();
     const validStart = new Timestamp(timestamp, 0);
-    console.log("staked Amount", amount);
 
     const accountId: AccountId = AccountId.fromString(
       selectedAccount as string
@@ -486,43 +601,70 @@ export default function HashConnectProvider({
       .setContractId(config.ids.stakingContractId)
       .setGas(2_000_000)
       .setPayableAmount(amount)
+      .setFunction("stake")
+      .setNodeAccountIds([new AccountId(3)])
+      .setTransactionId(transId)
+      .freeze();
+
+    if (connectedAccountType === "hashpack") {
+      stakeHashpack(accountId, transaction);
+    } else if (connectedAccountType === "blade") {
+      stakeBlade(accountId, transaction);
+    }
+  };
+
+  const unstake = async (amount: number, exchangeRate: number) => {
+    setTransActionStatus("START");
+    setTransactionType("unstake");
+    const accountId: AccountId = AccountId.fromString(
+      selectedAccount as string
+    );
+
+    let transId = TransactionId.generate(accountId);
+    // const unstakeAmount = new Hbar(amount);
+    const transaction = new ContractExecuteTransaction()
+      .setContractId(config.ids.stakingContractId)
+      .setGas(2_000_000)
+      .setTransactionMemo(exchangeRate.toString())
       .setFunction(
-        "stake",
-        new ContractFunctionParameters().addAddress(
-          accountId.toSolidityAddress()
-        )
+        "unStake",
+        new ContractFunctionParameters().addUint256(amount)
       )
       .setNodeAccountIds([new AccountId(3)])
       .setTransactionId(transId)
       .freeze();
 
-    const transactionBytes = transaction.toBytes();
+    if (connectedAccountType === "hashpack") {
+      stakeHashpack(accountId, transaction);
+    } else if (connectedAccountType === "blade") {
+      stakeBlade(accountId, transaction);
+    }
+  };
 
-    const response: MessageTypes.TransactionResponse = await sendTransaction(
-      transactionBytes,
-      accountId.toString(),
-      false
+  const withdraw = async (index: number) => {
+    setWithdrawStatus("IN_PROGRESS");
+
+    const accountId: AccountId = AccountId.fromString(
+      selectedAccount as string
     );
 
-    if (response.success) {
-      setTransActionStatus("SUCCESS");
-    }
+    let transId = TransactionId.generate(accountId);
+    const transaction = new ContractExecuteTransaction()
+      .setContractId(config.ids.undelegationContractId)
+      .setGas(2_000_000)
+      .setFunction(
+        "withdraw",
+        new ContractFunctionParameters().addUint256(index)
+      )
+      .setNodeAccountIds([new AccountId(3)])
+      .setTransactionId(transId)
+      .freeze();
 
-    if (response.success && !response.signedTransaction)
-      console.log(TransactionReceipt.fromBytes(response.receipt as Uint8Array));
-    else if (response.success && response.signedTransaction)
-      console.log(
-        Transaction.fromBytes(response.signedTransaction as Uint8Array)
-      );
-    else {
-      setTransActionStatus("FAILED");
+    if (connectedAccountType === "hashpack") {
+      stakeHashpack(accountId, transaction, true);
+    } else if (connectedAccountType === "blade") {
+      stakeBlade(accountId, transaction, true);
     }
-
-    // console.log("saveData", saveData);
-    // console.log("saveDataRef", saveDataRef.current);
-    getAccounts(accountId.toString());
-    getTvl();
-    //  hashConnect.transactionResponseEvent.on(transactionResponseHandler);
   };
 
   const sendTransaction = async (
@@ -541,7 +683,7 @@ export default function HashConnectProvider({
       },
     };
     const response = await hashConnect.sendTransaction(topic, transaction);
-    // console.log("transaction sent", response);
+
     return response;
   };
 
@@ -555,11 +697,27 @@ export default function HashConnectProvider({
         walletData: saveData,
         network: network,
         installedExtensions,
+        isBladeExtensionInstalled,
         isExtensionInstalled,
+        transactionType,
         status,
         stake,
+        unstake,
+        withdraw,
+        setWithdrawStatus,
+        withdrawStatus,
         transactionStatus,
-        setTransActionStatus,
+        setTransActionStatus: async (newStatus) => {
+          setTransActionStatus(newStatus);
+          if (
+            isBladeExtensionInstalled &&
+            connectedAccountType === "blade" &&
+            newStatus == ""
+          ) {
+            const balance = await bladeService.getBalance();
+            setAccountBalance(balance);
+          }
+        },
         signTransaction,
         tvl,
       }}

@@ -1,5 +1,4 @@
 // import useLSPoolsForm from "../../../hooks/useLSPoolsForm";
-import { ButtonOutlined } from "@atoms/Button/Button";
 import {
   LIQUID_NATIVE_TOKEN_LABEL,
   NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS,
@@ -7,23 +6,20 @@ import {
   NATIVE_TOKEN_LABEL,
   NATIVE_TOKEN_MULTIPLIER,
   precision,
-  stakeTransactionFee,
   tokenLabel,
 } from "@constants/constants";
 import { config } from "config/config";
 import { InputAdornment } from "@material-ui/core";
-import { NumberInput } from "@terra-dev/neumorphism-ui/components/NumberInput";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import {
   nativeTokenFormatter,
   formatWIthLocale,
 } from "../../../utils/CurrencyHelper";
-import { Typography } from "../../atoms";
-import PercentageButtons from "../PercentageButtons/PercentageButtons";
-import SDTooltip from "@atoms/SDTooltip/SDTooltip";
 import styles from "./LSPoolsFormLaToLx.module.scss";
 import { getAnalytics, logEvent } from "firebase/analytics";
+import LSPoolsForm from "./LSPoolsForm";
+import useTransactionFee from "@hooks/useTransactionFee";
 
 type Props = {
   tvlExchangeRate: number;
@@ -31,12 +27,14 @@ type Props = {
   handleStake: (amount: number) => void;
 };
 
-function LSPoolsFormStake(props: Props) {
-  const { tvlExchangeRate, walletBalance, handleStake } = props;
+function LSPoolsFormStake({
+  tvlExchangeRate,
+  walletBalance,
+  handleStake,
+}: Props) {
   const minDeposit = config.minDeposit;
   const maxDeposit = config.maxDeposit;
-
-  // console.log(tvlExchangeRate);
+  const { fee: transactionFee } = useTransactionFee();
 
   // const minDep = nativeTokenFormatter(minDeposit);
   // const maxDep = Math.min(nativeTokenFormatter(maxDeposit), walletBalance);
@@ -46,36 +44,32 @@ function LSPoolsFormStake(props: Props) {
   const calculateStakeValue = (value: number, setFieldValue: any) => {
     //check for - value
     // let val = (walletBalance * value) / NATIVE_TOKEN_MULTIPLIER;
-    let val = (walletBalance - stakeTransactionFee) * value;
+    let val = (walletBalance - transactionFee) * value;
     val = Math.min(val, maxDeposit);
     val = Math.max(val, minDeposit);
 
     setFieldValue(
-      "liquidNativeToken",
+      "toToken",
       nativeTokenFormatter(val * tvlExchangeRate)
       // outputAmountLiquidNativeToken(val, tvlExchangeRate)
     );
-    setFieldValue("nativeToken", nativeTokenFormatter(val));
+    setFieldValue("fromToken", nativeTokenFormatter(val));
   };
 
-  // console.log(minDep, maxDep, stakingFee);
 
   const validation = Yup.object().shape({
-    nativeToken: Yup.number()
+    fromToken: Yup.number()
       .test("wailet-no-money", "", function (value: number | undefined) {
-        if (
-          !value ||
-          value * 10 ** 8 + stakeTransactionFee + minDeposit < walletBalance
-        ) {
+        if (!value || value * 10 ** 8 + transactionFee <= walletBalance) {
           return true;
         } else {
           return this.createError({ message: "You do not have enough HBAR" });
         }
       })
       .lessThan(
-        nativeTokenFormatter(walletBalance - stakeTransactionFee),
+        nativeTokenFormatter(walletBalance - transactionFee),
         `Entered amount should be less than ${nativeTokenFormatter(
-          walletBalance - stakeTransactionFee
+          walletBalance - transactionFee
         )}`
       )
       .max(
@@ -106,154 +100,84 @@ function LSPoolsFormStake(props: Props) {
     <div className={styles.root}>
       <Formik
         initialValues={{
-          nativeToken: 0,
-          liquidNativeToken: 0,
-          fees: stakeTransactionFee,
+          fromToken: 0,
+          toToken: 0,
+          fees: transactionFee,
         }}
         onSubmit={(values) => {
-          if (values.nativeToken) {
+          if (values.fromToken) {
             const analytics = getAnalytics();
-            logEvent(analytics, "stake_click", { amount: values.nativeToken });
-            handleStake(values.nativeToken);
+            logEvent(analytics, "stake_click", { amount: values.fromToken });
+            handleStake(values.fromToken);
           }
         }}
         validationSchema={validation}
       >
         {(formik) => {
-          const {
-            handleSubmit,
-            getFieldProps,
-            setFieldValue,
-            values,
-            errors,
-            isSubmitting,
-          } = formik;
-          const nativeTokenProps = getFieldProps("nativeToken");
-          const liquidNativeTokenProps = getFieldProps("liquidNativeToken");
+          const { handleSubmit, getFieldProps, setFieldValue, errors } = formik;
 
           return (
-            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-              <div className={styles.available_amount_validation}>
-                <div className="flex flex-row align-middle">
-                  <Typography variant={"body3"} color={"secondary"}>
-                    Available:{" "}
-                    {(walletBalance / NATIVE_TOKEN_MULTIPLIER).toFixed(
-                      precision
-                    )}{" "}
-                    {NATIVE_TOKEN_LABEL} (ℏ)
-                  </Typography>
-                </div>
-                <div className="flex flex-row align-middle">
-                  <Typography variant={"body3"}>{`1 ${tokenLabel} = ~ ${(
-                    1 / tvlExchangeRate
-                  ).toFixed(precision)} ${NATIVE_TOKEN_LABEL}`}</Typography>
-                  <SDTooltip
-                    content={
-                      "Actual exchange rate may vary from the displayed value"
-                    }
-                    className="text-white ml-1"
-                    fontSize="small"
-                  />
-                </div>
-              </div>
+            <LSPoolsForm
+              maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
+              maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
+              availableLabel={`
+        Available:
+        ${(walletBalance / NATIVE_TOKEN_MULTIPLIER).toFixed(precision)} 
+        ${NATIVE_TOKEN_LABEL} (ℏ)
+        `}
+              fromTokenProps={getFieldProps("fromToken")}
+              fromTokenLabel={`Enter Amount min ${nativeTokenFormatter(
+                minDeposit
+              )} ℏ max ${formatWIthLocale(nativeTokenFormatter(maxDeposit))} ℏ`}
+              tokenCostLabel={`1 ${tokenLabel} = ~ ${(
+                1 / tvlExchangeRate
+              ).toFixed(precision)} ${NATIVE_TOKEN_LABEL}`}
+              transactionFeeLabel={`${nativeTokenFormatter(
+                transactionFee
+              )} ${NATIVE_TOKEN_LABEL} (ℏ)`}
+              buttonLabel={"Stake"}
+              fromTokenInputProps={{
+                endAdornment: (
+                  <InputAdornment position="end" className="text-white">
+                    <span className={"text-white"}>ℏ {NATIVE_TOKEN_LABEL}</span>
+                  </InputAdornment>
+                ),
+              }}
+              toTokenInputProps={{
+                endAdornment: (
+                  <InputAdornment position="end" className="text-white">
+                    <span className={"text-white"}>
+                      {LIQUID_NATIVE_TOKEN_LABEL}
+                    </span>
+                  </InputAdornment>
+                ),
+              }}
+              toTokenProps={getFieldProps("toToken")}
+              walletBalance={walletBalance}
+              errors={errors}
+              onPercentageButtonsClick={(value) => {
+                const analytics = getAnalytics();
 
-              <div className={"mt-4 mb-8 relative"}>
-                <NumberInput
-                  {...nativeTokenProps}
-                  maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
-                  maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
-                  label={`Enter Amount min ${nativeTokenFormatter(
-                    minDeposit
-                  )} ℏ max ${formatWIthLocale(
-                    nativeTokenFormatter(maxDeposit)
-                  )} ℏ`}
-                  onChange={(e) => {
-                    let value = e.target.value;
-                    setFieldValue(
-                      "liquidNativeToken",
+                logEvent(analytics, "percentage_button_click", { value });
+                calculateStakeValue(value, setFieldValue);
+              }}
+              onFromTokenChange={(e) => {
+                let value = e.target.value;
+                setFieldValue(
+                  "toToken",
 
-                      parseFloat(
-                        (Number(value) * tvlExchangeRate).toFixed(precision)
-                      )
-                      // outputAmountLiquidNativeToken(value, tvlExchangeRate)
-                    );
-                    setFieldValue("nativeToken", value);
-                  }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end" className="text-white">
-                        <span className={"text-white"}>
-                          ℏ {NATIVE_TOKEN_LABEL}
-                        </span>
-                      </InputAdornment>
-                    ),
-                  }}
-                  fullWidth
-                />
-                <span className={styles.arrow_down}>
-                  <img src="/static/arrowDown.png" alt="Arrow down" />
-                </span>
-              </div>
-              <div className={"mb-6"}>
-                <NumberInput
-                  {...liquidNativeTokenProps}
-                  maxIntegerPoinsts={NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS}
-                  maxDecimalPoints={NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS}
-                  label="Output Amount"
-                  value={liquidNativeTokenProps.value}
-                  onChange={() => {
-                    return "";
-                  }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end" className="text-white">
-                        <span className={"text-white"}>
-                          {LIQUID_NATIVE_TOKEN_LABEL}
-                        </span>
-                      </InputAdornment>
-                    ),
-                  }}
-                  fullWidth
-                />
-              </div>
-              <div className={styles.percentage_buttons_container}>
-                <PercentageButtons
-                  total={walletBalance}
-                  activeValue={nativeTokenProps.value}
-                  onClick={(value) => {
-                    const analytics = getAnalytics();
-
-                    logEvent(analytics, "percentage_button_click", { value });
-                    calculateStakeValue(value, setFieldValue);
-                  }}
-                />
-                <Typography variant={"body3"} color={"textSecondary"}>
-                  Transaction Fee: ~ {nativeTokenFormatter(stakeTransactionFee)}{" "}
-                  {NATIVE_TOKEN_LABEL} (ℏ)
-                </Typography>
-              </div>
-              {(errors.fees || errors.nativeToken) && (
-                <Typography
-                  variant={"body2"}
-                  color={"primary"}
-                  fontWeight={"medium"}
-                  className={"block mt-8 text-center"}
-                >
-                  {errors.fees || errors.nativeToken}
-                </Typography>
-              )}
-              <div className="mt-8 lg:mt-8 flex justify-center">
-                <ButtonOutlined
-                  className="w-[200px] h-[48px]"
-                  disabled={
-                    !!Object.keys(errors).length || nativeTokenProps.value === 0
-                  }
-                  type="submit"
-                >
-                  Stake
-                </ButtonOutlined>
-              </div>
-            </form>
+                  parseFloat(
+                    (Number(value) * tvlExchangeRate).toFixed(precision)
+                  )
+                  // outputAmountLiquidNativeToken(value, tvlExchangeRate)
+                );
+                setFieldValue("fromToken", value);
+              }}
+              onToTokenChange={() => {
+                return "";
+              }}
+              handleSubmit={handleSubmit}
+            ></LSPoolsForm>
           );
         }}
       </Formik>

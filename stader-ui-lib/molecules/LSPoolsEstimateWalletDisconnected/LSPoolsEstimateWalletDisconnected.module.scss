@@ -32,6 +32,7 @@
     @include for-tablet-landscape-down {
       display: flex;
       align-items: center;
+
      /* margin: 0 0 .75rem 0;*/
     }
     @include for-phone-only {
@@ -50,6 +51,7 @@
 
   .value {
     @include for-tablet-landscape-down {
+
       font-size: 18px !important;
      /* margin-top: 0.9rem !important;*/
      margin-bottom: 00.9rem !important;

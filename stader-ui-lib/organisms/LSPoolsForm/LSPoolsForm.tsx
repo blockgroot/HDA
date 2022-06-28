@@ -1,13 +1,14 @@
 import { ButtonOutlined } from "@atoms/Button/Button";
+import { Hbar } from "@hashgraph/sdk";
 import LSPoolsFormStake from "@molecules/LSPoolsForms/LSPoolsFormStake";
 import LSPoolsFormUnstake from "@molecules/LSPoolsForms/LSPoolsFormUnstake";
+import LSPoolsFormClaim from "@molecules/LSPoolsForms/LSPoolsFromClaim";
 import { LSPoolProps } from "@types_/liquid-staking-pool";
-import React, { useState } from "react";
+import { getAnalytics, logEvent } from "firebase/analytics";
+import useWithdrawals from "hooks/useWithdrawals";
+import React, { useEffect, useState } from "react";
 import { Box, Loader, Tab, Tabs, Typography } from "../../atoms";
 import styles from "./LSPoolsForm.module.scss";
-import { getAnalytics, logEvent } from "firebase/analytics";
-import { nativeTokenFormatter } from "@utils/CurrencyHelper";
-import { precision } from "@constants/constants";
 
 const ErrSVG = () => (
   <svg
@@ -29,34 +30,68 @@ function LSPoolsForm(props: LSPoolProps) {
   const {
     exchangeRate,
     handleStake,
+    handleUnstake,
+    handleWithdraw,
     holding,
     transactionStatus,
+    transactionType,
     setTransactionStatus,
+    withdrawStatus,
   } = props;
 
   const [amount, setAmount] = useState<number>(0);
   const [hbarXAmount, setHbarXAmount] = useState<number>(0);
   const [tab, setTab] = useState<number>(0);
+  const { data, getUnStakeData } = useWithdrawals();
+
   const handleTabChange = (val: number) => {
+    const tabValue = val == 0 ? "stake" : val == 1 ? "unstake" : "withdraw";
+    logEvent(analytics, "tab_clicked", { value: tabValue });
     setTab(val);
   };
 
-  // console.log("transactionStatus", transactionStatus);
+  useEffect(() => {
+    getUnStakeData();
+    // console.log(`transactionStatus`, transactionStatus);
+    // console.log(`withdrawStatus`, withdrawStatus);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transactionStatus, withdrawStatus]);
 
-  const onStakeSent = (stake: number) => {
-    setAmount(stake);
-    setHbarXAmount(stake * exchangeRate);
-    handleStake(stake);
+  const onStakeSent = (amount: number) => {
+    amount = parseFloat(amount.toString());
+    setAmount(amount);
+    setHbarXAmount(amount * exchangeRate);
+    handleStake(amount);
+  };
+
+  const onUnstakeSent = (amount: number) => {
+    amount = parseFloat(amount.toString());
+    setAmount(amount);
+    setHbarXAmount(amount);
+    handleUnstake(amount, 1 / exchangeRate);
   };
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setTransactionStatus("");
+    if (transactionType === "unstake") {
+      setTab(2);
+    }
   };
 
+  const handleTryAgain = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setTransactionStatus("");
+  };
+
+  const unstakeReady = true;
   const analytics = getAnalytics();
   if (transactionStatus === "FAILED") {
-    logEvent(analytics, "transaction_failed", { hbar: amount });
+    transactionType === "stake"
+      ? logEvent(analytics, "stake_transaction_failed", { hbar: amount })
+      : logEvent(analytics, "unstake_transaction_failed", {
+          hbarx: Hbar.fromTinybars(hbarXAmount).toBigNumber().toNumber(),
+        });
 
     return (
       <Box className={styles.root} noPadding>
@@ -66,16 +101,27 @@ function LSPoolsForm(props: LSPoolProps) {
               <ErrSVG />
             </div>
             <div className="justify-center flex p-2 text-center">
-              <Typography variant={"body1"} fontWeight="bold">
-                Something went wrong, please try again! <br />
-                <br /> We have refunded your {amount} HBAR.
-              </Typography>
+              {transactionType === "stake" && (
+                <Typography variant={"body1"} fontWeight="bold">
+                  Something went wrong, please try again! <br />
+                  <br /> We have refunded your {amount} HBAR.
+                </Typography>
+              )}
+              {transactionType === "unstake" && (
+                <Typography variant={"body1"} fontWeight="bold">
+                  Something went wrong, please try again! <br />
+                  <br /> We have refunded your{" "}
+                  {Hbar.fromTinybars(hbarXAmount).toBigNumber().toNumber()}{" "}
+                  HBARX.
+                </Typography>
+              )}
             </div>
+
             <div className="justify-center flex p-5 mt-3">
               <ButtonOutlined
                 className="w-[200px] h-[48px]"
                 type="submit"
-                onClick={handleClick}
+                onClick={handleTryAgain}
               >
                 Try Again
               </ButtonOutlined>
@@ -85,10 +131,16 @@ function LSPoolsForm(props: LSPoolProps) {
       </Box>
     );
   } else if (transactionStatus === "SUCCESS") {
-    logEvent(analytics, "transaction_success", {
-      hbar: amount,
-      hbarx: hbarXAmount.toFixed(precision),
-    });
+    // logEvent(analytics, "transaction_success", {
+    //   hbar: amount,
+    //   hbarx: Hbar.fromTinybars(hbarXAmount).toBigNumber().toNumber(),
+    //   type: transactionType,
+    // });
+    transactionType === "stake"
+      ? logEvent(analytics, "stake_transaction_success", { hbar: amount })
+      : logEvent(analytics, "unstake_transaction_success", {
+          hbarx: Hbar.fromTinybars(hbarXAmount).toBigNumber().toNumber(),
+        });
     return (
       <Box className={styles.root} noPadding>
         <div className={styles.container}>
@@ -97,9 +149,18 @@ function LSPoolsForm(props: LSPoolProps) {
               <img src={"/static/success.gif"} width={200} alt="success" />
             </div>
             <div className="justify-center flex p-2">
-              <Typography variant={"body1"} fontWeight="bold">
-                You received {hbarXAmount.toFixed(precision)} HBARX
-              </Typography>
+              {transactionType === "stake" && (
+                <Typography variant={"body1"} fontWeight="bold">
+                  Staking of {amount} HBAR is successful!
+                </Typography>
+              )}
+              {transactionType === "unstake" && (
+                <Typography variant={"body1"} fontWeight="bold">
+                  Unstaking of{" "}
+                  {Hbar.fromTinybars(hbarXAmount).toBigNumber().toNumber()}{" "}
+                  HBARX is successful!
+                </Typography>
+              )}
             </div>
             <div className="justify-center flex p-5 mt-3">
               <ButtonOutlined
@@ -123,7 +184,7 @@ function LSPoolsForm(props: LSPoolProps) {
         <div className={styles.container}>
           <Loader
             position={"center"}
-            text={`Staking of ${amount} HBAR is in progress`}
+            text={`Your transaction is in progress...`}
           />
         </div>
       </Box>
@@ -134,7 +195,8 @@ function LSPoolsForm(props: LSPoolProps) {
         <div className={styles.container}>
           <Tabs onChange={handleTabChange} value={tab}>
             <Tab label={"Stake"} value={0} />
-            <Tab label={"Unstake"} value={1} subText="(Coming Soon)" />
+            <Tab label={"Unstake"} value={1} />
+            <Tab label={"Withdraw"} value={2} subText="" />
           </Tabs>
           <>
             {tab === 0 && (
@@ -144,7 +206,22 @@ function LSPoolsForm(props: LSPoolProps) {
                 handleStake={onStakeSent}
               />
             )}
-            {tab === 1 && <LSPoolsFormUnstake />}
+            {tab === 1 && (
+              <LSPoolsFormUnstake
+                tvlExchangeRate={exchangeRate}
+                walletBalance={holding}
+                handleUnstake={onUnstakeSent}
+                readyState={unstakeReady}
+              />
+            )}
+
+            {tab === 2 && (
+              <LSPoolsFormClaim
+                walletBalance={holding}
+                handleClaim={getUnStakeData}
+                undelegateData={data}
+              />
+            )}
           </>
         </div>
       </Box>
