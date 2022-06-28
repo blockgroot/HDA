@@ -12,18 +12,14 @@ export const betaMainnetConfig = {
   blade_extension_url:
     "https://chrome.google.com/webstore/detail/blade-new-hedera-wallet/abogmiocnneedmmepnohnhlijcjpcifd",
   ids: {
-    // [ '0.0.1001864', '0.0.1001961', '0.0.1001873', '0.0.1001960' ]
-    //[ '0.0.1025713', '0.0.1025728', '0.0.1025720', '0.0.1025726' ]
-    tokenId: "0.0.1025713",
-    // oldContractIds: ["0.0.937108"],
-    // stakingContractId: "0.0.955403",
-    stakingContractId: "0.0.1025728",
-    rewardsContractId: "0.0.1025720",
-    undelegationContractId: "0.0.1025726",
+    tokenId: "0.0.834116",
+    stakingContractId: "0.0.1027588",
+    rewardsContractId: "0.0.834120",
+    undelegationContractId: "0.0.1027587",
   },
-  comingSoon: true,
+  comingSoon: false,
   minDeposit: 0.01 * 10 ** 8,
-  maxDeposit: 50 * 10 ** 8,
+  maxDeposit: 999999999.9999 * 10 ** 8,
   firebaseConfig: {
     apiKey: "AIzaSyCpAi4CmKEmaonFu6uePMH9eThL5EF4c8w",
     authDomain: "stader-hedera-analytics-v0.firebaseapp.com",

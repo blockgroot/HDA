@@ -13,12 +13,11 @@ export const mainnetConfig = {
     "https://chrome.google.com/webstore/detail/blade-new-hedera-wallet/abogmiocnneedmmepnohnhlijcjpcifd",
   ids: {
     tokenId: "0.0.834116",
-    oldContractIds: [],
-    stakingContractId: "0.0.834119",
+    stakingContractId: "0.0.1027588",
     rewardsContractId: "0.0.834120",
-    undelegationContractId: "0.0.34386429",
+    undelegationContractId: "0.0.1027587",
   },
-  comingSoon: true,
+  comingSoon: false,
   minDeposit: 0.01 * 10 ** 8,
   maxDeposit: 999999999.9999 * 10 ** 8,
   firebaseConfig: {

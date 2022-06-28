@@ -20,7 +20,7 @@ export const transactionsStatusMap = {};
 
 export const NATIVE_TOKEN_MULTIPLIER = 100000000;
 
-export const emissionRate = 50 * NATIVE_TOKEN_MULTIPLIER; //Per day
+export const emissionRate = 668132 * NATIVE_TOKEN_MULTIPLIER; //Per day
 export const unBondingTime = 24 * 60 * 60 * 7; //24 * 60 * 60; // 24 hours
 export const usdTransactionFee = 0.2; // USD
 export const version = 1.0;
