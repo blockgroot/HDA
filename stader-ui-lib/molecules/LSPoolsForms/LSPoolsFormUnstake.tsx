@@ -49,7 +49,9 @@ function LSPoolsFormUnstake(props: Props) {
 
     fees: Yup.number().lessThan(
       walletBalance,
-      `Not enough HBAR for transaction fees ${transactionFee}`
+      `Not enough HBAR for transaction fees ${nativeTokenFormatter(
+        transactionFee
+      )}`
     ),
   });
   const calculateUnStakeValue = (value: number, setFieldValue: any) => {
