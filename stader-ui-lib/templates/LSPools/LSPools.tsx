@@ -31,14 +31,11 @@ function LSPools() {
   const { apy } = useAPY();
   const tabletDown = useMediaQuery(`(max-width:${MQ_FOR_TABLET_LANDSCAPE}px)`);
 
-  if (tabletDown) {
-    return <InfoPageMobile />;
-  }
-
   if (status === "INITIALIZING") {
     return <Loader text={"Please wait while we set things up for you"} />;
   }
 
+  console.log("LSPools: ", status);
   if (status !== "WALLET_CONNECTED") {
     return (
       <>

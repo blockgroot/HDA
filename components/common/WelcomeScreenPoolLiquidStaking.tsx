@@ -12,7 +12,7 @@ interface Props {
 
 function WelcomeScreenPoolLiquidStaking({ toggleConnectWallet }: Props) {
   return (
-    <div className="welcome-container welcome-container-liquid-staking pl-4 pr-4">
+    <div className="welcome-container welcome-container-liquid-staking">
       <div className="welcome-content">
         <div>
           <img src={welcome_wave} alt="welcome" />
@@ -26,7 +26,7 @@ function WelcomeScreenPoolLiquidStaking({ toggleConnectWallet }: Props) {
             </p>
           </div>
         </div>
-        <div className="flex-auto flex-col-reverse">
+        <div className="flex-auto flex-col-reverse pt-4">
           <div>
             <WalletSelector variant={"solid"} />
           </div>
