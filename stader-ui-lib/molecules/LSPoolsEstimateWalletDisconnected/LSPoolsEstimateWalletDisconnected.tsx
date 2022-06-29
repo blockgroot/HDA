@@ -40,7 +40,7 @@ function LSPoolsEstimate(props: Props) {
           <div
             className={`flex ${
               mobileDown
-                ? "flex-column"
+                ? "flex-column p-2"
                 : "flex-row  justify-between w-full align-middle"
             } `}
           >
