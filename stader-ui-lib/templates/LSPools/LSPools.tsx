@@ -35,7 +35,6 @@ function LSPools() {
     return <Loader text={"Please wait while we set things up for you"} />;
   }
 
-  console.log("LSPools: ", status);
   if (status !== "WALLET_CONNECTED") {
     return (
       <>
