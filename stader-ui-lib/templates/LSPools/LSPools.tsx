@@ -45,9 +45,13 @@ function LSPools() {
           apy={apy}
           exchangeRate={exchangeRate}
         />
-        <WelcomeScreenPoolLiquidStaking />
+        <InfoPageMobile />
       </>
     );
+  }
+
+  if (tabletDown) {
+    return <InfoPageMobile />;
   }
 
   return (
