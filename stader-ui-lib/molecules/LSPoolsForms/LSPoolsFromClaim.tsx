@@ -223,7 +223,7 @@ export default function LSPoolsFormClaim(
             {tab === 1 &&
               undelegateData.filter((s) => s.isWithDrawn).length === 0 && (
                 <LSEmptyClaim
-                  message="You have not made any withdrawls yet"
+                  message="You have not made any withdrawals yet"
                   showNoClaim={false}
                 />
               )}

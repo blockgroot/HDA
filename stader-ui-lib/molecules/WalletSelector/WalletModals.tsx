@@ -178,7 +178,7 @@ export const DisconnectWalletModal: FC<DisconnectedProps> = (props) => {
           ) : (
             <Typography fontWeight={"medium"}>
               {isBladeExtensionInstalled ? "" : "Install"} Blade
-              {isBladeExtensionInstalled ? " Wallet (Beta)" : " Extension"}
+              {isBladeExtensionInstalled ? " Wallet" : " Extension"}
             </Typography>
           )}
         </Button>
