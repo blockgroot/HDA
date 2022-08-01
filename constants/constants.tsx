@@ -32,7 +32,7 @@ export const transactionFees = 1; //1 hbar
 export const NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS = precision;
 export const NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS = 9;
 
-export const bannerText = `Current staking rewards are 600k HBAR/epoch.`;
+export const bannerText = `Current staking rewards are ~600k HBAR/epoch.`;
 
 export const gtmId = "GTM-KCLNW9N";
 export const tvlUpdateInterval = 10 * 1000;
