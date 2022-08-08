@@ -20,8 +20,8 @@ export const transactionsStatusMap = {};
 
 export const NATIVE_TOKEN_MULTIPLIER = 100000000;
 
-export const emissionRate = 599999.9996 * NATIVE_TOKEN_MULTIPLIER; //Per day
-export const unBondingTime = 24 * 60 * 60 * 7; //24 * 60 * 60; // 24 hours
+export const emissionRate = 574999.999776 * NATIVE_TOKEN_MULTIPLIER; //Per day
+export const unBondingTime = 24 * 60 * 60; //24 * 60 * 60; // 24 hours
 export const usdTransactionFee = 0.2; // USD
 export const version = 1.0;
 export const apiPath = "api/v1/";
@@ -32,7 +32,7 @@ export const transactionFees = 1; //1 hbar
 export const NATIVE_TOKEN_INPUT_MAXIMUM_DECIMAL_POINTS = precision;
 export const NATIVE_TOKEN_INPUT_MAXIMUM_INTEGER_POINTS = 9;
 
-export const bannerText = `Current staking rewards are ~600k HBAR/epoch.`;
+export const bannerText = `Current staking rewards are ~575k HBAR/epoch.`;
 
 export const gtmId = "GTM-KCLNW9N";
 export const tvlUpdateInterval = 10 * 1000;
