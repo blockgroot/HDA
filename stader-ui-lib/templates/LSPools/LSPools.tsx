@@ -103,7 +103,7 @@ function LSPools() {
                 height={20}
                 className="mr-2"
               />{" "}
-              HBARs will be available for withdrawal 7 days after unstaking
+              HBAR will be available for withdrawal 24 hours after unstaking.
             </Typography>
           </Box>
         </Grid>
