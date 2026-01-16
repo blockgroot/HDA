@@ -234,6 +234,8 @@ export default function HashConnectProvider({
             localData?.topic,
             localData?.pairedWalletData ?? metadata
           );
+          // Re-detect local wallets when reconnecting (important for production)
+          hashConnect.listeners.findLocalWallets();
         } else {
           await bladeService.loadWallet();
         }
@@ -305,7 +307,8 @@ export default function HashConnectProvider({
     if (debug) console.debug("====foundExtensionEvent====", data);
     // Do a thing
     console.log("foundExtensionEventHandler", data);
-    if (status === WalletStatus.INITIALIZING) {
+    // Use statusRef.current to get the current status value (avoids stale closure)
+    if (statusRef.current === WalletStatus.INITIALIZING) {
       setStatus(WalletStatus.WALLET_NOT_CONNECTED);
       setInstalledExtensions(data as HashConnectTypes.WalletMetadata);
     }
@@ -342,9 +345,14 @@ export default function HashConnectProvider({
   // });
 
   useEffect(() => {
+    // Only initialize on client side
+    if (typeof window === "undefined") return;
+
     //Intialize the setup
 
-    hashConnect.listeners.foundExtensionEvent.once(foundExtensionEventHandler);
+    // Use .on() instead of .once() so the handler can fire multiple times
+    // This is critical for production where extensions might not be detected immediately
+    hashConnect.listeners.foundExtensionEvent.on(foundExtensionEventHandler);
     hashConnect.listeners.pairingEvent.on(pairingEventHandler);
     hashConnect.listeners.transactionEvent.on(transactionHandler);
 
