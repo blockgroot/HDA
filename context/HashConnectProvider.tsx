@@ -503,7 +503,7 @@ export default function HashConnectProvider({
     accountId: string,
     accountType?: WalletExtensionType,
     retryCount: number = 0
-  ) => {
+  ): Promise<void> => {
     //Create the account info query
     const accountTypeToUse = accountType || connectedAccountType;
 
@@ -1022,10 +1022,6 @@ export default function HashConnectProvider({
       metadata: {
         accountToSign: acctToSign,
         returnTransaction: return_trans,
-        // Add description to help wallet display the transaction
-        description: "Sign transaction",
-        // Add memo if available
-        memo: return_trans ? "Return signed transaction" : undefined,
       },
     };
 
@@ -1038,24 +1034,6 @@ export default function HashConnectProvider({
           transactionHex: Buffer.from(trans.slice(0, 50)).toString("hex"),
         });
       }
-
-      // Set up a listener to catch any transaction events
-      const transactionHandler = (
-        response: MessageTypes.TransactionResponse
-      ) => {
-        if (debug) {
-          console.log("Transaction event received:", {
-            success: response.success,
-            hasSignedTransaction: !!response.signedTransaction,
-            hasReceipt: !!response.receipt,
-            error: response.error,
-            response: response,
-          });
-        }
-      };
-
-      // Listen for transaction responses
-      hashConnect.listeners.transactionEvent.once(transactionHandler);
 
       const response = await hashConnect.sendTransaction(topic, transaction);
 
