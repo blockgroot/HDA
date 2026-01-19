@@ -227,7 +227,30 @@ export default function HashConnectProvider({
         // if (debug) console.log("====Local data found====", localData);
         //use loaded data for initialization + connection
         if (localData.walletExtensionType == "hashpack") {
-          await hashConnect.init(metadata ?? APP_CONFIG, localData?.privateKey);
+          // Ensure HashConnect is initialized with private key BEFORE connecting
+          // This is critical for encryption to work properly
+          if (localData?.privateKey) {
+            try {
+              await hashConnect.init(
+                metadata ?? APP_CONFIG,
+                localData.privateKey
+              );
+              if (debug) {
+                console.log(
+                  "HashConnect initialized with private key for reconnection"
+                );
+              }
+            } catch (initError: any) {
+              // If init fails, log but continue - it might already be initialized
+              if (debug) {
+                console.warn(
+                  "HashConnect init during reconnect:",
+                  initError?.message
+                );
+              }
+            }
+          }
+
           setInstalledExtensions(localData?.pairedWalletData);
           setExtensionInstalled(true);
           const state = await hashConnect.connect(
@@ -267,11 +290,12 @@ export default function HashConnectProvider({
     if (debug)
       console.info("===============Saving to localstorage::=============");
     const { metadata, ...restData } = data;
+    const walletType = extensionType || connectedAccountType || "hashpack";
     const saveObj: SaveData = {
       ...saveData,
       pairedWalletData: metadata,
       pairedAccounts: restData.accountIds,
-      walletExtensionType: extensionType || connectedAccountType,
+      walletExtensionType: walletType,
       ...restData,
     };
     // console.log(saveObj, "saveObj");
@@ -282,6 +306,10 @@ export default function HashConnectProvider({
     // });
     // console.log("saveData", saveData);
     setSaveData(saveObj);
+    // Ensure connectedAccountType is set
+    if (walletType) {
+      setConnectedAccountType(walletType);
+    }
     // setAccountId(restData.accountIds[0]);
     StorageService.saveData(saveObj);
     if (
@@ -290,7 +318,8 @@ export default function HashConnectProvider({
       saveObj.accountIds[0] !== undefined
     ) {
       setSelectedAccount(saveObj.accountIds[0]);
-      await getAccounts(saveObj.accountIds[0]!);
+      // Pass the wallet type explicitly to avoid stale closure issues
+      await getAccounts(saveObj.accountIds[0]!, walletType);
     }
   };
 
@@ -439,36 +468,113 @@ export default function HashConnectProvider({
 
       const client = Client.forName(config.network.name);
 
+      // Add timeout to prevent hanging requests
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error("TVL query timeout")), 10000); // 10 second timeout
+      });
+
       //Sign the query with the client operator private key and submit to a Hedera network
-      const balance = await query.execute(client);
-      // console.log(balance);
+      const balance = (await Promise.race([
+        query.execute(client),
+        timeoutPromise,
+      ])) as AccountBalance;
 
       setTvl(balance.hbars.toTinybars().toNumber());
+      setNetworkError(false); // Clear network error on success
     } catch (error: any) {
+      // Check if error is a network/503 error
+      const isNetworkError =
+        error.message?.includes("503") ||
+        error.message?.includes("Service Unavailable") ||
+        error.message?.includes("unexpected frame length") ||
+        error.message?.includes("timeout");
+
+      // Only log non-network errors or if debug is enabled
+      if (debug || !isNetworkError) {
+        console.warn("Error fetching TVL:", error.message || error);
+      }
+
       setNetworkError(true);
-      console.log(error.message);
+      // Keep previous TVL value - don't reset it on error
     }
   };
 
-  const getAccounts = async (accountId: string) => {
+  const getAccounts = async (
+    accountId: string,
+    accountType?: WalletExtensionType,
+    retryCount: number = 0
+  ) => {
     //Create the account info query
+    const accountTypeToUse = accountType || connectedAccountType;
+
+    // Set status to connected first, even if balance query fails
+    // The wallet is connected if we have an account ID and account type
+    if (accountId && accountTypeToUse) {
+      setStatus(WalletStatus.WALLET_CONNECTED);
+    }
+
+    const MAX_RETRIES = 2;
+    const RETRY_DELAY = 1000; // 1 second
+
     try {
-      if (connectedAccountType === "hashpack") {
+      if (accountTypeToUse === "hashpack") {
         const query = new AccountBalanceQuery().setAccountId(accountId);
         const client = Client.forName(config.network.name);
+
+        // Add timeout to prevent hanging requests
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error("Balance query timeout")), 10000); // 10 second timeout
+        });
+
         // Sign with client operator private key and submit the query to a Hedera network
-        const balance = await query.execute(client);
+        const balance = (await Promise.race([
+          query.execute(client),
+          timeoutPromise,
+        ])) as AccountBalance;
+
         setAccountBalance(balance);
-      } else if (connectedAccountType === "blade") {
+        setNetworkError(false); // Clear network error on success
+      } else if (accountTypeToUse === "blade") {
         const balance = await bladeService.getBalance();
         setAccountBalance(balance);
-      }
-      if (connectedAccountType !== "") {
-        setStatus("WALLET_CONNECTED");
+        setNetworkError(false); // Clear network error on success
       }
     } catch (error: any) {
+      // Check if error is a network/503 error that we should retry
+      const isRetryableError =
+        error.message?.includes("503") ||
+        error.message?.includes("Service Unavailable") ||
+        error.message?.includes("unexpected frame length") ||
+        error.message?.includes("timeout") ||
+        error.code === "ECONNRESET" ||
+        error.code === "ETIMEDOUT";
+
+      if (isRetryableError && retryCount < MAX_RETRIES) {
+        // Retry with exponential backoff
+        if (debug) {
+          console.log(
+            `Balance query failed, retrying... (${
+              retryCount + 1
+            }/${MAX_RETRIES})`
+          );
+        }
+        await new Promise((resolve) =>
+          setTimeout(resolve, RETRY_DELAY * (retryCount + 1))
+        );
+        return getAccounts(accountId, accountType, retryCount + 1);
+      }
+
+      // Log error only if it's not a common network issue or if debug is enabled
+      if (debug || !isRetryableError) {
+        console.warn("Error fetching account balance:", error.message || error);
+      }
+
+      // Set network error flag but don't break the app
       setNetworkError(true);
-      console.log(error.message);
+
+      // Keep balance as null/previous value - don't clear it on error
+      // Status is already set to WALLET_CONNECTED above, so wallet connection is still recognized
+      // even if balance query fails
     }
   };
 
@@ -487,34 +593,205 @@ export default function HashConnectProvider({
   };
 
   const signTransaction = async (transactionString: string) => {
-    // console.log("transactionString", transactionString);
-    const transaction = Buffer.from(transactionString, "base64");
-
-    // console.log("transaction", transaction.buffer);
-
-    const response: MessageTypes.TransactionResponse = await sendTransaction(
-      transaction,
-      selectedAccount,
-      true
-    );
-
-    // console.log("response", response);
-    if (response.success && response.signedTransaction) {
-      // console.log("signedTransaction", signedTransaction);
-
-      const signedTransaction = Buffer.from(
-        response.signedTransaction
-      ).toString("base64");
-      // console.log(encodedSignature);
-      // const output: signedTransactionParams = {
-      //   userId: selectedAccount,
-      //   signature: encodedSignature,
-      // };
-      // console.log("output", output);
-      return signedTransaction;
+    if (!transactionString || transactionString.trim() === "") {
+      throw new Error("Transaction string is empty");
     }
 
-    return null;
+    if (!selectedAccount) {
+      throw new Error("No account selected. Please connect your wallet.");
+    }
+
+    try {
+      // Decode base64 string to Uint8Array
+      // Remove any whitespace from the input
+      const cleanTransactionString = transactionString
+        .trim()
+        .replace(/\s/g, "");
+      const transactionBuffer = Buffer.from(cleanTransactionString, "base64");
+      const transactionBytes = new Uint8Array(transactionBuffer);
+
+      if (transactionBytes.length === 0) {
+        throw new Error("Invalid transaction: decoded bytes are empty");
+      }
+
+      // Try to deserialize the transaction to verify it's valid
+      // This helps ensure the transaction is in the correct format
+      let transactionValid = false;
+      let payerAccount: string | null = null;
+      let deserializedTx: Transaction | null = null;
+      let parseError: any = null;
+
+      try {
+        // Validate transaction length before attempting to parse
+        if (transactionBytes.length < 10) {
+          throw new Error(
+            `Transaction too short: ${transactionBytes.length} bytes. ` +
+              `A valid Hedera transaction should be at least 50 bytes. ` +
+              `The transaction string may be incomplete or corrupted.`
+          );
+        }
+
+        if (debug) {
+          console.log("Transaction bytes info:", {
+            length: transactionBytes.length,
+            firstBytes: Array.from(transactionBytes.slice(0, 20)),
+            hexPreview: Buffer.from(transactionBytes.slice(0, 30)).toString(
+              "hex"
+            ),
+          });
+        }
+
+        deserializedTx = Transaction.fromBytes(transactionBytes);
+        // Verify the transaction is frozen (has transaction ID)
+        if (deserializedTx.transactionId) {
+          transactionValid = true;
+          // Get the payer account from the transaction ID for logging
+          payerAccount =
+            deserializedTx.transactionId.accountId?.toString() || null;
+
+          // Check if transaction is frozen (required for signing)
+          if (!deserializedTx.isFrozen()) {
+            console.warn(
+              "Transaction is not frozen. The wallet may not be able to sign it."
+            );
+          }
+
+          if (payerAccount && payerAccount !== selectedAccount) {
+            console.warn(
+              `Transaction payer (${payerAccount}) differs from connected account (${selectedAccount}). Will attempt to sign with connected account.`
+            );
+          }
+
+          if (debug) {
+            console.log("Transaction validated:", {
+              transactionId: deserializedTx.transactionId.toString(),
+              payerAccount: payerAccount,
+              selectedAccount: selectedAccount,
+              accountToSign: selectedAccount,
+              isFrozen: deserializedTx.isFrozen(),
+              nodeAccountIds: deserializedTx.nodeAccountIds?.map((id) =>
+                id.toString()
+              ),
+            });
+          }
+        } else {
+          throw new Error(
+            "Transaction does not have a transaction ID. It may not be properly formatted."
+          );
+        }
+      } catch (error: any) {
+        parseError = error;
+        const errorMsg = error.message || String(error);
+        console.warn("Failed to parse transaction:", errorMsg);
+
+        // Provide more specific error messages
+        if (errorMsg.includes("index out of range")) {
+          console.warn(
+            `⚠️ Transaction bytes appear incomplete or may be in a different format. ` +
+              `Length: ${transactionBytes.length} bytes. ` +
+              `Attempting to send anyway - the wallet may be able to parse it.`
+          );
+          if (debug) {
+            console.warn("Transaction bytes analysis:", {
+              totalBytes: transactionBytes.length,
+              first20Bytes: Array.from(transactionBytes.slice(0, 20)),
+              last10Bytes: Array.from(transactionBytes.slice(-10)),
+              hexPreview: Buffer.from(transactionBytes.slice(0, 30)).toString(
+                "hex"
+              ),
+            });
+          }
+          // Don't throw - allow sending even if we can't parse it
+          // The wallet might be able to handle it
+          transactionValid = true; // Allow proceeding
+        } else {
+          console.warn(
+            "⚠️ Could not parse transaction, but will attempt to send it anyway. The wallet may be able to handle it."
+          );
+          // Allow proceeding - some transaction formats might not parse easily
+          transactionValid = true;
+        }
+      }
+
+      // Note: We allow proceeding even if parsing failed
+      // The wallet might be able to parse transactions we can't
+
+      // Always use the connected account for signing
+      const accountToSign = selectedAccount;
+
+      if (debug) {
+        console.log("Signing transaction:", {
+          accountId: selectedAccount,
+          accountToSign: accountToSign,
+          transactionLength: transactionBytes.length,
+          transactionValid: transactionValid,
+          returnTransaction: true,
+        });
+      }
+
+      const response: MessageTypes.TransactionResponse = await sendTransaction(
+        transactionBytes,
+        accountToSign,
+        true
+      );
+
+      if (debug) {
+        console.log("Transaction response:", {
+          success: response.success,
+          hasSignedTransaction: !!response.signedTransaction,
+          hasReceipt: !!response.receipt,
+          error: response.error,
+          response: response,
+        });
+      }
+
+      // Check if wallet received but didn't respond (wallet opened but showed nothing)
+      if (
+        !response.success &&
+        !response.error &&
+        !response.signedTransaction &&
+        !response.receipt
+      ) {
+        console.warn(
+          "⚠️ Wallet opened but no response received. This usually means:"
+        );
+        console.warn(
+          "   1. The transaction format is not recognized by the wallet"
+        );
+        console.warn("   2. The transaction bytes are incomplete or corrupted");
+        console.warn("   3. The wallet cannot parse this transaction type");
+        console.warn(
+          "   Transaction length:",
+          transactionBytes.length,
+          "bytes"
+        );
+        throw new Error(
+          "Wallet opened but could not display the transaction. " +
+            "The transaction format may not be recognized. " +
+            "Please ensure you're using a complete, frozen Hedera transaction in base64 format. " +
+            "Check the browser console for more details."
+        );
+      }
+
+      if (response.success && response.signedTransaction) {
+        const signedTransaction = Buffer.from(
+          response.signedTransaction
+        ).toString("base64");
+        return signedTransaction;
+      } else if (response.error) {
+        throw new Error(`Transaction signing failed: ${response.error}`);
+      } else if (!response.success) {
+        // If response is not successful but no error, the user might have rejected it
+        throw new Error(
+          "Transaction signing was cancelled or rejected. Please check your wallet."
+        );
+      }
+
+      return null;
+    } catch (error: any) {
+      console.error("Error in signTransaction:", error);
+      throw error;
+    }
   };
 
   const stakeHashpack = async (
@@ -680,19 +957,184 @@ export default function HashConnectProvider({
     acctToSign: string,
     return_trans: boolean = false
   ) => {
-    const topic = saveData.topic;
+    // Use ref to get the latest saveData to avoid stale closure issues
+    const currentSaveData = saveDataRef.current;
+    const topic = currentSaveData.topic;
+
+    if (!topic) {
+      throw new Error(
+        "HashConnect is not properly initialized. Topic is missing. Please reconnect your wallet."
+      );
+    }
+
+    if (!currentSaveData.privateKey) {
+      throw new Error(
+        "HashConnect is not properly initialized. Private key is missing. Please reconnect your wallet."
+      );
+    }
+
+    // HashConnect should already be initialized when the wallet connects
+    // But we need to ensure it's initialized with the private key for encryption
+    // Try to ensure initialization without throwing if it's already done
+    try {
+      // Check if we need to initialize by attempting init
+      // If it's already initialized, this should not throw an error in newer versions
+      // But if it does throw, we'll catch it and proceed anyway
+      await hashConnect.init(
+        metadata ?? APP_CONFIG,
+        currentSaveData.privateKey
+      );
+      if (debug) {
+        console.log("HashConnect initialized/verified for transaction");
+      }
+    } catch (error: any) {
+      // HashConnect might already be initialized - that's fine
+      // The important thing is that we have the private key stored
+      // and HashConnect should maintain its encryption state
+      const errorMessage = error?.message || String(error);
+      if (debug) {
+        console.log(
+          "HashConnect init check (may already be initialized):",
+          errorMessage
+        );
+      }
+      // Don't throw - proceed with transaction as HashConnect might still work
+    }
+
+    // Validate transaction bytes before sending
+    if (!trans || trans.length === 0) {
+      throw new Error("Transaction bytes are empty or invalid");
+    }
+
+    if (debug) {
+      console.log("Sending transaction to HashConnect:", {
+        topic: topic,
+        accountToSign: acctToSign,
+        transactionLength: trans.length,
+        returnTransaction: return_trans,
+        firstBytes: Array.from(trans.slice(0, 10)), // First 10 bytes for debugging
+      });
+    }
+
     const transaction: MessageTypes.Transaction = {
       topic: topic,
       byteArray: trans,
-
       metadata: {
         accountToSign: acctToSign,
         returnTransaction: return_trans,
+        // Add description to help wallet display the transaction
+        description: "Sign transaction",
+        // Add memo if available
+        memo: return_trans ? "Return signed transaction" : undefined,
       },
     };
-    const response = await hashConnect.sendTransaction(topic, transaction);
 
-    return response;
+    try {
+      if (debug) {
+        console.log("Calling hashConnect.sendTransaction with:", {
+          topic: transaction.topic,
+          byteArrayLength: transaction.byteArray.length,
+          metadata: transaction.metadata,
+          transactionHex: Buffer.from(trans.slice(0, 50)).toString("hex"),
+        });
+      }
+
+      // Set up a listener to catch any transaction events
+      const transactionHandler = (
+        response: MessageTypes.TransactionResponse
+      ) => {
+        if (debug) {
+          console.log("Transaction event received:", {
+            success: response.success,
+            hasSignedTransaction: !!response.signedTransaction,
+            hasReceipt: !!response.receipt,
+            error: response.error,
+            response: response,
+          });
+        }
+      };
+
+      // Listen for transaction responses
+      hashConnect.listeners.transactionEvent.once(transactionHandler);
+
+      const response = await hashConnect.sendTransaction(topic, transaction);
+
+      if (debug) {
+        console.log("HashConnect sendTransaction response:", {
+          success: response.success,
+          hasSignedTransaction: !!response.signedTransaction,
+          hasReceipt: !!response.receipt,
+          error: response.error,
+          fullResponse: response,
+        });
+
+        // Log if wallet received the transaction
+        if (response.success === false && !response.error) {
+          console.warn(
+            "⚠️ Transaction sent but wallet may not be displaying it. This could mean:"
+          );
+          console.warn(
+            "   1. The transaction format is not recognized by the wallet"
+          );
+          console.warn("   2. The wallet needs additional metadata");
+          console.warn(
+            "   3. The transaction type is not supported for display"
+          );
+        }
+      }
+
+      return response;
+    } catch (error: any) {
+      const errorMessage = error?.message || String(error);
+
+      // If we get the SimpleCrypto error, HashConnect encryption is not set up
+      // This means the init didn't work or HashConnect lost its encryption state
+      if (
+        errorMessage.includes("SimpleCrypto") ||
+        errorMessage.includes("SECRET KEY")
+      ) {
+        if (debug) {
+          console.log(
+            "SimpleCrypto error - HashConnect encryption not initialized. Attempting fix..."
+          );
+        }
+
+        // The issue is that HashConnect needs to be initialized with the private key
+        // But calling init again might not work if it's already initialized
+        // We need to ensure the HashConnect instance has the encryption key
+
+        // Try to disconnect and reconnect to force re-initialization
+        try {
+          // First, try to ensure we're connected with the topic
+          if (currentSaveData.pairedWalletData) {
+            await hashConnect.connect(
+              currentSaveData.topic,
+              currentSaveData.pairedWalletData
+            );
+          }
+
+          // Wait a moment for connection to establish
+          await new Promise((resolve) => setTimeout(resolve, 200));
+
+          // Retry the transaction
+          const response = await hashConnect.sendTransaction(
+            topic,
+            transaction
+          );
+          return response;
+        } catch (retryError: any) {
+          // If that doesn't work, the user needs to reconnect
+          throw new Error(
+            `HashConnect encryption is not initialized. ` +
+              `This usually happens when the wallet connection is lost. ` +
+              `Please disconnect and reconnect your wallet, then try again.`
+          );
+        }
+      }
+
+      // For other errors, throw them as-is
+      throw error;
+    }
   };
 
   return (
