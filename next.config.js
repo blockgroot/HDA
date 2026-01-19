@@ -93,64 +93,122 @@ const securityHeaders = [
   },
 ];
 
-const sentryWebpackPluginOptions = {
-  // Additional config options for the Sentry Webpack plugin. Keep in mind that
-  // the following options are set automatically, and overriding them is not
-  // recommended:
-  //   release, url, org, project, authToken, configFile, stripPrefix,
-  //   urlPrefix, include, ignore
+// const sentryWebpackPluginOptions = {
+//   // Additional config options for the Sentry Webpack plugin. Keep in mind that
+//   // the following options are set automatically, and overriding them is not
+//   // recommended:
+//   //   release, url, org, project, authToken, configFile, stripPrefix,
+//   //   urlPrefix, include, ignore
 
-  silent: true, // Suppresses all logs
+//   silent: true, // Suppresses all logs
+//   authToken: process.env.SENTRY_AUTH_TOKEN,
+//   // For all available options, see:
+//   // https://github.com/getsentry/sentry-webpack-plugin#options.
+// };
+
+// module.exports = withSentryConfig(
+//   withTM(
+//     withImages(
+//       {
+//         poweredByHeader: false,
+
+//         productionBrowserSourceMaps: true,
+//         webpack: (config) => {
+//           return {
+//             ...config,
+//             resolve: {
+//               ...config.resolve,
+//               extensions: getSupportedExtensions(config.resolve.extensions),
+//             },
+//           };
+//         },
+//         sassOptions: {
+//           includePaths: [path.join(__dirname, "styles")],
+
+//           prependData: `@import "./styles/_mixins.scss";`,
+//         },
+//         compiler: {
+//           // ssr and displayName are configured by default
+//           styledComponents: true,
+//         },
+//         async redirects() {
+//           return [
+//             {
+//               source: "/",
+//               destination: "/lt-pools",
+//               permanent: true,
+//             },
+//           ];
+//         },
+//         async headers() {
+//           return [
+//             {
+//               // Apply these headers to all routes.
+//               source: "/:path*",
+//               headers: securityHeaders,
+//             },
+//           ];
+//         },
+//       },
+//       sentryWebpackPluginOptions
+//     )
+//   )
+// );
+// ... existing code up to line 94 ...
+
+const sentryWebpackPluginOptions = {
+  silent: true,
   authToken: process.env.SENTRY_AUTH_TOKEN,
-  // For all available options, see:
-  // https://github.com/getsentry/sentry-webpack-plugin#options.
+  // Skip Sentry release creation if no valid token
+  dryRun: !process.env.SENTRY_AUTH_TOKEN,
 };
 
-module.exports = withSentryConfig(
-  withTM(
-    withImages(
-      {
-        poweredByHeader: false,
+// Create base config without Sentry
+const baseConfig = withTM(
+  withImages({
+    poweredByHeader: false,
 
-        productionBrowserSourceMaps: true,
-        webpack: (config) => {
-          return {
-            ...config,
-            resolve: {
-              ...config.resolve,
-              extensions: getSupportedExtensions(config.resolve.extensions),
-            },
-          };
+    productionBrowserSourceMaps: true,
+    webpack: (config) => {
+      return {
+        ...config,
+        resolve: {
+          ...config.resolve,
+          extensions: getSupportedExtensions(config.resolve.extensions),
         },
-        sassOptions: {
-          includePaths: [path.join(__dirname, "styles")],
+      };
+    },
+    sassOptions: {
+      includePaths: [path.join(__dirname, "styles")],
 
-          prependData: `@import "./styles/_mixins.scss";`,
+      prependData: `@import "./styles/_mixins.scss";`,
+    },
+    compiler: {
+      // ssr and displayName are configured by default
+      styledComponents: true,
+    },
+    async redirects() {
+      return [
+        {
+          source: "/",
+          destination: "/lt-pools",
+          permanent: true,
         },
-        compiler: {
-          // ssr and displayName are configured by default
-          styledComponents: true,
+      ];
+    },
+    async headers() {
+      return [
+        {
+          // Apply these headers to all routes.
+          source: "/:path*",
+          headers: securityHeaders,
         },
-        async redirects() {
-          return [
-            {
-              source: "/",
-              destination: "/lt-pools",
-              permanent: true,
-            },
-          ];
-        },
-        async headers() {
-          return [
-            {
-              // Apply these headers to all routes.
-              source: "/:path*",
-              headers: securityHeaders,
-            },
-          ];
-        },
-      },
-      sentryWebpackPluginOptions
-    )
-  )
+      ];
+    },
+  })
 );
+
+// Only apply Sentry if auth token is present
+module.exports = process.env.SENTRY_AUTH_TOKEN
+  ? withSentryConfig(baseConfig, sentryWebpackPluginOptions)
+  : baseConfig;
