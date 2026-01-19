@@ -267,22 +267,16 @@ export default function HashConnectProvider({
     if (debug)
       console.info("===============Saving to localstorage::=============");
     const { metadata, ...restData } = data;
+    const walletType = extensionType || connectedAccountType || "hashpack";
     const saveObj: SaveData = {
       ...saveData,
       pairedWalletData: metadata,
       pairedAccounts: restData.accountIds,
-      walletExtensionType: extensionType || connectedAccountType,
+      walletExtensionType: walletType,
       ...restData,
     };
-    // console.log(saveObj, "saveObj");
-    // await setSaveData((prevSaveData) => {
-    //   prevSaveData.pairedWalletData = metadata;
-    //   console.log("restData", { ...prevSaveData, ...restData });
-    //   return { ...prevSaveData, ...restData };
-    // });
-    // console.log("saveData", saveData);
     setSaveData(saveObj);
-    // setAccountId(restData.accountIds[0]);
+    setConnectedAccountType(walletType);
     StorageService.saveData(saveObj);
     if (
       saveObj !== undefined &&
@@ -451,6 +445,11 @@ export default function HashConnectProvider({
   };
 
   const getAccounts = async (accountId: string) => {
+    // Set status to connected first, even if balance query fails
+    if (accountId && connectedAccountType) {
+      setStatus(WalletStatus.WALLET_CONNECTED);
+    }
+
     //Create the account info query
     try {
       if (connectedAccountType === "hashpack") {
@@ -463,12 +462,11 @@ export default function HashConnectProvider({
         const balance = await bladeService.getBalance();
         setAccountBalance(balance);
       }
-      if (connectedAccountType !== "") {
-        setStatus("WALLET_CONNECTED");
-      }
     } catch (error: any) {
       setNetworkError(true);
       console.log(error.message);
+      // Status is already set to WALLET_CONNECTED above, so wallet connection is still recognized
+      // even if balance query fails
     }
   };
 
@@ -487,10 +485,17 @@ export default function HashConnectProvider({
   };
 
   const signTransaction = async (transactionString: string) => {
-    // console.log("transactionString", transactionString);
-    const transaction = Buffer.from(transactionString, "base64");
+    if (!transactionString || transactionString.trim() === "") {
+      throw new Error("Transaction string is empty");
+    }
 
-    // console.log("transaction", transaction.buffer);
+    if (!selectedAccount) {
+      throw new Error("No account selected. Please connect your wallet.");
+    }
+
+    // Convert base64 string to Uint8Array
+    const transactionBuffer = Buffer.from(transactionString.trim(), "base64");
+    const transaction = new Uint8Array(transactionBuffer);
 
     const response: MessageTypes.TransactionResponse = await sendTransaction(
       transaction,
@@ -498,20 +503,17 @@ export default function HashConnectProvider({
       true
     );
 
-    // console.log("response", response);
     if (response.success && response.signedTransaction) {
-      // console.log("signedTransaction", signedTransaction);
-
       const signedTransaction = Buffer.from(
         response.signedTransaction
       ).toString("base64");
-      // console.log(encodedSignature);
-      // const output: signedTransactionParams = {
-      //   userId: selectedAccount,
-      //   signature: encodedSignature,
-      // };
-      // console.log("output", output);
       return signedTransaction;
+    } else if (response.error) {
+      throw new Error(`Transaction signing failed: ${response.error}`);
+    } else if (!response.success) {
+      throw new Error(
+        "Transaction signing was cancelled or rejected. Please check your wallet."
+      );
     }
 
     return null;
@@ -681,17 +683,40 @@ export default function HashConnectProvider({
     return_trans: boolean = false
   ) => {
     const topic = saveData.topic;
+
+    if (!topic) {
+      throw new Error(
+        "HashConnect is not properly initialized. Topic is missing. Please reconnect your wallet."
+      );
+    }
+
+    if (!saveData.privateKey) {
+      throw new Error(
+        "HashConnect is not properly initialized. Private key is missing. Please reconnect your wallet."
+      );
+    }
+
+    // Ensure HashConnect is initialized with private key for encryption
+    // This is required before sending transactions
+    try {
+      await hashConnect.init(metadata ?? APP_CONFIG, saveData.privateKey);
+    } catch (error: any) {
+      // If already initialized, that's fine - continue
+      if (!error.message?.includes("already initialized")) {
+        console.warn("HashConnect init warning:", error.message);
+      }
+    }
+
     const transaction: MessageTypes.Transaction = {
       topic: topic,
       byteArray: trans,
-
       metadata: {
         accountToSign: acctToSign,
         returnTransaction: return_trans,
       },
     };
-    const response = await hashConnect.sendTransaction(topic, transaction);
 
+    const response = await hashConnect.sendTransaction(topic, transaction);
     return response;
   };
 
