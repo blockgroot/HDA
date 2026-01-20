@@ -2,6 +2,10 @@
   "name": "stader",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,8 +18,10 @@
   },
   "dependencies": {
     "@bladelabs/blade-web3.js": "0.9.9",
+    "@hashgraph/hedera-wallet-connect": "^2.0.4",
     "@hashgraph/hethers": "^1.0.3",
     "@hashgraph/sdk": "^2.15.0",
+    "@walletconnect/modal": "^2.7.0",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",

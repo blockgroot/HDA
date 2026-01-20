@@ -8,17 +8,18 @@ jobs:
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 14
+          node-version: 18
       - name: "Install vercel"
         run: npm i -g vercel
       - name: "Deploy to vercel"
         id: deploy
         run: |
-          prodRun=""
-          echo "::set-output name=DEPLOYMENT_URL::$(vercel --confirm -t $VERCEL_TOKEN --scope $VERCEL_ORG_ID)"
+          deployment_url=$(vercel --confirm -t $VERCEL_TOKEN --scope $VERCEL_ORG_ID)
+          echo "DEPLOYMENT_URL=$deployment_url" >> $GITHUB_OUTPUT
+          echo "Deployment URL: $deployment_url"
       - name: "comment deployment url"
         uses: thollander/actions-comment-pull-request@v1
         with:
