@@ -9,6 +9,7 @@ const withTM = require("next-transpile-modules", "hashconnect")([
   "@hashgraph/hedera-wallet-connect",
   "@reown/appkit",
   "@reown/appkit-controllers",
+  "@reown/appkit-common",
   "@reown/walletkit",
   "@walletconnect/modal",
   "@walletconnect/utils",
