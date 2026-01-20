@@ -39,6 +39,12 @@ jobs:
         with:
           path: "./deploy.json"
           prop_path: "${{ steps.extract_branch.outputs.branch }}.alias"
+      - name: "Validate Vercel token"
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "VERCEL_TOKEN is not set. Please add it as a GitHub secret."
+            exit 1
+          fi
       - name: "Install vercel"
         run: npm i -g vercel
       - name: "Deploy to vercel"
