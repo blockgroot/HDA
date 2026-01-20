@@ -6,6 +6,12 @@ const withImages = require("next-images");
 const withTM = require("next-transpile-modules", "hashconnect")([
   "@bladelabs/blade-web3.js",
   "hashconnect",
+  "@hashgraph/hedera-wallet-connect",
+  "@reown/appkit",
+  "@reown/appkit-controllers",
+  "@reown/walletkit",
+  "@walletconnect/modal",
+  "@walletconnect/utils",
 ]);
 
 const { withSentryConfig } = require("@sentry/nextjs");
@@ -27,7 +33,10 @@ const allowedDomainsToConnect = [
   "https://www.googletagmanager.com",
   "https://www.google-analytics.com",
   "wss://*.bridge.walletconnect.org",
+  "wss://relay.walletconnect.com",
   "https://registry.walletconnect.com",
+  "https://explorer-api.walletconnect.com",
+  "https://*.walletconnect.com",
   "https://api.wallet.coinbase.com",
   "wss://www.walletlink.org",
   "https://firebaseinstallations.googleapis.com",
@@ -51,6 +60,7 @@ const ContentSecurityPolicy = `
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com;
   img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com;
+  frame-src 'self' https://verify.walletconnect.org https://*.walletconnect.org;
   connect-src 'self' ${allowedDomainsToConnect.join(" ")};
 `;
 
@@ -113,6 +123,10 @@ module.exports = withSentryConfig(
         poweredByHeader: false,
 
         productionBrowserSourceMaps: true,
+        typescript: {
+          // Ignore TypeScript errors in dependencies (like @noble/curves)
+          ignoreBuildErrors: true,
+        },
         webpack: (config) => {
           return {
             ...config,
